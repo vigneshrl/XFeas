@@ -1,0 +1,57 @@
+{
+ "bbox_xyz_m": [
+  0.34576967469741543,
+  0.6982663062742909,
+  0.1141899425611611
+ ],
+ "fall_tilt": 1.0,
+ "family": "aerial",
+ "joint_lower": [
+  0.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "joint_names": [
+  "rotor0",
+  "rotor1",
+  "rotor2",
+  "rotor3"
+ ],
+ "joint_tau_max": [
+  -1.0,
+  -1.0,
+  -1.0,
+  -1.0
+ ],
+ "joint_upper": [
+  0.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "joint_vmax": [
+  1100.0,
+  1100.0,
+  1100.0,
+  1100.0
+ ],
+ "kind": "iris",
+ "mass_kg": 1.5,
+ "max_cmd": {
+  "vx_fwd": 2.0,
+  "vx_rev": 2.0,
+  "vy": 1.5,
+  "vz": 1.0,
+  "wz": 1.5
+ },
+ "n_joints": 4,
+ "phys_hz": 200,
+ "v_min": 0.05,
+ "variant": {
+  "cmd_scale": 1.0,
+  "effort_scale": 1.0,
+  "payload_kg": 0.0
+ },
+ "note": "fixed iris body for every iris controller in gen5 (from data/gen_v5 iris episode desc, 2026-10-26); max_cmd is zeroed by embodiment(); bbox = the most frequent logged value"
+}

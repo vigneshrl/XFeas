@@ -1,0 +1,57 @@
+{
+ "bbox_xyz_m": [
+  0.5106514770085205,
+  0.430012964306433,
+  0.43530095863790663
+ ],
+ "fall_tilt": 1.0,
+ "family": "wheeled",
+ "joint_lower": [
+  -3.4028234663852886e+38,
+  -3.4028234663852886e+38,
+  -3.4028234663852886e+38,
+  -3.4028234663852886e+38
+ ],
+ "joint_names": [
+  "front_left_wheel_joint",
+  "front_right_wheel_joint",
+  "rear_left_wheel_joint",
+  "rear_right_wheel_joint"
+ ],
+ "joint_tau_max": [
+  8.0,
+  8.0,
+  8.0,
+  8.0
+ ],
+ "joint_upper": [
+  3.4028234663852886e+38,
+  3.4028234663852886e+38,
+  3.4028234663852886e+38,
+  3.4028234663852886e+38
+ ],
+ "joint_vmax": [
+  -1.0,
+  -1.0,
+  -1.0,
+  -1.0
+ ],
+ "kind": "jackal",
+ "mass_kg": 20.225903511047363,
+ "max_cmd": {
+  "vx_fwd": 2.0,
+  "vx_rev": 1.0,
+  "vy": 0.0,
+  "vz": 0.0,
+  "wz": 2.0
+ },
+ "n_joints": 4,
+ "phys_hz": 200,
+ "v_min": 0.1,
+ "variant": {
+  "cmd_scale": 1.0,
+  "effort_scale": 1.0,
+  "payload_kg": 0.0
+ },
+ "note": "fixed jackal body for every jackal controller in gen5 (from data/gen_v5 jackal episode desc, 2026-10-26); max_cmd is zeroed by embodiment(); bbox = the most frequent logged value; fall_tilt 1.0 = the production fall rule (GEN5_DATA_SPEC 12)"
+}
