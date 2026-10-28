@@ -1,0 +1,2205 @@
+{
+ "spec": {
+  "version": "spot",
+  "location": "south_hall",
+  "lane": {
+   "P0": [
+    -27.2,
+    -5.8
+   ],
+   "yaw": 0.0,
+   "floor": 0.681,
+   "half": 1.35
+  },
+  "straight": 3.0,
+  "clear": 1.4,
+  "hurdle": {
+   "kind": "bench",
+   "scale": 0.85,
+   "removed": true
+  },
+  "oil": {
+   "scale": 0.85,
+   "gap_to_tunnel": 0.1
+  },
+  "tunnel": {
+   "style": "partition",
+   "locker_scale": 1.05,
+   "cab": "closet3",
+   "cab_scale": 1.14,
+   "n_cab": 2,
+   "half_w": 0.8,
+   "n_leaves": 3,
+   "closure": [
+    "closet3",
+    "bookcase3"
+   ],
+   "closure_srange": [
+    0.85,
+    1.15
+   ],
+   "wall": "partition",
+   "wall_top": 0.92
+  },
+  "clear_after_ln": 1.2,
+  "gym_door_block": {
+   "x": [
+    -23.85,
+    -21.2
+   ],
+   "depth": 0.58,
+   "kinds": [
+    "wardrobe1",
+    "wardrobe"
+   ]
+  },
+  "low_narrow": {
+   "gap": 0.68,
+   "cab": "closet3",
+   "cab_scale": 1.14,
+   "lintel": "plank",
+   "lintel_scale": 0.9,
+   "closure": [
+    "closet3",
+    "bookcase3"
+   ],
+   "closure_srange": [
+    0.85,
+    1.15
+   ],
+   "jamb": "partition",
+   "jamb_top": 1.1,
+   "ds": 0.25
+  },
+  "sidle": {
+   "s0_min": 13.75,
+   "gap": 0.68,
+   "length": 2.7,
+   "kinds": [
+    "wardrobe1",
+    "wardrobe"
+   ],
+   "srange": [
+    0.95,
+    1.08
+   ]
+  },
+  "goal_after": 1.4,
+  "robot": "spotp",
+  "curb": {
+   "s0": 3.4,
+   "h": 0.11,
+   "kind": "plank",
+   "wall_margin": 0.005,
+   "clear_after": 1.45
+  },
+  "spot": {
+   "stand_top": 0.966,
+   "min_walk_top": 0.704,
+   "stand_top_src": "data/gen_v4/bands4.json spot (gen_v4 smoke probe of spotp, school_sprobe.json 2026-10-19): stand top 0.966, lowest walking top 0.704 at h 0.25 / pitch 0.35",
+   "overhang_pass_stock": 0.955,
+   "overhang_pass_lowest_crouch": 0.88,
+   "overhang_src": "analysis/OVERHANG_RESULTS.md sec. 1 (physics band on 1,520 Spot episodes: stock posture passes from ~0.955 m, lowest crouch from ~0.88 m); D1 0.906 m stock 0/3, crouch oracle 3/3; T1 0.885 m and V3 0.91 m stock 0/3, oracle 3/3 (STATUS_TERRAIN_SETPOINT_AUDIT sec. 2.1)",
+   "width": 0.548,
+   "depth": 1.594,
+   "width_src": "analysis/SIDESTEP_RESULTS.md sec. 1 (PhysX collision width 0.548 m at the feet, depth 1.594 m arm jaw to hind leg); bands4.json standing link width 0.53 m",
+   "gap_ok": 0.75,
+   "gap_src": "SIDESTEP_RESULTS.md sec. 5: N2 0.75 m x 0.60 m gap, stock_straight 3/3",
+   "curb_ok": 0.11,
+   "curb_src": "STATUS_TERRAIN_SETPOINT_AUDIT sec. 3.4 / 3.6: H2 3-plank curb 0.11 m (fm0 oracle 3/3); edges 0.10-0.13 m: gen_v1 env_climb oracle 87/92, stock 6/92; edges < 0.10 m stock 16/28; G2 risers 0.08 m"
+  }
+ },
+ "build": {
+  "sections": [
+   {
+    "name": "start_straight",
+    "s": [
+     0.0,
+     3.4
+    ],
+    "length": 3.4
+   },
+   {
+    "name": "curb",
+    "s": [
+     3.4,
+     3.873
+    ],
+    "h_target": 0.11,
+    "h_built": 0.11,
+    "layers": 3,
+    "plank_scale": 0.9466,
+    "sink": 0.0,
+    "depth": 0.473,
+    "columns": 2,
+    "column_length": 2.84,
+    "l_range": [
+     -3.426,
+     2.277
+    ],
+    "column_joint_gap": 0.0226,
+    "what": "3 stacked school planks SM_literature_props_1 x0.947 per column, 2 columns wall to wall (H2 curb recipe)"
+   },
+   {
+    "name": "low_narrow",
+    "spot_role": "narrow_opening",
+    "s": [
+     5.323,
+     5.598
+    ],
+    "gap_design": 0.68,
+    "height_design": 1.1,
+    "jambs": {
+     "src": "SM_cloakroom_2",
+     "scale": 1.1
+    },
+    "lintel": {
+     "src": "SM_literature_props_1",
+     "scale": 0.9
+    }
+   },
+   {
+    "name": "oil",
+    "s": [
+     6.798,
+     9.481
+    ],
+    "what": "school oil decal Oil_surface_02 x0.850 + PM_Oil",
+    "size_along_across": [
+     2.683,
+     3.226
+    ]
+   },
+   {
+    "name": "tunnel",
+    "s": [
+     9.581,
+     11.238
+    ],
+    "length": 1.657,
+    "clear_width": 1.6,
+    "clear_height_design": 0.92,
+    "roof": {
+     "src": "BP_school_door_13/SM_school_door_4_2/InstancedSM_school_door_4_2",
+     "n": 3,
+     "scale": 0.85
+    },
+    "rows": {
+     "src": "SM_cloakroom_2",
+     "scale": 0.92,
+     "depth": 0.23,
+     "top": 0.92
+    },
+    "closure": [
+     {
+      "side": "L",
+      "wall": 2.932,
+      "pieces": [
+       [
+        "closet3",
+        false,
+        0.9761,
+        0.3645
+       ],
+       [
+        "closet3",
+        false,
+        0.9761,
+        0.3645
+       ]
+      ],
+      "scale": 1.0222,
+      "built": 1.9222,
+      "what": "low school cabinets BP_school_closet_3, BP_school_bookcase_3"
+     },
+     {
+      "side": "R",
+      "wall": 3.408,
+      "pieces": [
+       [
+        "bookcase3",
+        false,
+        0.8294,
+        0.3264
+       ],
+       [
+        "bookcase3",
+        false,
+        0.8294,
+        0.3264
+       ],
+       [
+        "bookcase3",
+        false,
+        0.8294,
+        0.3264
+       ]
+      ],
+      "scale": 0.87,
+      "built": 2.4281,
+      "what": "low school cabinets BP_school_closet_3, BP_school_bookcase_3"
+     }
+    ]
+   },
+   {
+    "name": "sidle_strip",
+    "spot_role": "corridor",
+    "s": [
+     13.75,
+     16.48
+    ],
+    "gap_design": 0.68,
+    "length": 2.73,
+    "what": "school wardrobes BP_school_wardrobe_1, BP_school_wardrobe_2"
+   }
+  ],
+  "doorway_block": {
+   "x": [
+    -23.85,
+    -21.2
+   ],
+   "wall_l": 2.872,
+   "front_l": 2.282,
+   "pieces": [
+    [
+     "wardrobe",
+     false,
+     0.9033,
+     0.5799
+    ],
+    [
+     "wardrobe",
+     false,
+     0.9033,
+     0.5799
+    ],
+    [
+     "wardrobe",
+     false,
+     0.9033,
+     0.5799
+    ]
+   ],
+   "scale": 1.0006
+  },
+  "task": {
+   "start": {
+    "xy": [
+     -27.2,
+     -5.8
+    ],
+    "z": 0.681,
+    "yaw": 0.0
+   },
+   "goal": {
+    "xy": [
+     -9.32,
+     -5.8
+    ],
+    "z": 0.681,
+    "success_radius": 0.5
+   },
+   "path": [
+    [
+     -27.2,
+     -5.8,
+     0.681
+    ],
+    [
+     -24.1,
+     -5.8,
+     0.681
+    ],
+    [
+     -23.027,
+     -5.8,
+     0.681
+    ],
+    [
+     -22.177,
+     -5.8,
+     0.681
+    ],
+    [
+     -21.302,
+     -5.8,
+     0.681
+    ],
+    [
+     -20.702,
+     -5.8,
+     0.681
+    ],
+    [
+     -17.919,
+     -5.8,
+     0.681
+    ],
+    [
+     -17.419,
+     -5.8,
+     0.681
+    ],
+    [
+     -15.662,
+     -5.8,
+     0.681
+    ],
+    [
+     -13.75,
+     -5.8,
+     0.681
+    ],
+    [
+     -10.42,
+     -5.8,
+     0.681
+    ],
+    [
+     -9.32,
+     -5.8,
+     0.681
+    ]
+   ],
+   "length": 17.88,
+   "skills": {
+    "curb": "step up / over a 0.11 m full-width curb (Spot climb setpoint: high body, nose-up)",
+    "low_narrow": "align through a 0.68 m opening (lintel 1.10 m: no crouch needed)",
+    "tunnel": "slow on the oil patch, then crouch-walk ~1.7 m under 0.92 m",
+    "sidle": "hold alignment 2.7 m in a ~0.80 m wardrobe corridor"
+   }
+  },
+  "n_parts": 37
+ },
+ "parts": [
+  {
+   "role": "gymdoor_block_0",
+   "section": "doorway_block",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 1.0006,
+   "orient": "as_is",
+   "yaw_rad": 3.14159,
+   "prim": "/World/SchoolCourseSpot/wardrobe_000",
+   "center": [
+    -23.3983,
+    -3.2284,
+    1.5327
+   ],
+   "size": [
+    0.9033,
+    0.5799,
+    1.7035
+   ],
+   "aabb_min": [
+    -23.85,
+    -3.5183,
+    0.681
+   ],
+   "aabb_max": [
+    -22.9467,
+    -2.9385,
+    2.3845
+   ]
+  },
+  {
+   "role": "gymdoor_block_1",
+   "section": "doorway_block",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 1.0006,
+   "orient": "as_is",
+   "yaw_rad": 3.14159,
+   "prim": "/World/SchoolCourseSpot/wardrobe_001",
+   "center": [
+    -22.525,
+    -3.2284,
+    1.5327
+   ],
+   "size": [
+    0.9033,
+    0.5799,
+    1.7035
+   ],
+   "aabb_min": [
+    -22.9767,
+    -3.5183,
+    0.681
+   ],
+   "aabb_max": [
+    -22.0733,
+    -2.9385,
+    2.3845
+   ]
+  },
+  {
+   "role": "gymdoor_block_2",
+   "section": "doorway_block",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 1.0006,
+   "orient": "as_is",
+   "yaw_rad": 3.14159,
+   "prim": "/World/SchoolCourseSpot/wardrobe_002",
+   "center": [
+    -21.6517,
+    -3.2284,
+    1.5327
+   ],
+   "size": [
+    0.9033,
+    0.5799,
+    1.7035
+   ],
+   "aabb_min": [
+    -22.1033,
+    -3.5183,
+    0.681
+   ],
+   "aabb_max": [
+    -21.2,
+    -2.9385,
+    2.3845
+   ]
+  },
+  {
+   "role": "curb_L0_L",
+   "section": "curb",
+   "kind": "plank",
+   "src": "SM_literature_props_1",
+   "scale": 0.9466,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/plank_000",
+   "center": [
+    -23.5633,
+    -4.9432,
+    0.6999
+   ],
+   "size": [
+    2.8399,
+    0.0379,
+    0.4733
+   ],
+   "aabb_min": [
+    -23.8,
+    -6.3632,
+    0.681
+   ],
+   "aabb_max": [
+    -23.3267,
+    -3.5232,
+    0.7189
+   ]
+  },
+  {
+   "role": "curb_L0_R",
+   "section": "curb",
+   "kind": "plank",
+   "src": "SM_literature_props_1",
+   "scale": 0.9466,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/plank_001",
+   "center": [
+    -23.5633,
+    -7.8057,
+    0.6999
+   ],
+   "size": [
+    2.8399,
+    0.0379,
+    0.4733
+   ],
+   "aabb_min": [
+    -23.8,
+    -9.2257,
+    0.681
+   ],
+   "aabb_max": [
+    -23.3267,
+    -6.3858,
+    0.7189
+   ]
+  },
+  {
+   "role": "curb_L1_L",
+   "section": "curb",
+   "kind": "plank",
+   "src": "SM_literature_props_1",
+   "scale": 0.9466,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/plank_002",
+   "center": [
+    -23.5633,
+    -4.9432,
+    0.7378
+   ],
+   "size": [
+    2.8399,
+    0.0379,
+    0.4733
+   ],
+   "aabb_min": [
+    -23.8,
+    -6.3632,
+    0.7189
+   ],
+   "aabb_max": [
+    -23.3267,
+    -3.5232,
+    0.7567
+   ]
+  },
+  {
+   "role": "curb_L1_R",
+   "section": "curb",
+   "kind": "plank",
+   "src": "SM_literature_props_1",
+   "scale": 0.9466,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/plank_003",
+   "center": [
+    -23.5633,
+    -7.8057,
+    0.7378
+   ],
+   "size": [
+    2.8399,
+    0.0379,
+    0.4733
+   ],
+   "aabb_min": [
+    -23.8,
+    -9.2257,
+    0.7189
+   ],
+   "aabb_max": [
+    -23.3267,
+    -6.3858,
+    0.7567
+   ]
+  },
+  {
+   "role": "curb_L2_L",
+   "section": "curb",
+   "kind": "plank",
+   "src": "SM_literature_props_1",
+   "scale": 0.9466,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/plank_004",
+   "center": [
+    -23.5633,
+    -4.9432,
+    0.7757
+   ],
+   "size": [
+    2.8399,
+    0.0379,
+    0.4733
+   ],
+   "aabb_min": [
+    -23.8,
+    -6.3632,
+    0.7567
+   ],
+   "aabb_max": [
+    -23.3267,
+    -3.5232,
+    0.7946
+   ]
+  },
+  {
+   "role": "curb_L2_R",
+   "section": "curb",
+   "kind": "plank",
+   "src": "SM_literature_props_1",
+   "scale": 0.9466,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/plank_005",
+   "center": [
+    -23.5633,
+    -7.8057,
+    0.7757
+   ],
+   "size": [
+    2.8399,
+    0.0379,
+    0.4733
+   ],
+   "aabb_min": [
+    -23.8,
+    -9.2257,
+    0.7567
+   ],
+   "aabb_max": [
+    -23.3267,
+    -6.3858,
+    0.7946
+   ]
+  },
+  {
+   "role": "ln_jamb_L",
+   "section": "low_narrow",
+   "kind": "partition",
+   "src": "SM_cloakroom_2",
+   "scale": 1.1,
+   "orient": "as_is",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/partition_000",
+   "center": [
+    -21.7394,
+    -4.4695,
+    1.231
+   ],
+   "size": [
+    1.981,
+    0.2751,
+    1.1
+   ],
+   "aabb_min": [
+    -21.877,
+    -5.46,
+    0.681
+   ],
+   "aabb_max": [
+    -21.6019,
+    -3.479,
+    1.781
+   ]
+  },
+  {
+   "role": "ln_jamb_R",
+   "section": "low_narrow",
+   "kind": "partition",
+   "src": "SM_cloakroom_2",
+   "scale": 1.1,
+   "orient": "as_is",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/partition_001",
+   "center": [
+    -21.7394,
+    -7.1305,
+    1.231
+   ],
+   "size": [
+    1.981,
+    0.2751,
+    1.1
+   ],
+   "aabb_min": [
+    -21.877,
+    -8.121,
+    0.681
+   ],
+   "aabb_max": [
+    -21.6019,
+    -6.14,
+    1.781
+   ]
+  },
+  {
+   "role": "ln_closure_R0",
+   "section": "low_narrow",
+   "kind": "bookcase3",
+   "src": "BP_school_bookcase_3",
+   "scale": 0.9495,
+   "orient": "as_is",
+   "yaw_rad": 4.71239,
+   "prim": "/World/SchoolCourseSpot/bookcase3_000",
+   "center": [
+    -21.6989,
+    -8.5535,
+    1.068
+   ],
+   "size": [
+    0.9052,
+    0.3562,
+    0.774
+   ],
+   "aabb_min": [
+    -21.877,
+    -9.0061,
+    0.681
+   ],
+   "aabb_max": [
+    -21.5208,
+    -8.101,
+    1.455
+   ]
+  },
+  {
+   "role": "ln_closure_R1",
+   "section": "low_narrow",
+   "kind": "closet3",
+   "src": "BP_school_closet_3",
+   "scale": 0.9495,
+   "orient": "as_is",
+   "yaw_rad": 0.0,
+   "prim": "/World/SchoolCourseSpot/closet3_000",
+   "center": [
+    -21.4236,
+    -9.1455,
+    1.0911
+   ],
+   "size": [
+    0.9067,
+    0.3386,
+    0.8202
+   ],
+   "aabb_min": [
+    -21.877,
+    -9.3148,
+    0.681
+   ],
+   "aabb_max": [
+    -20.9703,
+    -8.9761,
+    1.5012
+   ]
+  },
+  {
+   "role": "ln_lintel",
+   "section": "low_narrow",
+   "kind": "plank",
+   "src": "SM_literature_props_1",
+   "scale": 0.9,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/plank_006",
+   "center": [
+    -21.7394,
+    -5.8,
+    1.799
+   ],
+   "size": [
+    2.7,
+    0.036,
+    0.45
+   ],
+   "aabb_min": [
+    -21.9644,
+    -7.15,
+    1.781
+   ],
+   "aabb_max": [
+    -21.5144,
+    -4.45,
+    1.817
+   ]
+  },
+  {
+   "role": "oil_patch",
+   "section": "oil",
+   "kind": "oil",
+   "src": "Oil_surface_02",
+   "scale": 0.85,
+   "orient": "as_is",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/oil_000",
+   "center": [
+    -19.0605,
+    -5.8,
+    0.6814
+   ],
+   "size": [
+    3.2263,
+    2.6828,
+    0.0008
+   ],
+   "aabb_min": [
+    -20.4019,
+    -7.4132,
+    0.681
+   ],
+   "aabb_max": [
+    -17.7191,
+    -4.1868,
+    0.6818
+   ]
+  },
+  {
+   "role": "tunnel_row_L",
+   "section": "tunnel",
+   "kind": "partition",
+   "src": "SM_cloakroom_2",
+   "scale": 0.92,
+   "orient": "as_is",
+   "yaw_rad": 0.0,
+   "prim": "/World/SchoolCourseSpot/partition_002",
+   "center": [
+    -16.7907,
+    -4.8849,
+    1.141
+   ],
+   "size": [
+    1.6568,
+    0.2301,
+    0.92
+   ],
+   "aabb_min": [
+    -17.6191,
+    -5.0,
+    0.681
+   ],
+   "aabb_max": [
+    -15.9623,
+    -4.7699,
+    1.601
+   ]
+  },
+  {
+   "role": "tunnel_row_R",
+   "section": "tunnel",
+   "kind": "partition",
+   "src": "SM_cloakroom_2",
+   "scale": 0.92,
+   "orient": "as_is",
+   "yaw_rad": 0.0,
+   "prim": "/World/SchoolCourseSpot/partition_003",
+   "center": [
+    -16.7907,
+    -6.7151,
+    1.141
+   ],
+   "size": [
+    1.6568,
+    0.2301,
+    0.92
+   ],
+   "aabb_min": [
+    -17.6191,
+    -6.8301,
+    0.681
+   ],
+   "aabb_max": [
+    -15.9623,
+    -6.6,
+    1.601
+   ]
+  },
+  {
+   "role": "tunnel_roof_0",
+   "section": "tunnel",
+   "kind": "door_leaf",
+   "src": "BP_school_door_13/SM_school_door_4_2/InstancedSM_school_door_4_2",
+   "scale": 0.85,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/door_leaf_000",
+   "center": [
+    -17.4125,
+    -5.8,
+    1.6309
+   ],
+   "size": [
+    2.1939,
+    0.6198,
+    0.1187
+   ],
+   "aabb_min": [
+    -17.7223,
+    -6.8969,
+    1.5715
+   ],
+   "aabb_max": [
+    -17.1026,
+    -4.7031,
+    1.6903
+   ]
+  },
+  {
+   "role": "tunnel_roof_1",
+   "section": "tunnel",
+   "kind": "door_leaf",
+   "src": "BP_school_door_13/SM_school_door_4_2/InstancedSM_school_door_4_2",
+   "scale": 0.85,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/door_leaf_001",
+   "center": [
+    -16.7907,
+    -5.8,
+    1.6307
+   ],
+   "size": [
+    2.1939,
+    0.6198,
+    0.1187
+   ],
+   "aabb_min": [
+    -17.1006,
+    -6.8969,
+    1.5714
+   ],
+   "aabb_max": [
+    -16.4808,
+    -4.7031,
+    1.6901
+   ]
+  },
+  {
+   "role": "tunnel_roof_2",
+   "section": "tunnel",
+   "kind": "door_leaf",
+   "src": "BP_school_door_13/SM_school_door_4_2/InstancedSM_school_door_4_2",
+   "scale": 0.85,
+   "orient": "flat",
+   "yaw_rad": 1.5708,
+   "prim": "/World/SchoolCourseSpot/door_leaf_002",
+   "center": [
+    -16.1689,
+    -5.8,
+    1.6307
+   ],
+   "size": [
+    2.1939,
+    0.6198,
+    0.1187
+   ],
+   "aabb_min": [
+    -16.4788,
+    -6.8969,
+    1.5714
+   ],
+   "aabb_max": [
+    -15.8591,
+    -4.7031,
+    1.6901
+   ]
+  },
+  {
+   "role": "tunnel_closure_L0",
+   "section": "tunnel",
+   "kind": "closet3",
+   "src": "BP_school_closet_3",
+   "scale": 1.0222,
+   "orient": "as_is",
+   "yaw_rad": 4.71239,
+   "prim": "/World/SchoolCourseSpot/closet3_001",
+   "center": [
+    -17.4368,
+    -4.3018,
+    1.1225
+   ],
+   "size": [
+    0.9761,
+    0.3645,
+    0.8829
+   ],
+   "aabb_min": [
+    -17.6191,
+    -4.7899,
+    0.681
+   ],
+   "aabb_max": [
+    -17.2546,
+    -3.8138,
+    1.5639
+   ]
+  },
+  {
+   "role": "tunnel_closure_L1",
+   "section": "tunnel",
+   "kind": "closet3",
+   "src": "BP_school_closet_3",
+   "scale": 1.0222,
+   "orient": "as_is",
+   "yaw_rad": 4.71239,
+   "prim": "/World/SchoolCourseSpot/closet3_002",
+   "center": [
+    -17.4368,
+    -3.3558,
+    1.1225
+   ],
+   "size": [
+    0.9761,
+    0.3645,
+    0.8829
+   ],
+   "aabb_min": [
+    -17.6191,
+    -3.8438,
+    0.681
+   ],
+   "aabb_max": [
+    -17.2546,
+    -2.8677,
+    1.5639
+   ]
+  },
+  {
+   "role": "tunnel_closure_R0",
+   "section": "tunnel",
+   "kind": "bookcase3",
+   "src": "BP_school_bookcase_3",
+   "scale": 0.87,
+   "orient": "as_is",
+   "yaw_rad": 4.71239,
+   "prim": "/World/SchoolCourseSpot/bookcase3_001",
+   "center": [
+    -17.4559,
+    -7.2248,
+    1.0356
+   ],
+   "size": [
+    0.8294,
+    0.3264,
+    0.7091
+   ],
+   "aabb_min": [
+    -17.6191,
+    -7.6395,
+    0.681
+   ],
+   "aabb_max": [
+    -17.2927,
+    -6.8101,
+    1.3901
+   ]
+  },
+  {
+   "role": "tunnel_closure_R1",
+   "section": "tunnel",
+   "kind": "bookcase3",
+   "src": "BP_school_bookcase_3",
+   "scale": 0.87,
+   "orient": "as_is",
+   "yaw_rad": 4.71239,
+   "prim": "/World/SchoolCourseSpot/bookcase3_002",
+   "center": [
+    -17.4559,
+    -8.0242,
+    1.0356
+   ],
+   "size": [
+    0.8294,
+    0.3264,
+    0.7091
+   ],
+   "aabb_min": [
+    -17.6191,
+    -8.4389,
+    0.681
+   ],
+   "aabb_max": [
+    -17.2927,
+    -7.6095,
+    1.3901
+   ]
+  },
+  {
+   "role": "tunnel_closure_R2",
+   "section": "tunnel",
+   "kind": "bookcase3",
+   "src": "BP_school_bookcase_3",
+   "scale": 0.87,
+   "orient": "as_is",
+   "yaw_rad": 4.71239,
+   "prim": "/World/SchoolCourseSpot/bookcase3_003",
+   "center": [
+    -17.4559,
+    -8.8236,
+    1.0356
+   ],
+   "size": [
+    0.8294,
+    0.3264,
+    0.7091
+   ],
+   "aabb_min": [
+    -17.6191,
+    -9.2382,
+    0.681
+   ],
+   "aabb_max": [
+    -17.2927,
+    -8.4089,
+    1.3901
+   ]
+  },
+  {
+   "role": "sidle_row_L0",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 1.0302,
+   "orient": "as_is",
+   "yaw_rad": 3.14159,
+   "prim": "/World/SchoolCourseSpot/wardrobe_003",
+   "center": [
+    -12.985,
+    -5.1615,
+    1.5579
+   ],
+   "size": [
+    0.93,
+    0.597,
+    1.7538
+   ],
+   "aabb_min": [
+    -13.45,
+    -5.46,
+    0.681
+   ],
+   "aabb_max": [
+    -12.52,
+    -4.863,
+    2.4348
+   ]
+  },
+  {
+   "role": "sidle_row_L1",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 1.0302,
+   "orient": "as_is",
+   "yaw_rad": 3.14159,
+   "prim": "/World/SchoolCourseSpot/wardrobe_004",
+   "center": [
+    -12.085,
+    -5.1615,
+    1.5579
+   ],
+   "size": [
+    0.93,
+    0.597,
+    1.7538
+   ],
+   "aabb_min": [
+    -12.55,
+    -5.46,
+    0.681
+   ],
+   "aabb_max": [
+    -11.62,
+    -4.863,
+    2.4348
+   ]
+  },
+  {
+   "role": "sidle_row_L2",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 1.0302,
+   "orient": "as_is",
+   "yaw_rad": 3.14159,
+   "prim": "/World/SchoolCourseSpot/wardrobe_005",
+   "center": [
+    -11.185,
+    -5.1615,
+    1.5579
+   ],
+   "size": [
+    0.93,
+    0.597,
+    1.7538
+   ],
+   "aabb_min": [
+    -11.65,
+    -5.46,
+    0.681
+   ],
+   "aabb_max": [
+    -10.72,
+    -4.863,
+    2.4348
+   ]
+  },
+  {
+   "role": "sidle_row_R0",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 1.0302,
+   "orient": "as_is",
+   "yaw_rad": 6.28319,
+   "prim": "/World/SchoolCourseSpot/wardrobe_006",
+   "center": [
+    -12.985,
+    -6.4385,
+    1.5579
+   ],
+   "size": [
+    0.93,
+    0.597,
+    1.7538
+   ],
+   "aabb_min": [
+    -13.45,
+    -6.737,
+    0.681
+   ],
+   "aabb_max": [
+    -12.52,
+    -6.14,
+    2.4348
+   ]
+  },
+  {
+   "role": "sidle_row_R1",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 1.0302,
+   "orient": "as_is",
+   "yaw_rad": 6.28319,
+   "prim": "/World/SchoolCourseSpot/wardrobe_007",
+   "center": [
+    -12.085,
+    -6.4385,
+    1.5579
+   ],
+   "size": [
+    0.93,
+    0.597,
+    1.7538
+   ],
+   "aabb_min": [
+    -12.55,
+    -6.737,
+    0.681
+   ],
+   "aabb_max": [
+    -11.62,
+    -6.14,
+    2.4348
+   ]
+  },
+  {
+   "role": "sidle_row_R2",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 1.0302,
+   "orient": "as_is",
+   "yaw_rad": 6.28319,
+   "prim": "/World/SchoolCourseSpot/wardrobe_008",
+   "center": [
+    -11.185,
+    -6.4385,
+    1.5579
+   ],
+   "size": [
+    0.93,
+    0.597,
+    1.7538
+   ],
+   "aabb_min": [
+    -11.65,
+    -6.737,
+    0.681
+   ],
+   "aabb_max": [
+    -10.72,
+    -6.14,
+    2.4348
+   ]
+  },
+  {
+   "role": "sidle_closure_L0",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 0.9842,
+   "orient": "as_is",
+   "yaw_rad": 7.85398,
+   "prim": "/World/SchoolCourseSpot/wardrobe_009",
+   "center": [
+    -13.1648,
+    -4.4138,
+    1.5187
+   ],
+   "size": [
+    0.8884,
+    0.5703,
+    1.6754
+   ],
+   "aabb_min": [
+    -13.45,
+    -4.858,
+    0.681
+   ],
+   "aabb_max": [
+    -12.8797,
+    -3.9696,
+    2.3564
+   ]
+  },
+  {
+   "role": "sidle_closure_L1",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 0.9842,
+   "orient": "as_is",
+   "yaw_rad": 0.0,
+   "prim": "/World/SchoolCourseSpot/wardrobe_010",
+   "center": [
+    -13.0058,
+    -3.7144,
+    1.5187
+   ],
+   "size": [
+    0.8884,
+    0.5703,
+    1.6754
+   ],
+   "aabb_min": [
+    -13.45,
+    -3.9996,
+    0.681
+   ],
+   "aabb_max": [
+    -12.5616,
+    -3.4293,
+    2.3564
+   ]
+  },
+  {
+   "role": "sidle_closure_L2",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 0.9842,
+   "orient": "as_is",
+   "yaw_rad": 0.0,
+   "prim": "/World/SchoolCourseSpot/wardrobe_011",
+   "center": [
+    -13.0058,
+    -3.1741,
+    1.5187
+   ],
+   "size": [
+    0.8884,
+    0.5703,
+    1.6754
+   ],
+   "aabb_min": [
+    -13.45,
+    -3.4593,
+    0.681
+   ],
+   "aabb_max": [
+    -12.5616,
+    -2.889,
+    2.3564
+   ]
+  },
+  {
+   "role": "sidle_closure_R0",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 0.9778,
+   "orient": "as_is",
+   "yaw_rad": 7.85398,
+   "prim": "/World/SchoolCourseSpot/wardrobe_012",
+   "center": [
+    -13.1667,
+    -7.1833,
+    1.5133
+   ],
+   "size": [
+    0.8827,
+    0.5666,
+    1.6646
+   ],
+   "aabb_min": [
+    -13.45,
+    -7.6247,
+    0.681
+   ],
+   "aabb_max": [
+    -12.8834,
+    -6.742,
+    2.3456
+   ]
+  },
+  {
+   "role": "sidle_closure_R1",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 0.9778,
+   "orient": "as_is",
+   "yaw_rad": 7.85398,
+   "prim": "/World/SchoolCourseSpot/wardrobe_013",
+   "center": [
+    -13.1667,
+    -8.036,
+    1.5133
+   ],
+   "size": [
+    0.8827,
+    0.5666,
+    1.6646
+   ],
+   "aabb_min": [
+    -13.45,
+    -8.4774,
+    0.681
+   ],
+   "aabb_max": [
+    -12.8834,
+    -7.5947,
+    2.3456
+   ]
+  },
+  {
+   "role": "sidle_closure_R2",
+   "section": "sidle",
+   "kind": "wardrobe",
+   "src": "BP_school_wardrobe_2",
+   "scale": 0.9778,
+   "orient": "as_is",
+   "yaw_rad": 7.85398,
+   "prim": "/World/SchoolCourseSpot/wardrobe_014",
+   "center": [
+    -13.1667,
+    -8.8887,
+    1.5133
+   ],
+   "size": [
+    0.8827,
+    0.5666,
+    1.6646
+   ],
+   "aabb_min": [
+    -13.45,
+    -9.3301,
+    0.681
+   ],
+   "aabb_max": [
+    -12.8834,
+    -8.4474,
+    2.3456
+   ]
+  }
+ ],
+ "prepare": {
+  "deactivated": [
+   {
+    "path": "/World/School/Geom/BP_school_electric_stove_1",
+    "min": [
+     -28.971,
+     -6.889,
+     0.681
+    ],
+    "max": [
+     -28.17,
+     -6.2,
+     1.551
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_electric_stove_2",
+    "min": [
+     -29.184,
+     -6.092,
+     0.681
+    ],
+    "max": [
+     -28.172,
+     -5.395,
+     1.551
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_safety_poster_2_11",
+    "min": [
+     -28.149,
+     -5.794,
+     2.615
+    ],
+    "max": [
+     -28.138,
+     -4.935,
+     3.252
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_safety_poster_2_12",
+    "min": [
+     -28.216,
+     -4.819,
+     2.651
+    ],
+    "max": [
+     -28.139,
+     -3.941,
+     3.199
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_safety_poster_2_13",
+    "min": [
+     -28.147,
+     -6.741,
+     2.655
+    ],
+    "max": [
+     -28.137,
+     -5.884,
+     3.292
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_safety_poster_2_14",
+    "min": [
+     -28.149,
+     -5.932,
+     1.935
+    ],
+    "max": [
+     -28.138,
+     -5.063,
+     2.572
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_safety_poster_2_15",
+    "min": [
+     -28.312,
+     -4.747,
+     1.799
+    ],
+    "max": [
+     -28.14,
+     -3.862,
+     2.624
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_safety_poster_2_16",
+    "min": [
+     -28.151,
+     -7.099,
+     1.847
+    ],
+    "max": [
+     -28.136,
+     -6.169,
+     2.59
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_door_1/SM_school_door_6_2",
+    "min": [
+     -16.233,
+     -7.71,
+     0.631
+    ],
+    "max": [
+     -14.4,
+     -5.095,
+     0.864
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_door_1/SM_school_door_6_3",
+    "min": [
+     -16.79,
+     -7.741,
+     0.693
+    ],
+    "max": [
+     -16.298,
+     -7.079,
+     3.277
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_door_12",
+    "min": [
+     -28.15,
+     -8.927,
+     0.68
+    ],
+    "max": [
+     -27.276,
+     -7.184,
+     3.376
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_door_13",
+    "min": [
+     -23.642,
+     -5.407,
+     0.625
+    ],
+    "max": [
+     -21.523,
+     -2.612,
+     3.376
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_small_furniture_27",
+    "min": [
+     -14.285,
+     -7.858,
+     0.681
+    ],
+    "max": [
+     -13.738,
+     -7.265,
+     1.583
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_lighting_13",
+    "min": [
+     -19.442,
+     -4.821,
+     0.652
+    ],
+    "max": [
+     -18.413,
+     -3.68,
+     0.771
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_bookcase_70",
+    "min": [
+     -17.207,
+     -4.22,
+     0.664
+    ],
+    "max": [
+     -14.784,
+     -3.252,
+     1.025
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_chair_10",
+    "min": [
+     -8.703,
+     -4.437,
+     0.661
+    ],
+    "max": [
+     -7.86,
+     -3.54,
+     1.153
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_wooden_wall_linings_37",
+    "min": [
+     -14.318,
+     -7.892,
+     0.688
+    ],
+    "max": [
+     -14.011,
+     -3.435,
+     2.735
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_biology_props_2_47",
+    "min": [
+     -27.692,
+     -6.19,
+     0.674
+    ],
+    "max": [
+     -26.372,
+     -4.92,
+     0.714
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_biology_props_2_48",
+    "min": [
+     -27.62,
+     -3.716,
+     0.674
+    ],
+    "max": [
+     -26.687,
+     -2.956,
+     0.714
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_chemistry_props_9",
+    "min": [
+     -19.997,
+     -5.135,
+     0.683
+    ],
+    "max": [
+     -17.654,
+     -2.854,
+     0.699
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_chemistry_props_15",
+    "min": [
+     -16.697,
+     -3.101,
+     0.694
+    ],
+    "max": [
+     -14.806,
+     -2.844,
+     2.065
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_chair_11",
+    "min": [
+     -24.753,
+     -8.71,
+     0.661
+    ],
+    "max": [
+     -23.996,
+     -7.785,
+     1.153
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_chair_26",
+    "min": [
+     -18.375,
+     -8.014,
+     0.661
+    ],
+    "max": [
+     -17.496,
+     -7.146,
+     1.153
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_desk_124",
+    "min": [
+     -26.01,
+     -9.07,
+     0.678
+    ],
+    "max": [
+     -24.753,
+     -8.029,
+     1.312
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_desk_119",
+    "min": [
+     -13.851,
+     -4.168,
+     0.68
+    ],
+    "max": [
+     -12.535,
+     -2.824,
+     1.459
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_desk_125",
+    "min": [
+     -25.433,
+     -9.257,
+     0.679
+    ],
+    "max": [
+     -23.305,
+     -8.14,
+     1.943
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_desk_120",
+    "min": [
+     -11.923,
+     -4.558,
+     0.676
+    ],
+    "max": [
+     -10.758,
+     -3.183,
+     1.326
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_desk_121",
+    "min": [
+     -14.692,
+     -4.384,
+     0.677
+    ],
+    "max": [
+     -13.29,
+     -3.037,
+     1.315
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_desk_126",
+    "min": [
+     -19.079,
+     -9.29,
+     0.678
+    ],
+    "max": [
+     -17.287,
+     -7.653,
+     1.312
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_desk_127",
+    "min": [
+     -18.111,
+     -8.75,
+     0.683
+    ],
+    "max": [
+     -16.683,
+     -6.721,
+     1.943
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_window_10/SM_school_window_1_3",
+    "min": [
+     -20.709,
+     -7.696,
+     0.675
+    ],
+    "max": [
+     -19.424,
+     -6.035,
+     0.785
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_window_11/SM_school_window_1_3/SM_school_windows_glass_14",
+    "min": [
+     -14.131,
+     -8.478,
+     0.708
+    ],
+    "max": [
+     -12.947,
+     -7.048,
+     0.758
+    ]
+   },
+   {
+    "path": "/World/School/Geom/BP_school_window_11/SM_school_window_1_4/InstancedSM_school_window_1_4",
+    "min": [
+     -15.474,
+     -4.958,
+     0.62
+    ],
+    "max": [
+     -13.839,
+     -4.088,
+     0.787
+    ]
+   },
+   {
+    "path": "/World/School/Geom/Oil_surface",
+    "min": [
+     -12.052,
+     -5.995,
+     0.681
+    ],
+    "max": [
+     -8.256,
+     -2.839,
+     0.682
+    ]
+   }
+  ],
+  "structure_in_lane": [
+   {
+    "path": "/World/School/Geom/SM_column_brick_element_1",
+    "min": [
+     -34.585,
+     -9.958,
+     0.294
+    ],
+    "max": [
+     3.192,
+     23.812,
+     9.46
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_concrete_element_1",
+    "min": [
+     -34.962,
+     -12.747,
+     0.002
+    ],
+    "max": [
+     3.571,
+     23.776,
+     9.453
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_wall_brick_element_3",
+    "min": [
+     -34.354,
+     -9.621,
+     -0.0
+    ],
+    "max": [
+     -24.296,
+     23.585,
+     9.48
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_wall_plaster_element_1",
+    "min": [
+     -27.961,
+     -9.409,
+     0.679
+    ],
+    "max": [
+     -3.432,
+     13.256,
+     9.108
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_wall_plaster_element_2",
+    "min": [
+     -34.034,
+     -9.233,
+     0.009
+    ],
+    "max": [
+     2.642,
+     7.85,
+     9.105
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_floor_element_1",
+    "min": [
+     -34.034,
+     -9.409,
+     0.005
+    ],
+    "max": [
+     2.642,
+     23.311,
+     5.301
+    ]
+   },
+   {
+    "path": "/World/School/Geom/SM_skirting_board_element_1",
+    "min": [
+     -34.021,
+     -9.395,
+     0.009
+    ],
+    "max": [
+     2.628,
+     23.272,
+     5.172
+    ]
+   }
+  ],
+  "rect": [
+   [
+    -28.2,
+    -7.4
+   ],
+   [
+    -28.2,
+    -4.2
+   ],
+   [
+    -8.35,
+    -4.2
+   ],
+   [
+    -8.35,
+    -7.4
+   ]
+  ]
+ },
+ "walls": {
+  "2.0:1": null,
+  "2.0:-1": 3.592393159866333,
+  "2.25:1": null,
+  "2.25:-1": 3.430732011795044,
+  "2.5:1": null,
+  "2.5:-1": 3.430732011795044,
+  "2.75:1": 2.9931976795196533,
+  "2.75:-1": 3.430732011795044,
+  "3.0:1": 2.993231773376465,
+  "3.0:-1": 3.43072509765625,
+  "3.25:1": 2.9932656288146973,
+  "3.25:-1": 3.4307148456573486,
+  "3.5:1": 2.9932992458343506,
+  "3.5:-1": 3.4307048320770264,
+  "3.75:1": 2.993333101272583,
+  "3.75:-1": 3.430694580078125,
+  "4.0:1": 2.993363857269287,
+  "4.0:-1": 3.5823402404785156,
+  "4.25:1": null,
+  "4.25:-1": 3.5932083129882812,
+  "4.5:1": null,
+  "4.5:-1": 3.30802321434021,
+  "4.75:1": null,
+  "4.75:-1": 3.5931966304779053,
+  "5.0:1": null,
+  "5.0:-1": 3.593191146850586,
+  "5.25:1": null,
+  "5.25:-1": 3.5920369625091553,
+  "5.5:1": null,
+  "5.5:-1": 3.588719606399536,
+  "5.75:1": 2.985553741455078,
+  "5.75:-1": 3.4547526836395264,
+  "6.0:1": 2.973682165145874,
+  "6.0:-1": 3.4035582542419434,
+  "6.25:1": 2.8716554641723633,
+  "6.25:-1": 3.3090600967407227,
+  "6.5:1": 2.8716557025909424,
+  "6.5:-1": 3.3090600967407227,
+  "6.75:1": 2.8716561794281006,
+  "6.75:-1": 3.3090600967407227,
+  "7.0:1": 2.8716564178466797,
+  "7.0:-1": 3.3090600967407227,
+  "7.25:1": 2.9933688640594482,
+  "7.25:-1": 3.593071460723877,
+  "7.5:1": 2.93229341506958,
+  "7.5:-1": 3.593062162399292,
+  "7.75:1": 2.93229341506958,
+  "7.75:-1": 3.410362720489502,
+  "8.0:1": 2.93229341506958,
+  "8.0:-1": 3.593043327331543,
+  "8.25:1": 2.93229341506958,
+  "8.25:-1": 3.4322283267974854,
+  "8.5:1": 2.93229341506958,
+  "8.5:-1": 3.592855215072632,
+  "8.75:1": 2.93229341506958,
+  "8.75:-1": 3.435608148574829,
+  "9.0:1": 2.93229341506958,
+  "9.0:-1": 3.5865936279296875,
+  "9.25:1": 2.93229341506958,
+  "9.25:-1": 3.4301698207855225,
+  "9.5:1": 2.93229341506958,
+  "9.5:-1": 3.420107841491699,
+  "9.75:1": 2.993370532989502,
+  "9.75:-1": 3.408242702484131,
+  "10.0:1": 2.871656656265259,
+  "10.0:-1": 3.3090600967407227,
+  "10.25:1": 2.871657133102417,
+  "10.25:-1": 1.9379160404205322,
+  "10.5:1": 2.93229341506958,
+  "10.5:-1": 1.9324920177459717,
+  "10.75:1": 2.93229341506958,
+  "10.75:-1": 1.9236602783203125,
+  "11.0:1": 2.93229341506958,
+  "11.0:-1": null,
+  "11.25:1": 2.93229341506958,
+  "11.25:-1": null,
+  "11.5:1": 2.93229341506958,
+  "11.5:-1": null,
+  "11.75:1": 2.93229341506958,
+  "11.75:-1": null,
+  "12.0:1": 2.93229341506958,
+  "12.0:-1": null,
+  "12.25:1": 2.93229341506958,
+  "12.25:-1": 1.9236602783203125,
+  "12.5:1": 2.93229341506958,
+  "12.5:-1": 1.9324920177459717,
+  "12.75:1": 2.871657133102417,
+  "12.75:-1": 1.939595103263855,
+  "13.0:1": 2.871656656265259,
+  "13.0:-1": 3.3090600967407227,
+  "13.25:1": 2.993354082107544,
+  "13.25:-1": 3.407818555831909,
+  "13.5:1": 2.8818862438201904,
+  "13.5:-1": 3.419727325439453,
+  "13.75:1": 2.881675958633423,
+  "13.75:-1": 3.4300787448883057,
+  "14.0:1": 2.881465435028076,
+  "14.0:-1": 3.586473226547241,
+  "14.25:1": 2.8812551498413086,
+  "14.25:-1": 3.4308035373687744,
+  "14.5:1": 2.881044387817383,
+  "14.5:-1": 3.5927515029907227,
+  "14.75:1": 2.8808341026306152,
+  "14.75:-1": 3.4303948879241943,
+  "15.0:1": 2.8821558952331543,
+  "15.0:-1": 3.59304141998291,
+  "15.25:1": 2.993370294570923,
+  "15.25:-1": 3.433584213256836,
+  "15.5:1": 2.993370294570923,
+  "15.5:-1": 3.593060255050659,
+  "15.75:1": 2.905460834503174,
+  "15.75:-1": 3.593069314956665,
+  "16.0:1": 2.8743953704833984,
+  "16.0:-1": 3.3117990493774414,
+  "16.25:1": 2.8716561794281006,
+  "16.25:-1": 3.3090600967407227,
+  "16.5:1": 2.8716557025909424,
+  "16.5:-1": 3.3090596199035645,
+  "16.75:1": 2.8716557025909424,
+  "16.75:-1": 3.3090596199035645,
+  "17.0:1": 2.642503499984741,
+  "17.0:-1": 3.401252031326294,
+  "17.25:1": 2.754260540008545,
+  "17.25:-1": 3.503389596939087,
+  "17.5:1": 2.8880391120910645,
+  "17.5:-1": 3.593066930770874,
+  "17.75:1": null,
+  "17.75:-1": 3.442159652709961,
+  "18.0:1": null,
+  "18.0:-1": 3.435781478881836,
+  "18.25:1": null,
+  "18.25:-1": 3.5930371284484863,
+  "18.5:1": null,
+  "18.5:-1": 3.4323196411132812,
+  "18.75:1": 2.95717191696167,
+  "18.75:-1": 3.58866810798645,
+  "19.0:1": 2.904362678527832,
+  "19.0:-1": 3.5280516147613525,
+  "19.25:1": 2.871567964553833,
+  "19.25:-1": 3.4306960105895996,
+  "19.5:1": 2.993300437927246,
+  "19.5:-1": 3.430708646774292,
+  "19.75:1": 2.9932665824890137,
+  "19.75:-1": 3.4307210445404053,
+  "20.0:1": 2.9932329654693604,
+  "20.0:-1": 3.430734157562256,
+  "20.25:1": 2.993198871612549,
+  "20.25:-1": 3.4307446479797363,
+  "20.5:1": null,
+  "20.5:-1": 3.4307446479797363,
+  "20.75:1": null,
+  "20.75:-1": 3.4307446479797363,
+  "21.0:1": 4.045379161834717,
+  "21.0:-1": 3.564004421234131,
+  "21.25:1": 3.9747602939605713,
+  "21.25:-1": 3.5924136638641357,
+  "21.5:1": 3.9041426181793213,
+  "21.5:-1": 3.5924136638641357,
+  "21.75:1": 3.8335235118865967,
+  "21.75:-1": 3.4315006732940674
+ }
+}

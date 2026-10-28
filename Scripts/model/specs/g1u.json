@@ -1,0 +1,64 @@
+{
+ "schema": "xfeas.ctrl_spec/1",
+ "robot": "unitree_g1",
+ "virtual": false,
+ "rate_hz": 50,
+ "nominal": {
+  "speed": 0.3
+ },
+ "ctrl_id": "g1u",
+ "base": "g1u",
+ "controller": "URMA (released, One Policy to Run Them All), URMA's G1",
+ "commands": [
+  {
+   "name": "vx",
+   "role": "lin_vel_x",
+   "type": "continuous",
+   "unit": "m/s",
+   "range": [
+    -1.0,
+    1.0
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "vy",
+   "role": "lin_vel_y",
+   "type": "continuous",
+   "unit": "m/s",
+   "range": [
+    -1.0,
+    1.0
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "wz",
+   "role": "yaw_rate",
+   "type": "continuous",
+   "unit": "rad/s",
+   "range": [
+    -1.0,
+    1.0
+   ],
+   "nominal": 0.0
+  }
+ ],
+ "modes": [],
+ "binding": {
+  "adapter": "urma_robot:make_urma_g1",
+  "call": "dict",
+  "names": {
+   "vx": "vx",
+   "vy": "vy",
+   "wz": "wz"
+  }
+ },
+ "doc_notes": [
+  "command_functions/random.py: (vx, vy, wz) each sampled U(-1, 1) during training; no height / posture / gait command"
+ ],
+ "sources": [
+  "baselines/one_policy_to_run_them_all",
+  "scripts/urma/urma_robot.py"
+ ]
+}

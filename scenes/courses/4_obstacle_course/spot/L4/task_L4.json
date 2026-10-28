@@ -1,0 +1,380 @@
+{
+ "scene": "GYMSPOT_L4",
+ "robot": "spotp",
+ "level": 4,
+ "verify_ok": false,
+ "start": {
+  "xy": [
+   -23.85,
+   0.45
+  ],
+  "yaw": 0.0,
+  "z": 0.008976
+ },
+ "goal": {
+  "xyz": [
+   -9.985,
+   6.186,
+   0.575
+  ],
+  "success_radius": 0.5,
+  "note": "strict success: base within 0.5 m of goal xy (goal on the platform)"
+ },
+ "path": [
+  {
+   "xyz": [
+    -23.85,
+    0.45,
+    0.009
+   ],
+   "what": "start"
+  },
+  {
+   "xyz": [
+    -23.35,
+    0.45,
+    0.009
+   ],
+   "what": "ramp foot"
+  },
+  {
+   "xyz": [
+    -22.64,
+    0.45,
+    0.122
+   ],
+   "what": "deck"
+  },
+  {
+   "xyz": [
+    -8.245,
+    0.45,
+    0.122
+   ],
+   "what": "corner A"
+  },
+  {
+   "xyz": [
+    -8.245,
+    3.318,
+    0.122
+   ],
+   "what": "corner K1"
+  },
+  {
+   "xyz": [
+    -23.302,
+    3.318,
+    0.122
+   ],
+   "what": "corner B"
+  },
+  {
+   "xyz": [
+    -23.302,
+    6.186,
+    0.122
+   ],
+   "what": "corner K2"
+  },
+  {
+   "xyz": [
+    -11.885,
+    6.186,
+    0.122
+   ],
+   "what": "stairs foot"
+  },
+  {
+   "xyz": [
+    -11.585,
+    6.186,
+    0.235
+   ],
+   "what": "tread 1"
+  },
+  {
+   "xyz": [
+    -11.285,
+    6.186,
+    0.348
+   ],
+   "what": "tread 2"
+  },
+  {
+   "xyz": [
+    -10.985,
+    6.186,
+    0.462
+   ],
+   "what": "tread 3"
+  },
+  {
+   "xyz": [
+    -9.985,
+    6.186,
+    0.575
+   ],
+   "what": "goal"
+  }
+ ],
+ "path_len_xy": 49.715,
+ "turns": [
+  {
+   "at": "A->K1",
+   "corner_xy": [
+    -8.245,
+    0.45
+   ],
+   "deg": 90.0,
+   "dir": "left"
+  },
+  {
+   "at": "K1->B",
+   "corner_xy": [
+    -8.245,
+    3.318
+   ],
+   "deg": 90.0,
+   "dir": "left"
+  },
+  {
+   "at": "B->K2",
+   "corner_xy": [
+    -23.302,
+    3.318
+   ],
+   "deg": -90.0,
+   "dir": "right"
+  },
+  {
+   "at": "K2->C",
+   "corner_xy": [
+    -23.302,
+    6.186
+   ],
+   "deg": -90.0,
+   "dir": "right"
+  }
+ ],
+ "sections": [
+  {
+   "seg": "A",
+   "kind": "rough",
+   "type": "gravel_loose",
+   "xy_from": [
+    -20.489,
+    0.45
+   ],
+   "xy_to": [
+    -19.057,
+    0.45
+   ]
+  },
+  {
+   "seg": "A",
+   "kind": "beam",
+   "type": null,
+   "xy_from": [
+    -17.144,
+    0.45
+   ],
+   "xy_to": [
+    -15.487,
+    0.45
+   ]
+  },
+  {
+   "seg": "A",
+   "kind": "crossing",
+   "type": [
+    "hump",
+    "valley"
+   ],
+   "xy_from": [
+    -13.574,
+    0.45
+   ],
+   "xy_to": [
+    -10.818,
+    0.45
+   ]
+  },
+  {
+   "seg": "B",
+   "kind": "rough",
+   "type": "rubble_rocky",
+   "xy_from": [
+    -11.058,
+    3.318
+   ],
+   "xy_to": [
+    -12.49,
+    3.318
+   ]
+  },
+  {
+   "seg": "B",
+   "kind": "crossing",
+   "type": [
+    "hump",
+    "valley"
+   ],
+   "xy_from": [
+    -14.34,
+    3.318
+   ],
+   "xy_to": [
+    -17.095,
+    3.318
+   ]
+  },
+  {
+   "seg": "B",
+   "kind": "rough",
+   "type": "roots_leaves",
+   "xy_from": [
+    -18.945,
+    3.318
+   ],
+   "xy_to": [
+    -20.377,
+    3.318
+   ]
+  },
+  {
+   "seg": "C",
+   "kind": "funnel",
+   "type": null,
+   "xy_from": [
+    -19.77,
+    6.186
+   ],
+   "xy_to": [
+    -19.075,
+    6.186
+   ]
+  },
+  {
+   "seg": "C",
+   "kind": "rough",
+   "type": "dirt_bumpy",
+   "xy_from": [
+    -16.187,
+    6.186
+   ],
+   "xy_to": [
+    -14.755,
+    6.186
+   ]
+  },
+  {
+   "seg": "C",
+   "kind": "stairs",
+   "xy_from": [
+    -11.885,
+    6.186
+   ],
+   "xy_to": [
+    -10.985,
+    6.186
+   ],
+   "risers": 4
+  }
+ ],
+ "dims": {
+  "riser_m": 0.1132,
+  "measured_risers": [
+   0.1132,
+   0.1132,
+   0.1132,
+   0.1131
+  ],
+  "deck_top": {
+   "median": 0.1105,
+   "min": 0.0,
+   "max": 0.1105,
+   "n": 1254
+  },
+  "platform_z": 0.5632,
+  "ramp_deg": 6.82,
+  "beam": [
+   {
+    "underside_min": 0.9226,
+    "underside_median": 0.9226,
+    "clear_width": {
+     "min": 1.0491,
+     "max": 1.054
+    },
+    "roof_len": 1.432
+   }
+  ],
+  "funnel": [
+   {
+    "gap_min": 0.6805
+   }
+  ],
+  "lane_width": {
+   "min": 1.3464,
+   "max": 1.347,
+   "n": 35,
+   "note": "beam / funnel bays skipped"
+  },
+  "rough": [
+   {
+    "type": "gravel_loose",
+    "relief": {
+     "min": -0.0424,
+     "max": 0.0272,
+     "std": 0.0105,
+     "p05": -0.0183,
+     "p95": 0.0171,
+     "n": 1120
+    }
+   },
+   {
+    "type": "rubble_rocky",
+    "relief": {
+     "min": -0.0562,
+     "max": 0.0552,
+     "std": 0.0209,
+     "p05": -0.0375,
+     "p95": 0.0319,
+     "n": 1152
+    }
+   },
+   {
+    "type": "roots_leaves",
+    "relief": {
+     "min": -0.0265,
+     "max": 0.0486,
+     "std": 0.0126,
+     "p05": -0.0121,
+     "p95": 0.0294,
+     "n": 1152
+    }
+   },
+   {
+    "type": "dirt_bumpy",
+    "relief": {
+     "min": -0.0491,
+     "max": 0.08,
+     "std": 0.0222,
+     "p05": -0.0292,
+     "p95": 0.0481,
+     "n": 1152
+    }
+   }
+  ],
+  "slippery": []
+ },
+ "rebuild": {
+  "module": "/p/cral/vignesh/ARL/Scripts/scripts/baselines_r1/gym_course_spot.py",
+  "cls": "SpotLevelCourse",
+  "fn": "make_spot_level_spec(4, 0)",
+  "stage": "assets/school.usd in memory; gym_course_levels.prepare_level(stage, level); B = SpotLevelCourse(stage); B.build(spec)",
+  "spec_json": "/p/cral/vignesh/ARL/experiments/4_obstacle_course/spot/L4/spec_L4.json",
+  "verify_json": "/p/cral/vignesh/ARL/experiments/4_obstacle_course/spot/L4/verify_L4.json"
+ },
+ "rules": "strict success = base within 0.5 m of goal xy; relative goal only; no prior map"
+}

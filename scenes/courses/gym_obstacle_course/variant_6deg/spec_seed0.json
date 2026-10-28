@@ -1,0 +1,60 @@
+{
+ "seed": 0,
+ "version": 1,
+ "board_scale": 1.1,
+ "riser_layers": 6,
+ "flat_a": 2.0,
+ "crossing": [
+  {
+   "type": "hump",
+   "support_scale": 0.85
+  },
+  {
+   "type": "valley",
+   "support_scale": 0.85
+  },
+  {
+   "type": "hump",
+   "support_scale": 0.85
+  },
+  {
+   "type": "valley",
+   "support_scale": 0.85
+  }
+ ],
+ "hump_scale": 1.1,
+ "valley_scale": 1.0,
+ "valley_inset": 0.026,
+ "cross_gap": 0.15,
+ "flat_b": 2.0,
+ "n_steps": 3,
+ "tread": 0.3,
+ "platform_len": 2.0,
+ "fence": {
+  "post_scale": 1.0,
+  "rail_scale_max": 1.15,
+  "rails_above_deck": [
+   0.3,
+   0.58,
+   0.86
+  ],
+  "bay": 1.0
+ },
+ "handrail": {
+  "post_scale": 0.85,
+  "rails_above": [
+   0.45,
+   0.85
+  ]
+ },
+ "lane_y": 2.6,
+ "yaw": 0.0,
+ "variant": "entry6_flush",
+ "entry": {
+  "deg": 6.0,
+  "flush_toe": true,
+  "n_boards": 3,
+  "sleeper_slats": 3,
+  "flats_policy": "shorten flat_a and flat_b by half the extra ramp run each (stairs fixed)"
+ }
+}

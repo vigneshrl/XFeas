@@ -1,0 +1,480 @@
+{
+ "schema": "xfeas.ctrl_spec/1",
+ "robot": "unitree_g1",
+ "virtual": false,
+ "rate_hz": 50,
+ "nominal": {
+  "speed": 0.3
+ },
+ "ctrl_id": "g1s",
+ "base": "g1s",
+ "controller": "GEAR-SONIC (released, nvidia/GEAR-SONIC default variant + planner_sonic.onnx)",
+ "commands": [
+  {
+   "name": "vx",
+   "role": "lin_vel_x",
+   "type": "continuous",
+   "unit": "m/s",
+   "range": [
+    -0.8,
+    0.8
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "vy",
+   "role": "lin_vel_y",
+   "type": "continuous",
+   "unit": "m/s",
+   "range": [
+    -0.8,
+    0.8
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "wz",
+   "role": "yaw_rate",
+   "type": "continuous",
+   "unit": "rad/s",
+   "range": [
+    -1.0,
+    1.0
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "speed",
+   "role": "speed",
+   "type": "continuous",
+   "unit": "m/s",
+   "range": [
+    -1.0,
+    3.0
+   ],
+   "nominal": -1.0
+  },
+  {
+   "name": "body_height",
+   "role": "pelvis_height",
+   "type": "continuous",
+   "unit": "m",
+   "range": [
+    0.2,
+    0.8
+   ],
+   "nominal": -1.0,
+   "applies_to": "modes with uses_height"
+  },
+  {
+   "name": "mode",
+   "role": "mode",
+   "type": "discrete",
+   "values": [
+    "idle",
+    "slowWalk",
+    "walk",
+    "run",
+    "squat",
+    "kneelTwoLeg",
+    "kneelOneLeg",
+    "lyingFacedown",
+    "handCrawling",
+    "idleBoxing",
+    "walkBoxing",
+    "leftJab",
+    "rightJab",
+    "randomPunches",
+    "elbowCrawling",
+    "leftHook",
+    "rightHook",
+    "happy",
+    "stealth",
+    "injured",
+    "careful",
+    "objectCarrying",
+    "crouch",
+    "happyDance",
+    "zombie",
+    "point",
+    "scared"
+   ],
+   "nominal": "slowWalk"
+  }
+ ],
+ "modes": [
+  {
+   "name": "idle",
+   "id": 0,
+   "group": "locomotion",
+   "moving": false,
+   "static": true,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Standing still"
+  },
+  {
+   "name": "slowWalk",
+   "id": 1,
+   "group": "locomotion",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    0.2,
+    0.8
+   ],
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Slow forward locomotion"
+  },
+  {
+   "name": "walk",
+   "id": 2,
+   "group": "locomotion",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Normal walking speed"
+  },
+  {
+   "name": "run",
+   "id": 3,
+   "group": "locomotion",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    1.5,
+    3.0
+   ],
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Running"
+  },
+  {
+   "name": "squat",
+   "id": 4,
+   "group": "squat_ground",
+   "moving": false,
+   "static": true,
+   "speed_range": null,
+   "uses_height": true,
+   "height_range": [
+    0.4,
+    0.8
+   ],
+   "doc": "Squatting - requires height input (range ~0.4-0.8m)"
+  },
+  {
+   "name": "kneelTwoLeg",
+   "id": 5,
+   "group": "squat_ground",
+   "moving": false,
+   "static": true,
+   "speed_range": null,
+   "uses_height": true,
+   "height_range": [
+    0.2,
+    0.4
+   ],
+   "doc": "Kneeling on both knees - requires height input (0.2m-0.4m)"
+  },
+  {
+   "name": "kneelOneLeg",
+   "id": 6,
+   "group": "squat_ground",
+   "moving": false,
+   "static": true,
+   "speed_range": null,
+   "uses_height": true,
+   "height_range": [
+    0.2,
+    0.4
+   ],
+   "doc": "Kneeling on one knee - requires height input (0.2m-0.4m)"
+  },
+  {
+   "name": "lyingFacedown",
+   "id": 7,
+   "group": "squat_ground",
+   "moving": false,
+   "static": true,
+   "speed_range": null,
+   "uses_height": true,
+   "height_range": [
+    0.2,
+    0.8
+   ],
+   "doc": "Lying face down - requires height input"
+  },
+  {
+   "name": "handCrawling",
+   "id": 8,
+   "group": "squat_ground",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    0.4,
+    1.0
+   ],
+   "uses_height": true,
+   "height_range": [
+    0.2,
+    0.8
+   ],
+   "doc": "Crawling on hands and knees"
+  },
+  {
+   "name": "idleBoxing",
+   "id": 9,
+   "group": "boxing",
+   "moving": false,
+   "static": true,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Boxing stance (idle)"
+  },
+  {
+   "name": "walkBoxing",
+   "id": 10,
+   "group": "boxing",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    0.7,
+    1.5
+   ],
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Walking with boxing guard"
+  },
+  {
+   "name": "leftJab",
+   "id": 11,
+   "group": "boxing",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    0.7,
+    1.5
+   ],
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Left jab"
+  },
+  {
+   "name": "rightJab",
+   "id": 12,
+   "group": "boxing",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    0.7,
+    1.5
+   ],
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Right jab"
+  },
+  {
+   "name": "randomPunches",
+   "id": 13,
+   "group": "boxing",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    0.7,
+    1.5
+   ],
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Random punch sequence"
+  },
+  {
+   "name": "elbowCrawling",
+   "id": 14,
+   "group": "squat_ground",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    0.7,
+    1.0
+   ],
+   "uses_height": true,
+   "height_range": [
+    0.2,
+    0.8
+   ],
+   "doc": "Crawling on elbows (more likely to overheat)"
+  },
+  {
+   "name": "leftHook",
+   "id": 15,
+   "group": "boxing",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    0.7,
+    1.5
+   ],
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Left hook"
+  },
+  {
+   "name": "rightHook",
+   "id": 16,
+   "group": "boxing",
+   "moving": true,
+   "static": false,
+   "speed_range": [
+    0.7,
+    1.5
+   ],
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Right hook"
+  },
+  {
+   "name": "happy",
+   "id": 17,
+   "group": "locomotion",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Happy walking"
+  },
+  {
+   "name": "stealth",
+   "id": 18,
+   "group": "locomotion",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Stealthy walking"
+  },
+  {
+   "name": "injured",
+   "id": 19,
+   "group": "locomotion",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Limping walk"
+  },
+  {
+   "name": "careful",
+   "id": 20,
+   "group": "styled_walk",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Cautious walking"
+  },
+  {
+   "name": "objectCarrying",
+   "id": 21,
+   "group": "styled_walk",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Walking with hands reaching out"
+  },
+  {
+   "name": "crouch",
+   "id": 22,
+   "group": "styled_walk",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Crouched walking"
+  },
+  {
+   "name": "happyDance",
+   "id": 23,
+   "group": "styled_walk",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Dancing walk (only walk forward)"
+  },
+  {
+   "name": "zombie",
+   "id": 24,
+   "group": "styled_walk",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Zombie walk"
+  },
+  {
+   "name": "point",
+   "id": 25,
+   "group": "styled_walk",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Walking with hands pointing"
+  },
+  {
+   "name": "scared",
+   "id": 26,
+   "group": "styled_walk",
+   "moving": true,
+   "static": false,
+   "speed_range": null,
+   "uses_height": false,
+   "height_range": null,
+   "doc": "Scared walk"
+  }
+ ],
+ "binding": {
+  "adapter": "g1_sonic:make_g1s",
+  "call": "dict",
+  "names": {
+   "vx": "vx",
+   "vy": "vy",
+   "wz": "wz",
+   "speed": "speed",
+   "body_height": "body_height",
+   "mode": "mode"
+  },
+  "mode_values": "int id",
+  "env": {
+   "SONIC_PLANNER_ASYNC": "0"
+  }
+ },
+ "doc_notes": [
+  "planner inputs: movement_direction (world, normalised), facing_direction, target_vel (<=0 -> the mode's default velocity), mode (int), height (<0 disabled; >=0 nearest height keyframe of the clip)",
+  "the harness bridge maps body-frame (vx, vy) to movement_direction + target_vel = |v| and integrates yaw_rate into facing_direction",
+  "keyboard: speed ranges per mode (slowWalk 0.2-0.8, run 1.5-3.0, handCrawl 0.4-1.0, elbowCrawl 0.7-1.0, boxing 0.7-1.5); height adjustable 0.2-0.8 m in the squat/ground set",
+  "keyboard tip: keep lateral (strafe) target velocity around 0.4 m/s",
+  "vx/vy range +-0.8 = the slowWalk band (the nominal walking set); mode 'walk' has no documented range"
+ ],
+ "sources": [
+  "baselines/GR00T-WholeBodyControl/docs/source/references/planner_onnx.md",
+  "baselines/GR00T-WholeBodyControl/docs/source/tutorials/keyboard.md",
+  "baselines/GEAR-SONIC/README_hf.md"
+ ]
+}

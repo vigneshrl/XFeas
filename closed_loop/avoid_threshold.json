@@ -1,0 +1,7 @@
+{
+ "tau": 0.4000000000000001,
+ "tpr": 0.6010928961748634,
+ "fpr": 0.0794979079497908,
+ "n": 422,
+ "ckpt": "data/xe_train/v5/xfeas_arena-a0,a1,c0,c1,sG03,sU02,oU04,oG07-dinov3_s.pt"
+}

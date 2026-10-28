@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.bak*
+*.pt
+*.mp4
+data/
+third_party/*
+!third_party/setup.sh

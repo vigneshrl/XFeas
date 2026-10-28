@@ -1,0 +1,5478 @@
+{
+ "level": 1,
+ "seed": 0,
+ "variant": "jog",
+ "spec": {
+  "level": 1,
+  "seed": 0,
+  "version": "levels",
+  "board_scale": 1.1,
+  "riser_layers": 4,
+  "hump_scale": 1.1,
+  "valley_scale": 1.0,
+  "valley_inset": 0.026,
+  "cross_gap": 0.15,
+  "support_scale": 0.85,
+  "n_steps": 3,
+  "tread": 0.3,
+  "platform_len": 2.0,
+  "fence": {
+   "post_scale": 1.0,
+   "rail_scale_max": 1.15,
+   "rails_above_deck": [
+    0.3,
+    0.58,
+    0.86
+   ],
+   "bay": 1.0
+  },
+  "handrail": {
+   "post_scale": 0.85,
+   "rails_above": [
+    0.45,
+    0.85
+   ]
+  },
+  "crouch": {
+   "kind": "partition_roof",
+   "u": 0.92,
+   "roof": "board",
+   "roof_scale": 1.1,
+   "partition_inset": 0.004,
+   "n_planks": 4,
+   "plank_scale": 0.85,
+   "plank_gap": 0.002
+  },
+  "funnel": {
+   "gap": 0.68,
+   "board_scale": 1.15,
+   "rail_clear": 0.002,
+   "post_scale": 1.15,
+   "post_at": [
+    0.35,
+    0.75
+   ]
+  },
+  "rough": {
+   "recess_layers": 3,
+   "hscale": 0.025,
+   "vscale": 0.002,
+   "margin_x": 0.14,
+   "margin_y": 0.1,
+   "zero_mean": true
+  },
+  "start_back": 0.5,
+  "segments": [
+   {
+    "name": "A",
+    "heading": 0.0,
+    "P0": [
+     -22.726,
+     2.6
+    ],
+    "last": true,
+    "x_end_max": -7.69,
+    "modules": [
+     {
+      "kind": "crossing",
+      "types": [
+       "hump",
+       "valley",
+       "hump",
+       "valley"
+      ]
+     }
+    ]
+   }
+  ],
+  "robot": "spotp",
+  "variant": "spot_jog",
+  "spot_sizing": {
+   "riser_m": null,
+   "beam_u": 0.92,
+   "funnel_gap": 0.68,
+   "note": "see module docstring; sources in school_course_spot.SPOT"
+  },
+  "jog": {
+   "L": 1.5,
+   "turn_deg": 45.0,
+   "mitre_margin": null,
+   "pad_ylo": 1.86,
+   "stairs_x": -12.696,
+   "cross_gap": 0.15
+  }
+ },
+ "build": {
+  "level": 1,
+  "seed": 0,
+  "jog": {
+   "L": 1.5,
+   "turn_deg": 45.0,
+   "mitre_margin": 0.0167,
+   "pad_ylo": 1.86,
+   "stairs_x": -12.696,
+   "cross_gap": 0.15
+  },
+  "ramp": {
+   "deg": 6.818,
+   "head_z": 0.0849,
+   "s_d": 0.7099
+  },
+  "terrace": {
+   "seg": "C",
+   "steps": 5,
+   "layers": 20,
+   "boards_per_step": [
+    19,
+    6,
+    5,
+    4,
+    3
+   ],
+   "starts": [
+    -4.5154,
+    4.8047,
+    5.1047,
+    5.4047,
+    5.7047
+   ],
+   "ends": [
+    9.1056,
+    9.1047,
+    8.6877,
+    8.2707,
+    7.8537
+   ],
+   "tops": [
+    0.1132,
+    0.2263,
+    0.3395,
+    0.4527,
+    0.5659
+   ],
+   "s_st": 4.8047,
+   "s_p0": 5.7047,
+   "stair_rail_deg": 21.781,
+   "platform_posts_s": [
+    5.8044,
+    6.7792,
+    7.754
+   ],
+   "end_x": -8.3951
+  },
+  "fence": {
+   "items": [
+    {
+     "kind": "rail",
+     "seg": "A",
+     "side": 1,
+     "a": 0.0,
+     "b": 0.9716,
+     "rsc": 0.8604,
+     "t": 0.0223
+    },
+    {
+     "kind": "rail",
+     "seg": "A",
+     "side": 1,
+     "a": 0.9716,
+     "b": 1.9431,
+     "rsc": 0.8604,
+     "t": 0.0223
+    },
+    {
+     "kind": "rail",
+     "seg": "A",
+     "side": 1,
+     "a": 1.9431,
+     "b": 2.9147,
+     "rsc": 0.8604,
+     "t": 0.0223
+    },
+    {
+     "kind": "rail",
+     "seg": "A",
+     "side": 1,
+     "a": 2.9147,
+     "b": 3.8863,
+     "rsc": 0.8604,
+     "t": 0.0223
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": 1,
+     "c": 0.0,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0223
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": 1,
+     "c": 0.9716,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0223
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": 1,
+     "c": 1.9431,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0223
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": 1,
+     "c": 2.9147,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0223
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": 1,
+     "c": 3.7411,
+     "ps": 0.9,
+     "z": 0.1132,
+     "t_rail": 0.0223
+    },
+    {
+     "kind": "rail",
+     "seg": "C",
+     "side": 1,
+     "a": -0.2784,
+     "b": 0.7383,
+     "rsc": 0.9003,
+     "t": 0.0233
+    },
+    {
+     "kind": "rail",
+     "seg": "C",
+     "side": 1,
+     "a": 0.7383,
+     "b": 1.7549,
+     "rsc": 0.9003,
+     "t": 0.0233
+    },
+    {
+     "kind": "rail",
+     "seg": "C",
+     "side": 1,
+     "a": 1.7549,
+     "b": 2.7715,
+     "rsc": 0.9003,
+     "t": 0.0233
+    },
+    {
+     "kind": "rail",
+     "seg": "C",
+     "side": 1,
+     "a": 2.7715,
+     "b": 3.7881,
+     "rsc": 0.9003,
+     "t": 0.0233
+    },
+    {
+     "kind": "rail",
+     "seg": "C",
+     "side": 1,
+     "a": 3.7881,
+     "b": 4.8047,
+     "rsc": 0.9003,
+     "t": 0.0233
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": 1,
+     "c": -0.192,
+     "ps": 0.9,
+     "z": 0.1132,
+     "t_rail": 0.0233
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": 1,
+     "c": 0.7383,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0233
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": 1,
+     "c": 1.7549,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0233
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": 1,
+     "c": 2.7715,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0233
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": 1,
+     "c": 3.7881,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0233
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": 1,
+     "c": 4.8047,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0233
+    },
+    {
+     "kind": "rail",
+     "seg": "A",
+     "side": -1,
+     "a": 0.0,
+     "b": 1.1107,
+     "rsc": 0.9837,
+     "t": 0.0255
+    },
+    {
+     "kind": "rail",
+     "seg": "A",
+     "side": -1,
+     "a": 1.1107,
+     "b": 2.2215,
+     "rsc": 0.9837,
+     "t": 0.0255
+    },
+    {
+     "kind": "rail",
+     "seg": "A",
+     "side": -1,
+     "a": 2.2215,
+     "b": 3.3322,
+     "rsc": 0.9837,
+     "t": 0.0255
+    },
+    {
+     "kind": "rail",
+     "seg": "A",
+     "side": -1,
+     "a": 3.3322,
+     "b": 4.443,
+     "rsc": 0.9837,
+     "t": 0.0255
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": -1,
+     "c": 0.0,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0255
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": -1,
+     "c": 1.1107,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0255
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": -1,
+     "c": 2.2215,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0255
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": -1,
+     "c": 3.3322,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.0255
+    },
+    {
+     "kind": "post",
+     "seg": "A",
+     "side": -1,
+     "c": 4.3489,
+     "ps": 0.9,
+     "z": 0.1132,
+     "t_rail": 0.0255
+    },
+    {
+     "kind": "rail",
+     "seg": "C",
+     "side": -1,
+     "a": 0.2784,
+     "b": 1.4099,
+     "rsc": 1.0021,
+     "t": 0.026
+    },
+    {
+     "kind": "rail",
+     "seg": "C",
+     "side": -1,
+     "a": 1.4099,
+     "b": 2.5415,
+     "rsc": 1.0021,
+     "t": 0.026
+    },
+    {
+     "kind": "rail",
+     "seg": "C",
+     "side": -1,
+     "a": 2.5415,
+     "b": 3.6731,
+     "rsc": 1.0021,
+     "t": 0.026
+    },
+    {
+     "kind": "rail",
+     "seg": "C",
+     "side": -1,
+     "a": 3.6731,
+     "b": 4.8047,
+     "rsc": 1.0021,
+     "t": 0.026
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": -1,
+     "c": 0.4356,
+     "ps": 0.9,
+     "z": 0.1132,
+     "t_rail": 0.026
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": -1,
+     "c": 1.4099,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.026
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": -1,
+     "c": 2.5415,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.026
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": -1,
+     "c": 3.6731,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.026
+    },
+    {
+     "kind": "post",
+     "seg": "C",
+     "side": -1,
+     "c": 4.8047,
+     "ps": 1.0,
+     "z": 0.0,
+     "t_rail": 0.026
+    },
+    {
+     "kind": "rail",
+     "seg": "J",
+     "side": 1,
+     "a": 0.2961,
+     "b": 1.5947,
+     "rsc": 1.15,
+     "t": 0.0298,
+     "setback": 0.0178
+    },
+    {
+     "kind": "filler",
+     "seg": "J",
+     "side": 1,
+     "a": 1.5967,
+     "b": 1.7764,
+     "ps": 0.9586,
+     "z": 0.1132,
+     "at": "b"
+    },
+    {
+     "kind": "post",
+     "seg": "J",
+     "side": 1,
+     "c": 0.4658,
+     "ps": 0.9,
+     "z": 0.1132,
+     "t_rail": 0.0298
+    },
+    {
+     "kind": "post",
+     "seg": "J",
+     "side": 1,
+     "c": 1.5083,
+     "ps": 0.9,
+     "z": 0.1132,
+     "t_rail": 0.0298
+    },
+    {
+     "kind": "rail",
+     "seg": "J",
+     "side": -1,
+     "a": -0.0973,
+     "b": 1.2013,
+     "rsc": 1.15,
+     "t": 0.0298,
+     "setback": 0.0204
+    },
+    {
+     "kind": "filler",
+     "seg": "J",
+     "side": -1,
+     "a": -0.2764,
+     "b": -0.0993,
+     "ps": 0.9448,
+     "z": 0.1132,
+     "at": "a"
+    },
+    {
+     "kind": "post",
+     "seg": "J",
+     "side": -1,
+     "c": -0.0109,
+     "ps": 0.9,
+     "z": 0.1132,
+     "t_rail": 0.0298
+    },
+    {
+     "kind": "post",
+     "seg": "J",
+     "side": -1,
+     "c": 1.0316,
+     "ps": 0.9,
+     "z": 0.1132,
+     "t_rail": 0.0298
+    }
+   ],
+   "rail_inner_l": 0.672,
+   "lane_width_design": 1.344,
+   "rails_above_deck": [
+    0.3,
+    0.58,
+    0.86
+   ],
+   "n": {
+    "rail": 19,
+    "post": 25,
+    "filler": 2
+   }
+  },
+  "n_parts": 289,
+  "crossing": [
+   {
+    "name": "hump 1",
+    "seg": "A",
+    "extent_s": [
+     1.1259,
+     2.5314
+    ],
+    "panel_deg": 13.127
+   },
+   {
+    "name": "hump 2",
+    "seg": "C",
+    "extent_s": [
+     1.6333,
+     3.0388
+    ],
+    "panel_deg": 13.127
+   },
+   {
+    "name": "valley 2",
+    "seg": "C",
+    "extent_s": [
+     3.1888,
+     4.3888
+    ],
+    "panel_deg": 14.814
+   },
+   {
+    "name": "valley 1 AL",
+    "seg": "A",
+    "side": "L",
+    "extent_s": [
+     2.6814,
+     3.8814
+    ],
+    "panel_deg": 14.814
+   },
+   {
+    "name": "valley 1 AR",
+    "seg": "A",
+    "side": "R",
+    "extent_s": [
+     2.9479,
+     4.1479
+    ],
+    "panel_deg": 14.814
+   },
+   {
+    "name": "valley 1 JL",
+    "seg": "J",
+    "side": "L",
+    "extent_s": [
+     0.2833,
+     1.4833
+    ],
+    "panel_deg": 14.814
+   },
+   {
+    "name": "valley 1 JR",
+    "seg": "J",
+    "side": "R",
+    "extent_s": [
+     0.0167,
+     1.2167
+    ],
+    "panel_deg": 14.814
+   },
+   {
+    "name": "valley 1 CL",
+    "seg": "C",
+    "side": "L",
+    "extent_s": [
+     0.0167,
+     1.2167
+    ],
+    "panel_deg": 14.814
+   },
+   {
+    "name": "valley 1 CR",
+    "seg": "C",
+    "side": "R",
+    "extent_s": [
+     0.2833,
+     1.4833
+    ],
+    "panel_deg": 14.814
+   }
+  ],
+  "spot": {
+   "riser_layers": 4,
+   "riser_m": 0.1132,
+   "ramp_deg": 6.818
+  },
+  "robot": {
+   "start": [
+    -23.226,
+    2.6,
+    0.0
+   ],
+   "goal": [
+    -10.796,
+    3.661,
+    0.575
+   ],
+   "path": [
+    {
+     "xyz": [
+      -23.226,
+      2.6,
+      0.009
+     ],
+     "what": "start"
+    },
+    {
+     "xyz": [
+      -22.726,
+      2.6,
+      0.009
+     ],
+     "what": "ramp foot"
+    },
+    {
+     "xyz": [
+      -22.016,
+      2.6,
+      0.122
+     ],
+     "what": "deck"
+    },
+    {
+     "xyz": [
+      -18.561,
+      2.6,
+      0.122
+     ],
+     "what": "turn 1: left 45 deg (in the valley-1 trough)"
+    },
+    {
+     "xyz": [
+      -17.501,
+      3.661,
+      0.122
+     ],
+     "what": "turn 2: right 45 deg (in the valley-1 trough)"
+    },
+    {
+     "xyz": [
+      -12.696,
+      3.661,
+      0.122
+     ],
+     "what": "stairs foot"
+    },
+    {
+     "xyz": [
+      -12.396,
+      3.661,
+      0.235
+     ],
+     "what": "tread 1"
+    },
+    {
+     "xyz": [
+      -12.096,
+      3.661,
+      0.348
+     ],
+     "what": "tread 2"
+    },
+    {
+     "xyz": [
+      -11.796,
+      3.661,
+      0.462
+     ],
+     "what": "tread 3"
+    },
+    {
+     "xyz": [
+      -10.796,
+      3.661,
+      0.575
+     ],
+     "what": "goal"
+    }
+   ],
+   "path_len_xy": 12.869,
+   "turns": [
+    {
+     "at": "A->J",
+     "where": "valley 1 trough (cross-slope), between the A- and J-valley panels",
+     "xy": [
+      -18.561,
+      2.6
+     ],
+     "deg": 45.0,
+     "dir": "left",
+     "heading_in": 0.0,
+     "heading_out": 45.0
+    },
+    {
+     "at": "J->C",
+     "where": "valley 1 trough (cross-slope), between the J- and C-valley panels",
+     "xy": [
+      -17.501,
+      3.661
+     ],
+     "deg": -45.0,
+     "dir": "right",
+     "heading_in": 45.0,
+     "heading_out": 0.0
+    }
+   ]
+  }
+ },
+ "floor_clear": {
+  "rays": 6801,
+  "ok": true,
+  "offenders": {},
+  "overhead_above_2m": {
+   "/World/School/Geom/SM_basketball_shield_1": 1
+  },
+  "footprint_x": [
+   -23.326,
+   -8.301
+  ],
+  "footprint_y": [
+   1.375,
+   4.84
+  ]
+ },
+ "deactivated_in_memory": [
+  "/World/School/Geom/SM_gym_props_12",
+  "/World/School/Geom/SM_gym_props_13",
+  "/World/School/Geom/SM_gym_props_14",
+  "/World/School/Geom/SM_gym_props_15",
+  "/World/School/Geom/SM_gym_props_16",
+  "/World/School/Geom/SM_gym_props_17",
+  "/World/School/Geom/SM_gym_props_23",
+  "/World/School/Geom/SM_school_lighting_6",
+  "/World/School/Geom/SM_school_lighting_7",
+  "/World/School/Geom/SM_school_lighting_8",
+  "/World/School/Geom/SM_school_lighting_9",
+  "/World/School/Geom/Oil_surface_01",
+  "/World/School/Geom/Oil_surface_02",
+  "/World/School/Geom/SM_school_desk_1_02",
+  "/World/School/Geom/InstancedSM_school_door_6_2",
+  "/World/School/Geom/BP_school_window_11/SM_school_window_1_3/InstancedSM_school_window_1_3",
+  "/World/School/Geom/BP_drilling_machine_1/SM_drilling_machine_02",
+  "/World/ClimbScene_G1",
+  "/World/ClimbScene_G2"
+ ],
+ "parts": [
+  {
+   "role": "A_deck_L0_00",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_000",
+   "min": [
+    -22.0161,
+    1.94,
+    0.009
+   ],
+   "max": [
+    -21.3011,
+    3.26,
+    0.0373
+   ]
+  },
+  {
+   "role": "A_deck_L1_00",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_001",
+   "min": [
+    -22.0161,
+    1.94,
+    0.0373
+   ],
+   "max": [
+    -21.3011,
+    3.26,
+    0.0656
+   ]
+  },
+  {
+   "role": "A_deck_L2_00",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_002",
+   "min": [
+    -22.0161,
+    1.94,
+    0.0656
+   ],
+   "max": [
+    -21.3011,
+    3.26,
+    0.0939
+   ]
+  },
+  {
+   "role": "A_deck_L3_00",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_003",
+   "min": [
+    -22.0081,
+    1.94,
+    0.0939
+   ],
+   "max": [
+    -21.2931,
+    3.26,
+    0.1221
+   ]
+  },
+  {
+   "role": "A_deck_L0_01",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_004",
+   "min": [
+    -21.2991,
+    1.94,
+    0.009
+   ],
+   "max": [
+    -20.5841,
+    3.26,
+    0.0373
+   ]
+  },
+  {
+   "role": "A_deck_L1_01",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_005",
+   "min": [
+    -21.2991,
+    1.94,
+    0.0373
+   ],
+   "max": [
+    -20.5841,
+    3.26,
+    0.0656
+   ]
+  },
+  {
+   "role": "A_deck_L2_01",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_006",
+   "min": [
+    -21.2991,
+    1.94,
+    0.0656
+   ],
+   "max": [
+    -20.5841,
+    3.26,
+    0.0939
+   ]
+  },
+  {
+   "role": "A_deck_L3_01",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_007",
+   "min": [
+    -21.2911,
+    1.94,
+    0.0939
+   ],
+   "max": [
+    -20.5761,
+    3.26,
+    0.1221
+   ]
+  },
+  {
+   "role": "A_deck_L0_02",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_008",
+   "min": [
+    -20.5821,
+    1.94,
+    0.009
+   ],
+   "max": [
+    -19.8671,
+    3.26,
+    0.0373
+   ]
+  },
+  {
+   "role": "A_deck_L1_02",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_009",
+   "min": [
+    -20.5821,
+    1.94,
+    0.0373
+   ],
+   "max": [
+    -19.8671,
+    3.26,
+    0.0656
+   ]
+  },
+  {
+   "role": "A_deck_L2_02",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_010",
+   "min": [
+    -20.5821,
+    1.94,
+    0.0656
+   ],
+   "max": [
+    -19.8671,
+    3.26,
+    0.0939
+   ]
+  },
+  {
+   "role": "A_deck_L3_02",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_011",
+   "min": [
+    -20.5741,
+    1.94,
+    0.0939
+   ],
+   "max": [
+    -19.8591,
+    3.26,
+    0.1221
+   ]
+  },
+  {
+   "role": "A_deck_L0_03",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_012",
+   "min": [
+    -19.8651,
+    1.94,
+    0.009
+   ],
+   "max": [
+    -19.1501,
+    3.26,
+    0.0373
+   ]
+  },
+  {
+   "role": "A_deck_L1_03",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_013",
+   "min": [
+    -19.8651,
+    1.94,
+    0.0373
+   ],
+   "max": [
+    -19.1501,
+    3.26,
+    0.0656
+   ]
+  },
+  {
+   "role": "A_deck_L2_03",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_014",
+   "min": [
+    -19.8651,
+    1.94,
+    0.0656
+   ],
+   "max": [
+    -19.1501,
+    3.26,
+    0.0939
+   ]
+  },
+  {
+   "role": "A_deck_L3_03",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_015",
+   "min": [
+    -19.8571,
+    1.94,
+    0.0939
+   ],
+   "max": [
+    -19.1421,
+    3.26,
+    0.1221
+   ]
+  },
+  {
+   "role": "P_deck_L0_04a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_016",
+   "min": [
+    -19.1481,
+    1.86,
+    0.009
+   ],
+   "max": [
+    -18.4331,
+    3.18,
+    0.0373
+   ]
+  },
+  {
+   "role": "P_deck_L0_04b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_017",
+   "min": [
+    -19.1481,
+    3.182,
+    0.009
+   ],
+   "max": [
+    -18.4331,
+    4.502,
+    0.0373
+   ]
+  },
+  {
+   "role": "P_deck_L1_04a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_018",
+   "min": [
+    -19.1481,
+    1.86,
+    0.0373
+   ],
+   "max": [
+    -18.4331,
+    3.18,
+    0.0656
+   ]
+  },
+  {
+   "role": "P_deck_L1_04b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_019",
+   "min": [
+    -19.1481,
+    3.182,
+    0.0373
+   ],
+   "max": [
+    -18.4331,
+    4.502,
+    0.0656
+   ]
+  },
+  {
+   "role": "P_deck_L2_04a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_020",
+   "min": [
+    -19.1481,
+    1.86,
+    0.0656
+   ],
+   "max": [
+    -18.4331,
+    3.18,
+    0.0939
+   ]
+  },
+  {
+   "role": "P_deck_L2_04b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_021",
+   "min": [
+    -19.1481,
+    3.182,
+    0.0656
+   ],
+   "max": [
+    -18.4331,
+    4.502,
+    0.0939
+   ]
+  },
+  {
+   "role": "P_deck_L3_04a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_022",
+   "min": [
+    -19.1401,
+    1.86,
+    0.0939
+   ],
+   "max": [
+    -18.4251,
+    3.18,
+    0.1221
+   ]
+  },
+  {
+   "role": "P_deck_L3_04b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_023",
+   "min": [
+    -19.1401,
+    3.182,
+    0.0939
+   ],
+   "max": [
+    -18.4251,
+    4.502,
+    0.1221
+   ]
+  },
+  {
+   "role": "P_deck_L0_05a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_024",
+   "min": [
+    -18.4311,
+    1.86,
+    0.009
+   ],
+   "max": [
+    -17.7161,
+    3.18,
+    0.0373
+   ]
+  },
+  {
+   "role": "P_deck_L0_05b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_025",
+   "min": [
+    -18.4311,
+    3.182,
+    0.009
+   ],
+   "max": [
+    -17.7161,
+    4.502,
+    0.0373
+   ]
+  },
+  {
+   "role": "P_deck_L1_05a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_026",
+   "min": [
+    -18.4311,
+    1.86,
+    0.0373
+   ],
+   "max": [
+    -17.7161,
+    3.18,
+    0.0656
+   ]
+  },
+  {
+   "role": "P_deck_L1_05b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_027",
+   "min": [
+    -18.4311,
+    3.182,
+    0.0373
+   ],
+   "max": [
+    -17.7161,
+    4.502,
+    0.0656
+   ]
+  },
+  {
+   "role": "P_deck_L2_05a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_028",
+   "min": [
+    -18.4311,
+    1.86,
+    0.0656
+   ],
+   "max": [
+    -17.7161,
+    3.18,
+    0.0939
+   ]
+  },
+  {
+   "role": "P_deck_L2_05b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_029",
+   "min": [
+    -18.4311,
+    3.182,
+    0.0656
+   ],
+   "max": [
+    -17.7161,
+    4.502,
+    0.0939
+   ]
+  },
+  {
+   "role": "P_deck_L3_05a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_030",
+   "min": [
+    -18.4231,
+    1.86,
+    0.0939
+   ],
+   "max": [
+    -17.7081,
+    3.18,
+    0.1221
+   ]
+  },
+  {
+   "role": "P_deck_L3_05b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_031",
+   "min": [
+    -18.4231,
+    3.182,
+    0.0939
+   ],
+   "max": [
+    -17.7081,
+    4.502,
+    0.1221
+   ]
+  },
+  {
+   "role": "P_deck_L0_06a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_032",
+   "min": [
+    -17.7141,
+    1.86,
+    0.009
+   ],
+   "max": [
+    -16.9991,
+    3.18,
+    0.0373
+   ]
+  },
+  {
+   "role": "P_deck_L0_06b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_033",
+   "min": [
+    -17.7141,
+    3.182,
+    0.009
+   ],
+   "max": [
+    -16.9991,
+    4.502,
+    0.0373
+   ]
+  },
+  {
+   "role": "P_deck_L1_06a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_034",
+   "min": [
+    -17.7141,
+    1.86,
+    0.0373
+   ],
+   "max": [
+    -16.9991,
+    3.18,
+    0.0656
+   ]
+  },
+  {
+   "role": "P_deck_L1_06b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_035",
+   "min": [
+    -17.7141,
+    3.182,
+    0.0373
+   ],
+   "max": [
+    -16.9991,
+    4.502,
+    0.0656
+   ]
+  },
+  {
+   "role": "P_deck_L2_06a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_036",
+   "min": [
+    -17.7141,
+    1.86,
+    0.0656
+   ],
+   "max": [
+    -16.9991,
+    3.18,
+    0.0939
+   ]
+  },
+  {
+   "role": "P_deck_L2_06b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_037",
+   "min": [
+    -17.7141,
+    3.182,
+    0.0656
+   ],
+   "max": [
+    -16.9991,
+    4.502,
+    0.0939
+   ]
+  },
+  {
+   "role": "P_deck_L3_06a",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_038",
+   "min": [
+    -17.7061,
+    1.86,
+    0.0939
+   ],
+   "max": [
+    -16.9911,
+    3.18,
+    0.1221
+   ]
+  },
+  {
+   "role": "P_deck_L3_06b",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_039",
+   "min": [
+    -17.7061,
+    3.182,
+    0.0939
+   ],
+   "max": [
+    -16.9911,
+    4.502,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_07",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_040",
+   "min": [
+    -16.9971,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -16.2821,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_07",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_041",
+   "min": [
+    -16.9971,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -16.2821,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_07",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_042",
+   "min": [
+    -16.9971,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -16.2821,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_07",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_043",
+   "min": [
+    -16.9891,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -16.2741,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_08",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_044",
+   "min": [
+    -16.2801,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -15.5651,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_08",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_045",
+   "min": [
+    -16.2801,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -15.5651,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_08",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_046",
+   "min": [
+    -16.2801,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -15.5651,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_08",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_047",
+   "min": [
+    -16.2721,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -15.5571,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_09",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_048",
+   "min": [
+    -15.5631,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -14.8481,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_09",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_049",
+   "min": [
+    -15.5631,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -14.8481,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_09",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_050",
+   "min": [
+    -15.5631,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -14.8481,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_09",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_051",
+   "min": [
+    -15.5551,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -14.8401,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_10",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_052",
+   "min": [
+    -14.8461,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -14.1311,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_10",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_053",
+   "min": [
+    -14.8461,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -14.1311,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_10",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_054",
+   "min": [
+    -14.8461,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -14.1311,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_10",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_055",
+   "min": [
+    -14.8381,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -14.1231,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_11",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_056",
+   "min": [
+    -14.1291,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -13.4141,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_11",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_057",
+   "min": [
+    -14.1291,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -13.4141,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_11",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_058",
+   "min": [
+    -14.1291,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -13.4141,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_11",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_059",
+   "min": [
+    -14.1211,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -13.4061,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_12",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_060",
+   "min": [
+    -13.4121,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -12.6971,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_12",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_061",
+   "min": [
+    -13.4121,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -12.6971,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_12",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_062",
+   "min": [
+    -13.4121,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -12.6971,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_12",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_063",
+   "min": [
+    -13.4041,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -12.6891,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_13",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_064",
+   "min": [
+    -12.6951,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -11.9801,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_13",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_065",
+   "min": [
+    -12.6951,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -11.9801,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_13",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_066",
+   "min": [
+    -12.6951,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -11.9801,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_13",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_067",
+   "min": [
+    -12.6871,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -11.9721,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_14",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_068",
+   "min": [
+    -11.9781,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -11.2631,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_14",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_069",
+   "min": [
+    -11.9781,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -11.2631,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_14",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_070",
+   "min": [
+    -11.9781,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -11.2631,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_14",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_071",
+   "min": [
+    -11.9701,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -11.2551,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_15",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_072",
+   "min": [
+    -11.2611,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -10.5461,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_15",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_073",
+   "min": [
+    -11.2611,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -10.5461,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_15",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_074",
+   "min": [
+    -11.2611,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -10.5461,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_15",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_075",
+   "min": [
+    -11.2531,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -10.5381,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_16",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_076",
+   "min": [
+    -10.5441,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -9.8291,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_16",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_077",
+   "min": [
+    -10.5441,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -9.8291,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_16",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_078",
+   "min": [
+    -10.5441,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -9.8291,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_16",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_079",
+   "min": [
+    -10.5361,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -9.8211,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_17",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_080",
+   "min": [
+    -9.8271,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -9.1121,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_17",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_081",
+   "min": [
+    -9.8271,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -9.1121,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_17",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_082",
+   "min": [
+    -9.8271,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -9.1121,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_17",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_083",
+   "min": [
+    -9.8191,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -9.1041,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "C_deck_L0_18",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_084",
+   "min": [
+    -9.1101,
+    3.0007,
+    0.009
+   ],
+   "max": [
+    -8.3951,
+    4.3207,
+    0.0373
+   ]
+  },
+  {
+   "role": "C_deck_L1_18",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_085",
+   "min": [
+    -9.1101,
+    3.0007,
+    0.0373
+   ],
+   "max": [
+    -8.3951,
+    4.3207,
+    0.0656
+   ]
+  },
+  {
+   "role": "C_deck_L2_18",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_086",
+   "min": [
+    -9.1101,
+    3.0007,
+    0.0656
+   ],
+   "max": [
+    -8.3951,
+    4.3207,
+    0.0939
+   ]
+  },
+  {
+   "role": "C_deck_L3_18",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_087",
+   "min": [
+    -9.1021,
+    3.0007,
+    0.0939
+   ],
+   "max": [
+    -8.3871,
+    4.3207,
+    0.1221
+   ]
+  },
+  {
+   "role": "ramp",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_088",
+   "min": [
+    -22.7254,
+    1.94,
+    0.009
+   ],
+   "max": [
+    -22.0121,
+    3.26,
+    0.1219
+   ]
+  },
+  {
+   "role": "A_hump1_ridge",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_000",
+   "min": [
+    -20.9084,
+    2.1201,
+    0.1221
+   ],
+   "max": [
+    -20.8864,
+    3.0799,
+    0.2815
+   ]
+  },
+  {
+   "role": "A_hump1_panela",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_089",
+   "min": [
+    -21.6001,
+    1.94,
+    0.1221
+   ],
+   "max": [
+    -20.8974,
+    3.26,
+    0.3121
+   ]
+  },
+  {
+   "role": "A_hump1_panelb",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_090",
+   "min": [
+    -20.8974,
+    1.94,
+    0.1221
+   ],
+   "max": [
+    -20.1946,
+    3.26,
+    0.3121
+   ]
+  },
+  {
+   "role": "A_valley1L_slat",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_001",
+   "min": [
+    -19.9245,
+    3.211,
+    0.1221
+   ],
+   "max": [
+    -18.9647,
+    3.233,
+    0.2815
+   ]
+  },
+  {
+   "role": "A_valley1L_panel",
+   "kind": "board",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/board_091",
+   "min": [
+    -20.0446,
+    2.602,
+    0.1221
+   ],
+   "max": [
+    -18.8446,
+    3.237,
+    0.3132
+   ]
+  },
+  {
+   "role": "A_valley1R_slat",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_002",
+   "min": [
+    -19.658,
+    1.967,
+    0.1221
+   ],
+   "max": [
+    -18.6982,
+    1.989,
+    0.2815
+   ]
+  },
+  {
+   "role": "A_valley1R_panel",
+   "kind": "board",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/board_092",
+   "min": [
+    -19.7781,
+    1.963,
+    0.1221
+   ],
+   "max": [
+    -18.5781,
+    2.598,
+    0.3132
+   ]
+  },
+  {
+   "role": "J_valley1L_slat",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_003",
+   "min": [
+    -18.7237,
+    3.3173,
+    0.1221
+   ],
+   "max": [
+    -18.0295,
+    4.0115,
+    0.2815
+   ]
+  },
+  {
+   "role": "J_valley1L_panel",
+   "kind": "board",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/board_093",
+   "min": [
+    -18.8115,
+    2.8017,
+    0.1221
+   ],
+   "max": [
+    -17.5139,
+    4.0992,
+    0.3132
+   ]
+  },
+  {
+   "role": "J_valley1R_slat",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_004",
+   "min": [
+    -18.0326,
+    2.2491,
+    0.1221
+   ],
+   "max": [
+    -17.3383,
+    2.9434,
+    0.2815
+   ]
+  },
+  {
+   "role": "J_valley1R_panel",
+   "kind": "board",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/board_094",
+   "min": [
+    -18.5481,
+    2.1614,
+    0.1221
+   ],
+   "max": [
+    -17.2506,
+    3.4589,
+    0.3132
+   ]
+  },
+  {
+   "role": "C_valley1L_slat",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_005",
+   "min": [
+    -17.3639,
+    4.2716,
+    0.1221
+   ],
+   "max": [
+    -16.4041,
+    4.2936,
+    0.2815
+   ]
+  },
+  {
+   "role": "C_valley1L_panel",
+   "kind": "board",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/board_095",
+   "min": [
+    -17.484,
+    3.6627,
+    0.1221
+   ],
+   "max": [
+    -16.284,
+    4.2976,
+    0.3132
+   ]
+  },
+  {
+   "role": "C_valley1R_slat",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_006",
+   "min": [
+    -17.0973,
+    3.0277,
+    0.1221
+   ],
+   "max": [
+    -16.1375,
+    3.0497,
+    0.2815
+   ]
+  },
+  {
+   "role": "C_valley1R_panel",
+   "kind": "board",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/board_096",
+   "min": [
+    -17.2174,
+    3.0237,
+    0.1221
+   ],
+   "max": [
+    -16.0174,
+    3.6587,
+    0.3132
+   ]
+  },
+  {
+   "role": "C_hump2_ridge",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_007",
+   "min": [
+    -15.1757,
+    3.1808,
+    0.1221
+   ],
+   "max": [
+    -15.1537,
+    4.1406,
+    0.2815
+   ]
+  },
+  {
+   "role": "C_hump2_panela",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_097",
+   "min": [
+    -15.8674,
+    3.0007,
+    0.1221
+   ],
+   "max": [
+    -15.1647,
+    4.3207,
+    0.3121
+   ]
+  },
+  {
+   "role": "C_hump2_panelb",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_098",
+   "min": [
+    -15.1647,
+    3.0007,
+    0.1221
+   ],
+   "max": [
+    -14.4619,
+    4.3207,
+    0.3121
+   ]
+  },
+  {
+   "role": "C_valley2_slatR",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_008",
+   "min": [
+    -14.1918,
+    3.0277,
+    0.1221
+   ],
+   "max": [
+    -13.232,
+    3.0497,
+    0.2815
+   ]
+  },
+  {
+   "role": "C_valley2_panelR",
+   "kind": "board",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/board_099",
+   "min": [
+    -14.3119,
+    3.0237,
+    0.1221
+   ],
+   "max": [
+    -13.1119,
+    3.6587,
+    0.3132
+   ]
+  },
+  {
+   "role": "C_valley2_slatL",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_009",
+   "min": [
+    -14.1918,
+    4.2716,
+    0.1221
+   ],
+   "max": [
+    -13.232,
+    4.2936,
+    0.2815
+   ]
+  },
+  {
+   "role": "C_valley2_panelL",
+   "kind": "board",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/board_100",
+   "min": [
+    -14.3119,
+    3.6627,
+    0.1221
+   ],
+   "max": [
+    -13.1119,
+    4.2976,
+    0.3132
+   ]
+  },
+  {
+   "role": "C_step1_L4_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_101",
+   "min": [
+    -12.696,
+    3.0007,
+    0.1221
+   ],
+   "max": [
+    -11.981,
+    4.3207,
+    0.1504
+   ]
+  },
+  {
+   "role": "C_step1_L4_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_102",
+   "min": [
+    -11.979,
+    3.0007,
+    0.1221
+   ],
+   "max": [
+    -11.264,
+    4.3207,
+    0.1504
+   ]
+  },
+  {
+   "role": "C_step1_L4_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_103",
+   "min": [
+    -11.262,
+    3.0007,
+    0.1221
+   ],
+   "max": [
+    -10.547,
+    4.3207,
+    0.1504
+   ]
+  },
+  {
+   "role": "C_step1_L4_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_104",
+   "min": [
+    -10.545,
+    3.0007,
+    0.1221
+   ],
+   "max": [
+    -9.83,
+    4.3207,
+    0.1504
+   ]
+  },
+  {
+   "role": "C_step1_L4_4",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_105",
+   "min": [
+    -9.828,
+    3.0007,
+    0.1221
+   ],
+   "max": [
+    -9.113,
+    4.3207,
+    0.1504
+   ]
+  },
+  {
+   "role": "C_step1_L4_5",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_106",
+   "min": [
+    -9.111,
+    3.0007,
+    0.1221
+   ],
+   "max": [
+    -8.396,
+    4.3207,
+    0.1504
+   ]
+  },
+  {
+   "role": "C_step1_L5_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_107",
+   "min": [
+    -12.696,
+    3.0007,
+    0.1504
+   ],
+   "max": [
+    -11.981,
+    4.3207,
+    0.1787
+   ]
+  },
+  {
+   "role": "C_step1_L5_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_108",
+   "min": [
+    -11.979,
+    3.0007,
+    0.1504
+   ],
+   "max": [
+    -11.264,
+    4.3207,
+    0.1787
+   ]
+  },
+  {
+   "role": "C_step1_L5_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_109",
+   "min": [
+    -11.262,
+    3.0007,
+    0.1504
+   ],
+   "max": [
+    -10.547,
+    4.3207,
+    0.1787
+   ]
+  },
+  {
+   "role": "C_step1_L5_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_110",
+   "min": [
+    -10.545,
+    3.0007,
+    0.1504
+   ],
+   "max": [
+    -9.83,
+    4.3207,
+    0.1787
+   ]
+  },
+  {
+   "role": "C_step1_L5_4",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_111",
+   "min": [
+    -9.828,
+    3.0007,
+    0.1504
+   ],
+   "max": [
+    -9.113,
+    4.3207,
+    0.1787
+   ]
+  },
+  {
+   "role": "C_step1_L5_5",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_112",
+   "min": [
+    -9.111,
+    3.0007,
+    0.1504
+   ],
+   "max": [
+    -8.396,
+    4.3207,
+    0.1787
+   ]
+  },
+  {
+   "role": "C_step1_L6_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_113",
+   "min": [
+    -12.696,
+    3.0007,
+    0.1787
+   ],
+   "max": [
+    -11.981,
+    4.3207,
+    0.207
+   ]
+  },
+  {
+   "role": "C_step1_L6_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_114",
+   "min": [
+    -11.979,
+    3.0007,
+    0.1787
+   ],
+   "max": [
+    -11.264,
+    4.3207,
+    0.207
+   ]
+  },
+  {
+   "role": "C_step1_L6_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_115",
+   "min": [
+    -11.262,
+    3.0007,
+    0.1787
+   ],
+   "max": [
+    -10.547,
+    4.3207,
+    0.207
+   ]
+  },
+  {
+   "role": "C_step1_L6_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_116",
+   "min": [
+    -10.545,
+    3.0007,
+    0.1787
+   ],
+   "max": [
+    -9.83,
+    4.3207,
+    0.207
+   ]
+  },
+  {
+   "role": "C_step1_L6_4",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_117",
+   "min": [
+    -9.828,
+    3.0007,
+    0.1787
+   ],
+   "max": [
+    -9.113,
+    4.3207,
+    0.207
+   ]
+  },
+  {
+   "role": "C_step1_L6_5",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_118",
+   "min": [
+    -9.111,
+    3.0007,
+    0.1787
+   ],
+   "max": [
+    -8.396,
+    4.3207,
+    0.207
+   ]
+  },
+  {
+   "role": "C_step1_L7_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_119",
+   "min": [
+    -12.696,
+    3.0007,
+    0.207
+   ],
+   "max": [
+    -11.981,
+    4.3207,
+    0.2353
+   ]
+  },
+  {
+   "role": "C_step1_L7_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_120",
+   "min": [
+    -11.979,
+    3.0007,
+    0.207
+   ],
+   "max": [
+    -11.264,
+    4.3207,
+    0.2353
+   ]
+  },
+  {
+   "role": "C_step1_L7_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_121",
+   "min": [
+    -11.262,
+    3.0007,
+    0.207
+   ],
+   "max": [
+    -10.547,
+    4.3207,
+    0.2353
+   ]
+  },
+  {
+   "role": "C_step1_L7_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_122",
+   "min": [
+    -10.545,
+    3.0007,
+    0.207
+   ],
+   "max": [
+    -9.83,
+    4.3207,
+    0.2353
+   ]
+  },
+  {
+   "role": "C_step1_L7_4",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_123",
+   "min": [
+    -9.828,
+    3.0007,
+    0.207
+   ],
+   "max": [
+    -9.113,
+    4.3207,
+    0.2353
+   ]
+  },
+  {
+   "role": "C_step1_L7_5",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_124",
+   "min": [
+    -9.111,
+    3.0007,
+    0.207
+   ],
+   "max": [
+    -8.396,
+    4.3207,
+    0.2353
+   ]
+  },
+  {
+   "role": "C_step2_L8_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_125",
+   "min": [
+    -12.396,
+    3.0007,
+    0.2353
+   ],
+   "max": [
+    -11.681,
+    4.3207,
+    0.2636
+   ]
+  },
+  {
+   "role": "C_step2_L8_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_126",
+   "min": [
+    -11.679,
+    3.0007,
+    0.2353
+   ],
+   "max": [
+    -10.964,
+    4.3207,
+    0.2636
+   ]
+  },
+  {
+   "role": "C_step2_L8_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_127",
+   "min": [
+    -10.962,
+    3.0007,
+    0.2353
+   ],
+   "max": [
+    -10.247,
+    4.3207,
+    0.2636
+   ]
+  },
+  {
+   "role": "C_step2_L8_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_128",
+   "min": [
+    -10.245,
+    3.0007,
+    0.2353
+   ],
+   "max": [
+    -9.53,
+    4.3207,
+    0.2636
+   ]
+  },
+  {
+   "role": "C_step2_L8_4",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_129",
+   "min": [
+    -9.528,
+    3.0007,
+    0.2353
+   ],
+   "max": [
+    -8.813,
+    4.3207,
+    0.2636
+   ]
+  },
+  {
+   "role": "C_step2_L9_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_130",
+   "min": [
+    -12.396,
+    3.0007,
+    0.2636
+   ],
+   "max": [
+    -11.681,
+    4.3207,
+    0.2919
+   ]
+  },
+  {
+   "role": "C_step2_L9_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_131",
+   "min": [
+    -11.679,
+    3.0007,
+    0.2636
+   ],
+   "max": [
+    -10.964,
+    4.3207,
+    0.2919
+   ]
+  },
+  {
+   "role": "C_step2_L9_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_132",
+   "min": [
+    -10.962,
+    3.0007,
+    0.2636
+   ],
+   "max": [
+    -10.247,
+    4.3207,
+    0.2919
+   ]
+  },
+  {
+   "role": "C_step2_L9_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_133",
+   "min": [
+    -10.245,
+    3.0007,
+    0.2636
+   ],
+   "max": [
+    -9.53,
+    4.3207,
+    0.2919
+   ]
+  },
+  {
+   "role": "C_step2_L9_4",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_134",
+   "min": [
+    -9.528,
+    3.0007,
+    0.2636
+   ],
+   "max": [
+    -8.813,
+    4.3207,
+    0.2919
+   ]
+  },
+  {
+   "role": "C_step2_L10_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_135",
+   "min": [
+    -12.396,
+    3.0007,
+    0.2919
+   ],
+   "max": [
+    -11.681,
+    4.3207,
+    0.3202
+   ]
+  },
+  {
+   "role": "C_step2_L10_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_136",
+   "min": [
+    -11.679,
+    3.0007,
+    0.2919
+   ],
+   "max": [
+    -10.964,
+    4.3207,
+    0.3202
+   ]
+  },
+  {
+   "role": "C_step2_L10_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_137",
+   "min": [
+    -10.962,
+    3.0007,
+    0.2919
+   ],
+   "max": [
+    -10.247,
+    4.3207,
+    0.3202
+   ]
+  },
+  {
+   "role": "C_step2_L10_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_138",
+   "min": [
+    -10.245,
+    3.0007,
+    0.2919
+   ],
+   "max": [
+    -9.53,
+    4.3207,
+    0.3202
+   ]
+  },
+  {
+   "role": "C_step2_L10_4",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_139",
+   "min": [
+    -9.528,
+    3.0007,
+    0.2919
+   ],
+   "max": [
+    -8.813,
+    4.3207,
+    0.3202
+   ]
+  },
+  {
+   "role": "C_step2_L11_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_140",
+   "min": [
+    -12.396,
+    3.0007,
+    0.3202
+   ],
+   "max": [
+    -11.681,
+    4.3207,
+    0.3485
+   ]
+  },
+  {
+   "role": "C_step2_L11_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_141",
+   "min": [
+    -11.679,
+    3.0007,
+    0.3202
+   ],
+   "max": [
+    -10.964,
+    4.3207,
+    0.3485
+   ]
+  },
+  {
+   "role": "C_step2_L11_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_142",
+   "min": [
+    -10.962,
+    3.0007,
+    0.3202
+   ],
+   "max": [
+    -10.247,
+    4.3207,
+    0.3485
+   ]
+  },
+  {
+   "role": "C_step2_L11_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_143",
+   "min": [
+    -10.245,
+    3.0007,
+    0.3202
+   ],
+   "max": [
+    -9.53,
+    4.3207,
+    0.3485
+   ]
+  },
+  {
+   "role": "C_step2_L11_4",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_144",
+   "min": [
+    -9.528,
+    3.0007,
+    0.3202
+   ],
+   "max": [
+    -8.813,
+    4.3207,
+    0.3485
+   ]
+  },
+  {
+   "role": "C_step3_L12_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_145",
+   "min": [
+    -12.096,
+    3.0007,
+    0.3485
+   ],
+   "max": [
+    -11.381,
+    4.3207,
+    0.3768
+   ]
+  },
+  {
+   "role": "C_step3_L12_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_146",
+   "min": [
+    -11.379,
+    3.0007,
+    0.3485
+   ],
+   "max": [
+    -10.664,
+    4.3207,
+    0.3768
+   ]
+  },
+  {
+   "role": "C_step3_L12_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_147",
+   "min": [
+    -10.662,
+    3.0007,
+    0.3485
+   ],
+   "max": [
+    -9.947,
+    4.3207,
+    0.3768
+   ]
+  },
+  {
+   "role": "C_step3_L12_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_148",
+   "min": [
+    -9.945,
+    3.0007,
+    0.3485
+   ],
+   "max": [
+    -9.23,
+    4.3207,
+    0.3768
+   ]
+  },
+  {
+   "role": "C_step3_L13_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_149",
+   "min": [
+    -12.096,
+    3.0007,
+    0.3768
+   ],
+   "max": [
+    -11.381,
+    4.3207,
+    0.4051
+   ]
+  },
+  {
+   "role": "C_step3_L13_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_150",
+   "min": [
+    -11.379,
+    3.0007,
+    0.3768
+   ],
+   "max": [
+    -10.664,
+    4.3207,
+    0.4051
+   ]
+  },
+  {
+   "role": "C_step3_L13_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_151",
+   "min": [
+    -10.662,
+    3.0007,
+    0.3768
+   ],
+   "max": [
+    -9.947,
+    4.3207,
+    0.4051
+   ]
+  },
+  {
+   "role": "C_step3_L13_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_152",
+   "min": [
+    -9.945,
+    3.0007,
+    0.3768
+   ],
+   "max": [
+    -9.23,
+    4.3207,
+    0.4051
+   ]
+  },
+  {
+   "role": "C_step3_L14_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_153",
+   "min": [
+    -12.096,
+    3.0007,
+    0.4051
+   ],
+   "max": [
+    -11.381,
+    4.3207,
+    0.4334
+   ]
+  },
+  {
+   "role": "C_step3_L14_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_154",
+   "min": [
+    -11.379,
+    3.0007,
+    0.4051
+   ],
+   "max": [
+    -10.664,
+    4.3207,
+    0.4334
+   ]
+  },
+  {
+   "role": "C_step3_L14_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_155",
+   "min": [
+    -10.662,
+    3.0007,
+    0.4051
+   ],
+   "max": [
+    -9.947,
+    4.3207,
+    0.4334
+   ]
+  },
+  {
+   "role": "C_step3_L14_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_156",
+   "min": [
+    -9.945,
+    3.0007,
+    0.4051
+   ],
+   "max": [
+    -9.23,
+    4.3207,
+    0.4334
+   ]
+  },
+  {
+   "role": "C_step3_L15_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_157",
+   "min": [
+    -12.096,
+    3.0007,
+    0.4334
+   ],
+   "max": [
+    -11.381,
+    4.3207,
+    0.4617
+   ]
+  },
+  {
+   "role": "C_step3_L15_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_158",
+   "min": [
+    -11.379,
+    3.0007,
+    0.4334
+   ],
+   "max": [
+    -10.664,
+    4.3207,
+    0.4617
+   ]
+  },
+  {
+   "role": "C_step3_L15_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_159",
+   "min": [
+    -10.662,
+    3.0007,
+    0.4334
+   ],
+   "max": [
+    -9.947,
+    4.3207,
+    0.4617
+   ]
+  },
+  {
+   "role": "C_step3_L15_3",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_160",
+   "min": [
+    -9.945,
+    3.0007,
+    0.4334
+   ],
+   "max": [
+    -9.23,
+    4.3207,
+    0.4617
+   ]
+  },
+  {
+   "role": "C_platform_L16_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_161",
+   "min": [
+    -11.796,
+    3.0007,
+    0.4617
+   ],
+   "max": [
+    -11.081,
+    4.3207,
+    0.49
+   ]
+  },
+  {
+   "role": "C_platform_L16_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_162",
+   "min": [
+    -11.079,
+    3.0007,
+    0.4617
+   ],
+   "max": [
+    -10.364,
+    4.3207,
+    0.49
+   ]
+  },
+  {
+   "role": "C_platform_L16_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_163",
+   "min": [
+    -10.362,
+    3.0007,
+    0.4617
+   ],
+   "max": [
+    -9.647,
+    4.3207,
+    0.49
+   ]
+  },
+  {
+   "role": "C_platform_L17_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_164",
+   "min": [
+    -11.796,
+    3.0007,
+    0.49
+   ],
+   "max": [
+    -11.081,
+    4.3207,
+    0.5183
+   ]
+  },
+  {
+   "role": "C_platform_L17_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_165",
+   "min": [
+    -11.079,
+    3.0007,
+    0.49
+   ],
+   "max": [
+    -10.364,
+    4.3207,
+    0.5183
+   ]
+  },
+  {
+   "role": "C_platform_L17_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_166",
+   "min": [
+    -10.362,
+    3.0007,
+    0.49
+   ],
+   "max": [
+    -9.647,
+    4.3207,
+    0.5183
+   ]
+  },
+  {
+   "role": "C_platform_L18_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_167",
+   "min": [
+    -11.796,
+    3.0007,
+    0.5183
+   ],
+   "max": [
+    -11.081,
+    4.3207,
+    0.5465
+   ]
+  },
+  {
+   "role": "C_platform_L18_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_168",
+   "min": [
+    -11.079,
+    3.0007,
+    0.5183
+   ],
+   "max": [
+    -10.364,
+    4.3207,
+    0.5465
+   ]
+  },
+  {
+   "role": "C_platform_L18_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_169",
+   "min": [
+    -10.362,
+    3.0007,
+    0.5183
+   ],
+   "max": [
+    -9.647,
+    4.3207,
+    0.5465
+   ]
+  },
+  {
+   "role": "C_platform_L19_0",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_170",
+   "min": [
+    -11.796,
+    3.0007,
+    0.5465
+   ],
+   "max": [
+    -11.081,
+    4.3207,
+    0.5748
+   ]
+  },
+  {
+   "role": "C_platform_L19_1",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_171",
+   "min": [
+    -11.079,
+    3.0007,
+    0.5465
+   ],
+   "max": [
+    -10.364,
+    4.3207,
+    0.5748
+   ]
+  },
+  {
+   "role": "C_platform_L19_2",
+   "kind": "board",
+   "scale": 1.1,
+   "path": "/World/GymCourseSpot/board_172",
+   "min": [
+    -10.362,
+    3.0007,
+    0.5465
+   ],
+   "max": [
+    -9.647,
+    4.3207,
+    0.5748
+   ]
+  },
+  {
+   "role": "handR_post_t1",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_010",
+   "min": [
+    -12.6257,
+    3.0047,
+    0.2353
+   ],
+   "max": [
+    -12.4663,
+    3.0267,
+    1.1951
+   ]
+  },
+  {
+   "role": "platR_post0",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_011",
+   "min": [
+    -11.776,
+    3.0047,
+    0.5748
+   ],
+   "max": [
+    -11.6167,
+    3.0267,
+    1.5346
+   ]
+  },
+  {
+   "role": "platR_post1",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_012",
+   "min": [
+    -10.8012,
+    3.0047,
+    0.5748
+   ],
+   "max": [
+    -10.6418,
+    3.0267,
+    1.5346
+   ]
+  },
+  {
+   "role": "platR_post2",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_013",
+   "min": [
+    -9.8263,
+    3.0047,
+    0.5748
+   ],
+   "max": [
+    -9.667,
+    3.0267,
+    1.5346
+   ]
+  },
+  {
+   "role": "handR_rail0",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_014",
+   "min": [
+    -12.5964,
+    3.0267,
+    0.603
+   ],
+   "max": [
+    -11.646,
+    3.0487,
+    1.1071
+   ]
+  },
+  {
+   "role": "handR_rail1",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_015",
+   "min": [
+    -12.5964,
+    3.0267,
+    1.003
+   ],
+   "max": [
+    -11.646,
+    3.0487,
+    1.5071
+   ]
+  },
+  {
+   "role": "platR_rail0_0",
+   "kind": "slat",
+   "scale": 0.8633,
+   "path": "/World/GymCourseSpot/slat_016",
+   "min": [
+    -11.6963,
+    3.0267,
+    0.9439
+   ],
+   "max": [
+    -10.7215,
+    3.049,
+    1.1057
+   ]
+  },
+  {
+   "role": "platR_rail0_1",
+   "kind": "slat",
+   "scale": 0.8633,
+   "path": "/World/GymCourseSpot/slat_017",
+   "min": [
+    -11.6963,
+    3.0267,
+    1.3439
+   ],
+   "max": [
+    -10.7215,
+    3.049,
+    1.5057
+   ]
+  },
+  {
+   "role": "platR_rail1_0",
+   "kind": "slat",
+   "scale": 0.8633,
+   "path": "/World/GymCourseSpot/slat_018",
+   "min": [
+    -10.7215,
+    3.0267,
+    0.9439
+   ],
+   "max": [
+    -9.7467,
+    3.049,
+    1.1057
+   ]
+  },
+  {
+   "role": "platR_rail1_1",
+   "kind": "slat",
+   "scale": 0.8633,
+   "path": "/World/GymCourseSpot/slat_019",
+   "min": [
+    -10.7215,
+    3.0267,
+    1.3439
+   ],
+   "max": [
+    -9.7467,
+    3.049,
+    1.5057
+   ]
+  },
+  {
+   "role": "handL_post_t1",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_020",
+   "min": [
+    -12.6257,
+    4.2946,
+    0.2353
+   ],
+   "max": [
+    -12.4663,
+    4.3167,
+    1.1951
+   ]
+  },
+  {
+   "role": "platL_post0",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_021",
+   "min": [
+    -11.776,
+    4.2946,
+    0.5748
+   ],
+   "max": [
+    -11.6167,
+    4.3167,
+    1.5346
+   ]
+  },
+  {
+   "role": "platL_post1",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_022",
+   "min": [
+    -10.8012,
+    4.2946,
+    0.5748
+   ],
+   "max": [
+    -10.6418,
+    4.3167,
+    1.5346
+   ]
+  },
+  {
+   "role": "platL_post2",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_023",
+   "min": [
+    -9.8263,
+    4.2946,
+    0.5748
+   ],
+   "max": [
+    -9.667,
+    4.3167,
+    1.5346
+   ]
+  },
+  {
+   "role": "handL_rail0",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_024",
+   "min": [
+    -12.5964,
+    4.2726,
+    0.603
+   ],
+   "max": [
+    -11.646,
+    4.2946,
+    1.1071
+   ]
+  },
+  {
+   "role": "handL_rail1",
+   "kind": "slat",
+   "scale": 0.85,
+   "path": "/World/GymCourseSpot/slat_025",
+   "min": [
+    -12.5964,
+    4.2726,
+    1.003
+   ],
+   "max": [
+    -11.646,
+    4.2946,
+    1.5071
+   ]
+  },
+  {
+   "role": "platL_rail0_0",
+   "kind": "slat",
+   "scale": 0.8633,
+   "path": "/World/GymCourseSpot/slat_026",
+   "min": [
+    -11.6963,
+    4.2723,
+    0.9439
+   ],
+   "max": [
+    -10.7215,
+    4.2946,
+    1.1057
+   ]
+  },
+  {
+   "role": "platL_rail0_1",
+   "kind": "slat",
+   "scale": 0.8633,
+   "path": "/World/GymCourseSpot/slat_027",
+   "min": [
+    -11.6963,
+    4.2723,
+    1.3439
+   ],
+   "max": [
+    -10.7215,
+    4.2946,
+    1.5057
+   ]
+  },
+  {
+   "role": "platL_rail1_0",
+   "kind": "slat",
+   "scale": 0.8633,
+   "path": "/World/GymCourseSpot/slat_028",
+   "min": [
+    -10.7215,
+    4.2723,
+    0.9439
+   ],
+   "max": [
+    -9.7467,
+    4.2946,
+    1.1057
+   ]
+  },
+  {
+   "role": "platL_rail1_1",
+   "kind": "slat",
+   "scale": 0.8633,
+   "path": "/World/GymCourseSpot/slat_029",
+   "min": [
+    -10.7215,
+    4.2723,
+    1.3439
+   ],
+   "max": [
+    -9.7467,
+    4.2946,
+    1.5057
+   ]
+  },
+  {
+   "role": "plat_end_rail0",
+   "kind": "slat",
+   "scale": 1.1229,
+   "path": "/World/GymCourseSpot/slat_030",
+   "min": [
+    -9.6991,
+    3.0267,
+    0.9196
+   ],
+   "max": [
+    -9.67,
+    4.2946,
+    1.1301
+   ]
+  },
+  {
+   "role": "plat_end_rail1",
+   "kind": "slat",
+   "scale": 1.1229,
+   "path": "/World/GymCourseSpot/slat_031",
+   "min": [
+    -9.6991,
+    3.0267,
+    1.3196
+   ],
+   "max": [
+    -9.67,
+    4.2946,
+    1.5301
+   ]
+  },
+  {
+   "role": "fenceAL_rail0_0",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_032",
+   "min": [
+    -22.726,
+    3.272,
+    0.3415
+   ],
+   "max": [
+    -21.7544,
+    3.2943,
+    0.5028
+   ]
+  },
+  {
+   "role": "fenceAL_rail0_1",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_033",
+   "min": [
+    -22.726,
+    3.272,
+    0.6215
+   ],
+   "max": [
+    -21.7544,
+    3.2943,
+    0.7828
+   ]
+  },
+  {
+   "role": "fenceAL_rail0_2",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_034",
+   "min": [
+    -22.726,
+    3.272,
+    0.9015
+   ],
+   "max": [
+    -21.7544,
+    3.2943,
+    1.0628
+   ]
+  },
+  {
+   "role": "fenceAL_rail1_0",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_035",
+   "min": [
+    -21.7544,
+    3.272,
+    0.3415
+   ],
+   "max": [
+    -20.7829,
+    3.2943,
+    0.5028
+   ]
+  },
+  {
+   "role": "fenceAL_rail1_1",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_036",
+   "min": [
+    -21.7544,
+    3.272,
+    0.6215
+   ],
+   "max": [
+    -20.7829,
+    3.2943,
+    0.7828
+   ]
+  },
+  {
+   "role": "fenceAL_rail1_2",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_037",
+   "min": [
+    -21.7544,
+    3.272,
+    0.9015
+   ],
+   "max": [
+    -20.7829,
+    3.2943,
+    1.0628
+   ]
+  },
+  {
+   "role": "fenceAL_rail2_0",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_038",
+   "min": [
+    -20.7829,
+    3.272,
+    0.3415
+   ],
+   "max": [
+    -19.8113,
+    3.2943,
+    0.5028
+   ]
+  },
+  {
+   "role": "fenceAL_rail2_1",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_039",
+   "min": [
+    -20.7829,
+    3.272,
+    0.6215
+   ],
+   "max": [
+    -19.8113,
+    3.2943,
+    0.7828
+   ]
+  },
+  {
+   "role": "fenceAL_rail2_2",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_040",
+   "min": [
+    -20.7829,
+    3.272,
+    0.9015
+   ],
+   "max": [
+    -19.8113,
+    3.2943,
+    1.0628
+   ]
+  },
+  {
+   "role": "fenceAL_rail3_0",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_041",
+   "min": [
+    -19.8113,
+    3.272,
+    0.3415
+   ],
+   "max": [
+    -18.8397,
+    3.2943,
+    0.5028
+   ]
+  },
+  {
+   "role": "fenceAL_rail3_1",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_042",
+   "min": [
+    -19.8113,
+    3.272,
+    0.6215
+   ],
+   "max": [
+    -18.8397,
+    3.2943,
+    0.7828
+   ]
+  },
+  {
+   "role": "fenceAL_rail3_2",
+   "kind": "slat",
+   "scale": 0.8604,
+   "path": "/World/GymCourseSpot/slat_043",
+   "min": [
+    -19.8113,
+    3.272,
+    0.9015
+   ],
+   "max": [
+    -18.8397,
+    3.2943,
+    1.0628
+   ]
+  },
+  {
+   "role": "fenceAL_post0",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_044",
+   "min": [
+    -22.8197,
+    3.2943,
+    0.009
+   ],
+   "max": [
+    -22.6323,
+    3.3202,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceAL_post1",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_045",
+   "min": [
+    -21.8481,
+    3.2943,
+    0.009
+   ],
+   "max": [
+    -21.6607,
+    3.3202,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceAL_post2",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_046",
+   "min": [
+    -20.8766,
+    3.2943,
+    0.009
+   ],
+   "max": [
+    -20.6891,
+    3.3202,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceAL_post3",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_047",
+   "min": [
+    -19.905,
+    3.2943,
+    0.009
+   ],
+   "max": [
+    -19.7176,
+    3.3202,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceAL_post4",
+   "kind": "slat",
+   "scale": 0.9,
+   "path": "/World/GymCourseSpot/slat_048",
+   "min": [
+    -19.0693,
+    3.2943,
+    0.1221
+   ],
+   "max": [
+    -18.9006,
+    3.3176,
+    1.1384
+   ]
+  },
+  {
+   "role": "fenceCL_rail4_0",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_049",
+   "min": [
+    -17.779,
+    4.3327,
+    0.3378
+   ],
+   "max": [
+    -16.7624,
+    4.356,
+    0.5065
+   ]
+  },
+  {
+   "role": "fenceCL_rail4_1",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_050",
+   "min": [
+    -17.779,
+    4.3327,
+    0.6178
+   ],
+   "max": [
+    -16.7624,
+    4.356,
+    0.7865
+   ]
+  },
+  {
+   "role": "fenceCL_rail4_2",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_051",
+   "min": [
+    -17.779,
+    4.3327,
+    0.8978
+   ],
+   "max": [
+    -16.7624,
+    4.356,
+    1.0665
+   ]
+  },
+  {
+   "role": "fenceCL_rail5_0",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_052",
+   "min": [
+    -16.7624,
+    4.3327,
+    0.3378
+   ],
+   "max": [
+    -15.7458,
+    4.356,
+    0.5065
+   ]
+  },
+  {
+   "role": "fenceCL_rail5_1",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_053",
+   "min": [
+    -16.7624,
+    4.3327,
+    0.6178
+   ],
+   "max": [
+    -15.7458,
+    4.356,
+    0.7865
+   ]
+  },
+  {
+   "role": "fenceCL_rail5_2",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_054",
+   "min": [
+    -16.7624,
+    4.3327,
+    0.8978
+   ],
+   "max": [
+    -15.7458,
+    4.356,
+    1.0665
+   ]
+  },
+  {
+   "role": "fenceCL_rail6_0",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_055",
+   "min": [
+    -15.7458,
+    4.3327,
+    0.3378
+   ],
+   "max": [
+    -14.7292,
+    4.356,
+    0.5065
+   ]
+  },
+  {
+   "role": "fenceCL_rail6_1",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_056",
+   "min": [
+    -15.7458,
+    4.3327,
+    0.6178
+   ],
+   "max": [
+    -14.7292,
+    4.356,
+    0.7865
+   ]
+  },
+  {
+   "role": "fenceCL_rail6_2",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_057",
+   "min": [
+    -15.7458,
+    4.3327,
+    0.8978
+   ],
+   "max": [
+    -14.7292,
+    4.356,
+    1.0665
+   ]
+  },
+  {
+   "role": "fenceCL_rail7_0",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_058",
+   "min": [
+    -14.7292,
+    4.3327,
+    0.3378
+   ],
+   "max": [
+    -13.7126,
+    4.356,
+    0.5065
+   ]
+  },
+  {
+   "role": "fenceCL_rail7_1",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_059",
+   "min": [
+    -14.7292,
+    4.3327,
+    0.6178
+   ],
+   "max": [
+    -13.7126,
+    4.356,
+    0.7865
+   ]
+  },
+  {
+   "role": "fenceCL_rail7_2",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_060",
+   "min": [
+    -14.7292,
+    4.3327,
+    0.8978
+   ],
+   "max": [
+    -13.7126,
+    4.356,
+    1.0665
+   ]
+  },
+  {
+   "role": "fenceCL_rail8_0",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_061",
+   "min": [
+    -13.7126,
+    4.3327,
+    0.3378
+   ],
+   "max": [
+    -12.696,
+    4.356,
+    0.5065
+   ]
+  },
+  {
+   "role": "fenceCL_rail8_1",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_062",
+   "min": [
+    -13.7126,
+    4.3327,
+    0.6178
+   ],
+   "max": [
+    -12.696,
+    4.356,
+    0.7865
+   ]
+  },
+  {
+   "role": "fenceCL_rail8_2",
+   "kind": "slat",
+   "scale": 0.9003,
+   "path": "/World/GymCourseSpot/slat_063",
+   "min": [
+    -13.7126,
+    4.3327,
+    0.8978
+   ],
+   "max": [
+    -12.696,
+    4.356,
+    1.0665
+   ]
+  },
+  {
+   "role": "fenceCL_post5",
+   "kind": "slat",
+   "scale": 0.9,
+   "path": "/World/GymCourseSpot/slat_064",
+   "min": [
+    -17.777,
+    4.356,
+    0.1221
+   ],
+   "max": [
+    -17.6084,
+    4.3793,
+    1.1384
+   ]
+  },
+  {
+   "role": "fenceCL_post6",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_065",
+   "min": [
+    -16.8562,
+    4.356,
+    0.009
+   ],
+   "max": [
+    -16.6687,
+    4.3819,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceCL_post7",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_066",
+   "min": [
+    -15.8395,
+    4.356,
+    0.009
+   ],
+   "max": [
+    -15.6521,
+    4.3819,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceCL_post8",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_067",
+   "min": [
+    -14.8229,
+    4.356,
+    0.009
+   ],
+   "max": [
+    -14.6355,
+    4.3819,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceCL_post9",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_068",
+   "min": [
+    -13.8063,
+    4.356,
+    0.009
+   ],
+   "max": [
+    -13.6189,
+    4.3819,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceCL_post10",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_069",
+   "min": [
+    -12.7897,
+    4.356,
+    0.009
+   ],
+   "max": [
+    -12.6023,
+    4.3819,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceAR_rail9_0",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_070",
+   "min": [
+    -22.726,
+    1.9025,
+    0.33
+   ],
+   "max": [
+    -21.6153,
+    1.928,
+    0.5143
+   ]
+  },
+  {
+   "role": "fenceAR_rail9_1",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_071",
+   "min": [
+    -22.726,
+    1.9025,
+    0.61
+   ],
+   "max": [
+    -21.6153,
+    1.928,
+    0.7943
+   ]
+  },
+  {
+   "role": "fenceAR_rail9_2",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_072",
+   "min": [
+    -22.726,
+    1.9025,
+    0.89
+   ],
+   "max": [
+    -21.6153,
+    1.928,
+    1.0743
+   ]
+  },
+  {
+   "role": "fenceAR_rail10_0",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_073",
+   "min": [
+    -21.6153,
+    1.9025,
+    0.33
+   ],
+   "max": [
+    -20.5045,
+    1.928,
+    0.5143
+   ]
+  },
+  {
+   "role": "fenceAR_rail10_1",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_074",
+   "min": [
+    -21.6153,
+    1.9025,
+    0.61
+   ],
+   "max": [
+    -20.5045,
+    1.928,
+    0.7943
+   ]
+  },
+  {
+   "role": "fenceAR_rail10_2",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_075",
+   "min": [
+    -21.6153,
+    1.9025,
+    0.89
+   ],
+   "max": [
+    -20.5045,
+    1.928,
+    1.0743
+   ]
+  },
+  {
+   "role": "fenceAR_rail11_0",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_076",
+   "min": [
+    -20.5045,
+    1.9025,
+    0.33
+   ],
+   "max": [
+    -19.3938,
+    1.928,
+    0.5143
+   ]
+  },
+  {
+   "role": "fenceAR_rail11_1",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_077",
+   "min": [
+    -20.5045,
+    1.9025,
+    0.61
+   ],
+   "max": [
+    -19.3938,
+    1.928,
+    0.7943
+   ]
+  },
+  {
+   "role": "fenceAR_rail11_2",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_078",
+   "min": [
+    -20.5045,
+    1.9025,
+    0.89
+   ],
+   "max": [
+    -19.3938,
+    1.928,
+    1.0743
+   ]
+  },
+  {
+   "role": "fenceAR_rail12_0",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_079",
+   "min": [
+    -19.3938,
+    1.9025,
+    0.33
+   ],
+   "max": [
+    -18.283,
+    1.928,
+    0.5143
+   ]
+  },
+  {
+   "role": "fenceAR_rail12_1",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_080",
+   "min": [
+    -19.3938,
+    1.9025,
+    0.61
+   ],
+   "max": [
+    -18.283,
+    1.928,
+    0.7943
+   ]
+  },
+  {
+   "role": "fenceAR_rail12_2",
+   "kind": "slat",
+   "scale": 0.9837,
+   "path": "/World/GymCourseSpot/slat_081",
+   "min": [
+    -19.3938,
+    1.9025,
+    0.89
+   ],
+   "max": [
+    -18.283,
+    1.928,
+    1.0743
+   ]
+  },
+  {
+   "role": "fenceAR_post11",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_082",
+   "min": [
+    -22.8197,
+    1.8766,
+    0.009
+   ],
+   "max": [
+    -22.6323,
+    1.9025,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceAR_post12",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_083",
+   "min": [
+    -21.709,
+    1.8766,
+    0.009
+   ],
+   "max": [
+    -21.5215,
+    1.9025,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceAR_post13",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_084",
+   "min": [
+    -20.5982,
+    1.8766,
+    0.009
+   ],
+   "max": [
+    -20.4108,
+    1.9025,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceAR_post14",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_085",
+   "min": [
+    -19.4875,
+    1.8766,
+    0.009
+   ],
+   "max": [
+    -19.3,
+    1.9025,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceAR_post15",
+   "kind": "slat",
+   "scale": 0.9,
+   "path": "/World/GymCourseSpot/slat_086",
+   "min": [
+    -18.4614,
+    1.8792,
+    0.1221
+   ],
+   "max": [
+    -18.2927,
+    1.9025,
+    1.1384
+   ]
+  },
+  {
+   "role": "fenceCR_rail13_0",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_087",
+   "min": [
+    -17.2223,
+    2.9627,
+    0.3282
+   ],
+   "max": [
+    -16.0908,
+    2.9887,
+    0.5161
+   ]
+  },
+  {
+   "role": "fenceCR_rail13_1",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_088",
+   "min": [
+    -17.2223,
+    2.9627,
+    0.6082
+   ],
+   "max": [
+    -16.0908,
+    2.9887,
+    0.7961
+   ]
+  },
+  {
+   "role": "fenceCR_rail13_2",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_089",
+   "min": [
+    -17.2223,
+    2.9627,
+    0.8882
+   ],
+   "max": [
+    -16.0908,
+    2.9887,
+    1.0761
+   ]
+  },
+  {
+   "role": "fenceCR_rail14_0",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_090",
+   "min": [
+    -16.0908,
+    2.9627,
+    0.3282
+   ],
+   "max": [
+    -14.9592,
+    2.9887,
+    0.5161
+   ]
+  },
+  {
+   "role": "fenceCR_rail14_1",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_091",
+   "min": [
+    -16.0908,
+    2.9627,
+    0.6082
+   ],
+   "max": [
+    -14.9592,
+    2.9887,
+    0.7961
+   ]
+  },
+  {
+   "role": "fenceCR_rail14_2",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_092",
+   "min": [
+    -16.0908,
+    2.9627,
+    0.8882
+   ],
+   "max": [
+    -14.9592,
+    2.9887,
+    1.0761
+   ]
+  },
+  {
+   "role": "fenceCR_rail15_0",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_093",
+   "min": [
+    -14.9592,
+    2.9627,
+    0.3282
+   ],
+   "max": [
+    -13.8276,
+    2.9887,
+    0.5161
+   ]
+  },
+  {
+   "role": "fenceCR_rail15_1",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_094",
+   "min": [
+    -14.9592,
+    2.9627,
+    0.6082
+   ],
+   "max": [
+    -13.8276,
+    2.9887,
+    0.7961
+   ]
+  },
+  {
+   "role": "fenceCR_rail15_2",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_095",
+   "min": [
+    -14.9592,
+    2.9627,
+    0.8882
+   ],
+   "max": [
+    -13.8276,
+    2.9887,
+    1.0761
+   ]
+  },
+  {
+   "role": "fenceCR_rail16_0",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_096",
+   "min": [
+    -13.8276,
+    2.9627,
+    0.3282
+   ],
+   "max": [
+    -12.696,
+    2.9887,
+    0.5161
+   ]
+  },
+  {
+   "role": "fenceCR_rail16_1",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_097",
+   "min": [
+    -13.8276,
+    2.9627,
+    0.6082
+   ],
+   "max": [
+    -12.696,
+    2.9887,
+    0.7961
+   ]
+  },
+  {
+   "role": "fenceCR_rail16_2",
+   "kind": "slat",
+   "scale": 1.0021,
+   "path": "/World/GymCourseSpot/slat_098",
+   "min": [
+    -13.8276,
+    2.9627,
+    0.8882
+   ],
+   "max": [
+    -12.696,
+    2.9887,
+    1.0761
+   ]
+  },
+  {
+   "role": "fenceCR_post16",
+   "kind": "slat",
+   "scale": 0.9,
+   "path": "/World/GymCourseSpot/slat_099",
+   "min": [
+    -17.1495,
+    2.9394,
+    0.1221
+   ],
+   "max": [
+    -16.9808,
+    2.9627,
+    1.1384
+   ]
+  },
+  {
+   "role": "fenceCR_post17",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_100",
+   "min": [
+    -16.1845,
+    2.9368,
+    0.009
+   ],
+   "max": [
+    -15.997,
+    2.9627,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceCR_post18",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_101",
+   "min": [
+    -15.0529,
+    2.9368,
+    0.009
+   ],
+   "max": [
+    -14.8655,
+    2.9627,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceCR_post19",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_102",
+   "min": [
+    -13.9213,
+    2.9368,
+    0.009
+   ],
+   "max": [
+    -13.7339,
+    2.9627,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceCR_post20",
+   "kind": "slat",
+   "scale": 1.0,
+   "path": "/World/GymCourseSpot/slat_103",
+   "min": [
+    -12.7897,
+    2.9368,
+    0.009
+   ],
+   "max": [
+    -12.6023,
+    2.9627,
+    1.1382
+   ]
+  },
+  {
+   "role": "fenceJL_rail17_0",
+   "kind": "slat",
+   "scale": 1.15,
+   "path": "/World/GymCourseSpot/slat_104",
+   "min": [
+    -18.8482,
+    3.2846,
+    0.3144
+   ],
+   "max": [
+    -17.9089,
+    4.2238,
+    0.5299
+   ]
+  },
+  {
+   "role": "fenceJL_rail17_1",
+   "kind": "slat",
+   "scale": 1.15,
+   "path": "/World/GymCourseSpot/slat_105",
+   "min": [
+    -18.8482,
+    3.2846,
+    0.5944
+   ],
+   "max": [
+    -17.9089,
+    4.2238,
+    0.8099
+   ]
+  },
+  {
+   "role": "fenceJL_rail17_2",
+   "kind": "slat",
+   "scale": 1.15,
+   "path": "/World/GymCourseSpot/slat_106",
+   "min": [
+    -18.8482,
+    3.2846,
+    0.8744
+   ],
+   "max": [
+    -17.9089,
+    4.2238,
+    1.0899
+   ]
+  },
+  {
+   "role": "fenceJL_filler0",
+   "kind": "slat",
+   "scale": 0.9586,
+   "path": "/World/GymCourseSpot/slat_107",
+   "min": [
+    -17.9251,
+    4.2042,
+    0.1221
+   ],
+   "max": [
+    -17.7805,
+    4.3488,
+    1.2046
+   ]
+  },
+  {
+   "role": "fenceJL_post21",
+   "kind": "slat",
+   "scale": 0.9,
+   "path": "/World/GymCourseSpot/slat_108",
+   "min": [
+    -18.8043,
+    3.366,
+    0.1221
+   ],
+   "max": [
+    -18.6686,
+    3.5018,
+    1.1384
+   ]
+  },
+  {
+   "role": "fenceJL_post22",
+   "kind": "slat",
+   "scale": 0.9,
+   "path": "/World/GymCourseSpot/slat_109",
+   "min": [
+    -18.0672,
+    4.1032,
+    0.1221
+   ],
+   "max": [
+    -17.9314,
+    4.2389,
+    1.1384
+   ]
+  },
+  {
+   "role": "fenceJR_rail18_0",
+   "kind": "slat",
+   "scale": 1.15,
+   "path": "/World/GymCourseSpot/slat_110",
+   "min": [
+    -18.155,
+    2.035,
+    0.3144
+   ],
+   "max": [
+    -17.2157,
+    2.9743,
+    0.5299
+   ]
+  },
+  {
+   "role": "fenceJR_rail18_1",
+   "kind": "slat",
+   "scale": 1.15,
+   "path": "/World/GymCourseSpot/slat_111",
+   "min": [
+    -18.155,
+    2.035,
+    0.5944
+   ],
+   "max": [
+    -17.2157,
+    2.9743,
+    0.8099
+   ]
+  },
+  {
+   "role": "fenceJR_rail18_2",
+   "kind": "slat",
+   "scale": 1.15,
+   "path": "/World/GymCourseSpot/slat_112",
+   "min": [
+    -18.155,
+    2.035,
+    0.8744
+   ],
+   "max": [
+    -17.2157,
+    2.9743,
+    1.0899
+   ]
+  },
+  {
+   "role": "fenceJR_filler1",
+   "kind": "slat",
+   "scale": 0.9448,
+   "path": "/World/GymCourseSpot/slat_113",
+   "min": [
+    -18.2816,
+    1.9121,
+    0.1221
+   ],
+   "max": [
+    -18.1391,
+    2.0546,
+    1.189
+   ]
+  },
+  {
+   "role": "fenceJR_post23",
+   "kind": "slat",
+   "scale": 0.9,
+   "path": "/World/GymCourseSpot/slat_114",
+   "min": [
+    -18.1325,
+    2.0199,
+    0.1221
+   ],
+   "max": [
+    -17.9967,
+    2.1557,
+    1.1384
+   ]
+  },
+  {
+   "role": "fenceJR_post24",
+   "kind": "slat",
+   "scale": 0.9,
+   "path": "/World/GymCourseSpot/slat_115",
+   "min": [
+    -17.3953,
+    2.7571,
+    0.1221
+   ],
+   "max": [
+    -17.2596,
+    2.8928,
+    1.1384
+   ]
+  }
+ ],
+ "compare_with_old_L1": null
+}

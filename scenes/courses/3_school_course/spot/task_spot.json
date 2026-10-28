@@ -1,0 +1,242 @@
+{
+ "scene": "SCSPOT",
+ "robot": "spotp",
+ "course": "school course, Spot variant (school_course_spot.py)",
+ "verify_ok": true,
+ "start": {
+  "xy": [
+   -27.2,
+   -5.8
+  ],
+  "z": 0.681,
+  "yaw": 0.0
+ },
+ "goal": {
+  "xy": [
+   -9.32,
+   -5.8
+  ],
+  "z": 0.681,
+  "success_radius": 0.5
+ },
+ "path": [
+  [
+   -27.2,
+   -5.8,
+   0.681
+  ],
+  [
+   -24.1,
+   -5.8,
+   0.681
+  ],
+  [
+   -23.027,
+   -5.8,
+   0.681
+  ],
+  [
+   -22.177,
+   -5.8,
+   0.681
+  ],
+  [
+   -21.302,
+   -5.8,
+   0.681
+  ],
+  [
+   -20.702,
+   -5.8,
+   0.681
+  ],
+  [
+   -17.919,
+   -5.8,
+   0.681
+  ],
+  [
+   -17.419,
+   -5.8,
+   0.681
+  ],
+  [
+   -15.662,
+   -5.8,
+   0.681
+  ],
+  [
+   -13.75,
+   -5.8,
+   0.681
+  ],
+  [
+   -10.42,
+   -5.8,
+   0.681
+  ],
+  [
+   -9.32,
+   -5.8,
+   0.681
+  ]
+ ],
+ "length": 17.88,
+ "sections": [
+  {
+   "name": "start_straight",
+   "role": "start_straight",
+   "s": [
+    0.0,
+    3.4
+   ],
+   "x": [
+    -27.2,
+    -23.8
+   ]
+  },
+  {
+   "name": "curb",
+   "role": "curb",
+   "s": [
+    3.4,
+    3.873
+   ],
+   "x": [
+    -23.8,
+    -23.327
+   ]
+  },
+  {
+   "name": "low_narrow",
+   "role": "narrow_opening",
+   "s": [
+    5.323,
+    5.598
+   ],
+   "x": [
+    -21.877,
+    -21.602
+   ]
+  },
+  {
+   "name": "oil",
+   "role": "oil",
+   "s": [
+    6.798,
+    9.481
+   ],
+   "x": [
+    -20.402,
+    -17.719
+   ]
+  },
+  {
+   "name": "tunnel",
+   "role": "tunnel",
+   "s": [
+    9.581,
+    11.238
+   ],
+   "x": [
+    -17.619,
+    -15.962
+   ]
+  },
+  {
+   "name": "sidle_strip",
+   "role": "corridor",
+   "s": [
+    13.75,
+    16.48
+   ],
+   "x": [
+    -13.45,
+    -10.72
+   ]
+  }
+ ],
+ "skills": {
+  "curb": "step up / over a 0.11 m full-width curb (Spot climb setpoint: high body, nose-up)",
+  "low_narrow": "align through a 0.68 m opening (lintel 1.10 m: no crouch needed)",
+  "tunnel": "slow on the oil patch, then crouch-walk ~1.7 m under 0.92 m",
+  "sidle": "hold alignment 2.7 m in a ~0.80 m wardrobe corridor"
+ },
+ "measured": {
+  "tunnel_clear_height": {
+   "min": 0.9197,
+   "max": 0.9326
+  },
+  "tunnel_roof_length": 1.84,
+  "tunnel_clear_width": {
+   "min": 1.8022,
+   "max": 1.8022
+  },
+  "low_narrow_height": {
+   "min": 1.1,
+   "max": 1.1
+  },
+  "low_narrow_width": {
+   "min": 0.681,
+   "max": 0.8878,
+   "n": 12
+  },
+  "sidle_width": {
+   "min": 0.7995,
+   "max": 0.8701
+  },
+  "sidle_length": null,
+  "corridor_length_width_lt_1m": 2.7,
+  "curb": {
+   "top_above_floor": {
+    "min": 0.11,
+    "max": 0.6427,
+    "median": 0.11,
+    "n": 452
+   },
+   "rows": [
+    {
+     "s": 3.45,
+     "n": 113,
+     "below_0p09": 0
+    },
+    {
+     "s": 3.574,
+     "n": 113,
+     "below_0p09": 0
+    },
+    {
+     "s": 3.699,
+     "n": 113,
+     "below_0p09": 0
+    },
+    {
+     "s": 3.823,
+     "n": 113,
+     "below_0p09": 0
+    }
+   ],
+   "front_edge_s": {
+    "min": 3.4,
+    "max": 3.4
+   },
+   "depth": 0.473
+  }
+ },
+ "closures_ok": {
+  "curb": true,
+  "low_narrow": true,
+  "tunnel": true,
+  "sidle": true,
+  "gym_doorway_block": true
+ },
+ "rebuild": {
+  "module": "/p/cral/vignesh/ARL/Scripts/scripts/baselines_r1/school_course_spot.py",
+  "cls": "SchoolCourseSpot",
+  "fn": "make_spec_spot",
+  "stage": "assets/school.usd opened in memory; B.prepare(); world.reset(); walls_at() from the spec json 'walls' (same rule as experiments_fig/school_ctrl.py build_sc2); B.build(walls_at=walls_at)",
+  "spec_json": "/p/cral/vignesh/ARL/experiments/3_school_course/spot/school_course_spot_spec.json",
+  "verify_json": "/p/cral/vignesh/ARL/experiments/3_school_course/spot/school_course_spot_verify.json"
+ },
+ "rules": "strict success = base within 0.5 m of goal xy (no goal z); relative goal only; no prior map"
+}

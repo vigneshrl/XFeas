@@ -1,0 +1,114 @@
+{
+ "schema": "xfeas.ctrl_spec/1",
+ "robot": "unitree_g1",
+ "virtual": false,
+ "rate_hz": 50,
+ "nominal": {
+  "speed": 0.3
+ },
+ "ctrl_id": "g1g",
+ "base": "g1g",
+ "controller": "GR00T Decoupled WBC (released, NVlabs/GR00T-WholeBodyControl @45c03fa)",
+ "commands": [
+  {
+   "name": "vx",
+   "role": "lin_vel_x",
+   "type": "continuous",
+   "unit": "m/s",
+   "range": [
+    -0.8,
+    0.8
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "vy",
+   "role": "lin_vel_y",
+   "type": "continuous",
+   "unit": "m/s",
+   "range": [
+    -0.5,
+    0.5
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "wz",
+   "role": "yaw_rate",
+   "type": "continuous",
+   "unit": "rad/s",
+   "range": [
+    -1.0,
+    1.0
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "body_height",
+   "role": "pelvis_height",
+   "type": "continuous",
+   "unit": "m",
+   "range": [
+    0.3,
+    0.8
+   ],
+   "nominal": 0.74
+  },
+  {
+   "name": "pitch",
+   "role": "torso_pitch",
+   "type": "continuous",
+   "unit": "rad",
+   "range": [
+    -0.5,
+    1.0
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "roll",
+   "role": "torso_roll",
+   "type": "continuous",
+   "unit": "rad",
+   "range": [
+    -0.4,
+    0.4
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "torso_yaw",
+   "role": "torso_yaw",
+   "type": "continuous",
+   "unit": "rad",
+   "range": [
+    -1.0,
+    1.0
+   ],
+   "nominal": 0.0
+  }
+ ],
+ "modes": [],
+ "binding": {
+  "adapter": "g1_gr00t:make_g1g",
+  "call": "dict",
+  "names": {
+   "vx": "vx",
+   "vy": "vy",
+   "wz": "wz",
+   "body_height": "body_height",
+   "pitch": "pitch",
+   "roll": "roll",
+   "torso_yaw": "torso_yaw"
+  }
+ },
+ "doc_notes": [
+  "observation slot [3] = absolute pelvis-height command (default 0.74), [4:7] torso roll/pitch/yaw command; Walk/Balance switch at |cmd| <= 0.05",
+  "training ranges are not released; the ranges are those the release's own MuJoCo deployment accepts"
+ ],
+ "sources": [
+  "baselines/GR00T-WholeBodyControl/decoupled_wbc/sim2mujoco/scripts/run_mujoco_gear_wbc.py",
+  "g1_gear_wbc.yaml",
+  "scripts/gr00t/g1_gr00t.py (RANGES)"
+ ]
+}

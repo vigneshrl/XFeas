@@ -1,0 +1,55 @@
+{
+ "schema": "xfeas.ctrl_spec/1",
+ "robot": "unitree_g1",
+ "virtual": false,
+ "rate_hz": 50,
+ "nominal": {
+  "speed": 0.3
+ },
+ "ctrl_id": "g1l",
+ "base": "g1l",
+ "controller": "Isaac Lab Isaac-Velocity-Rough-G1-v0 (released rsl_rl checkpoint)",
+ "commands": [
+  {
+   "name": "vx",
+   "role": "lin_vel_x",
+   "type": "continuous",
+   "unit": "m/s",
+   "range": [
+    0.0,
+    1.0
+   ],
+   "nominal": 0.0
+  },
+  {
+   "name": "wz",
+   "role": "yaw_rate",
+   "type": "continuous",
+   "unit": "rad/s",
+   "range": [
+    -1.0,
+    1.0
+   ],
+   "nominal": 0.0
+  }
+ ],
+ "modes": [],
+ "binding": {
+  "adapter": "il_g1_robot:make_il_g1",
+  "call": "dict",
+  "names": {
+   "vx": "vx",
+   "wz": "wz"
+  },
+  "env": {
+   "IL_G1_ASSET": "full"
+  }
+ },
+ "doc_notes": [
+  "G1RoughEnvCfg: lin_vel_x (0, 1), lin_vel_y (0, 0), ang_vel_z (-1, 1); velocity-only interface"
+ ],
+ "sources": [
+  "isaaclab/.../config/g1/rough_env_cfg.py",
+  "scripts/isaaclab_humanoid/il_g1_robot.py"
+ ]
+}

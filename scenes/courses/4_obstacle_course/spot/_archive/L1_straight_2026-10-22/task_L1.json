@@ -1,0 +1,160 @@
+{
+ "scene": "GYMSPOT_L1",
+ "robot": "spotp",
+ "level": 1,
+ "verify_ok": true,
+ "start": {
+  "xy": [
+   -23.226,
+   2.6
+  ],
+  "yaw": 0.0,
+  "z": 0.008976
+ },
+ "goal": {
+  "xyz": [
+   -10.796,
+   2.6,
+   0.575
+  ],
+  "success_radius": 0.5,
+  "note": "strict success: base within 0.5 m of goal xy (goal on the platform)"
+ },
+ "path": [
+  {
+   "xyz": [
+    -23.226,
+    2.6,
+    0.009
+   ],
+   "what": "start"
+  },
+  {
+   "xyz": [
+    -22.726,
+    2.6,
+    0.009
+   ],
+   "what": "ramp foot"
+  },
+  {
+   "xyz": [
+    -22.016,
+    2.6,
+    0.122
+   ],
+   "what": "deck"
+  },
+  {
+   "xyz": [
+    -12.696,
+    2.6,
+    0.122
+   ],
+   "what": "stairs foot"
+  },
+  {
+   "xyz": [
+    -12.396,
+    2.6,
+    0.235
+   ],
+   "what": "tread 1"
+  },
+  {
+   "xyz": [
+    -12.096,
+    2.6,
+    0.348
+   ],
+   "what": "tread 2"
+  },
+  {
+   "xyz": [
+    -11.796,
+    2.6,
+    0.462
+   ],
+   "what": "tread 3"
+  },
+  {
+   "xyz": [
+    -10.796,
+    2.6,
+    0.575
+   ],
+   "what": "goal"
+  }
+ ],
+ "path_len_xy": 12.43,
+ "turns": [],
+ "sections": [
+  {
+   "seg": "A",
+   "kind": "crossing",
+   "type": [
+    "hump",
+    "valley",
+    "hump",
+    "valley"
+   ],
+   "xy_from": [
+    -20.187,
+    2.6
+   ],
+   "xy_to": [
+    -14.526,
+    2.6
+   ]
+  },
+  {
+   "seg": "A",
+   "kind": "stairs",
+   "xy_from": [
+    -12.696,
+    2.6
+   ],
+   "xy_to": [
+    -11.796,
+    2.6
+   ],
+   "risers": 4
+  }
+ ],
+ "dims": {
+  "riser_m": 0.1132,
+  "measured_risers": [
+   0.1132,
+   0.1132,
+   0.1132,
+   0.1131
+  ],
+  "deck_top": {
+   "median": 0.1105,
+   "min": 0.0822,
+   "max": 0.1105,
+   "n": 162
+  },
+  "platform_z": 0.5632,
+  "ramp_deg": 6.82,
+  "beam": [],
+  "funnel": [],
+  "lane_width": {
+   "min": 1.3465,
+   "max": 1.3465,
+   "n": 9,
+   "note": "beam / funnel bays skipped"
+  },
+  "rough": [],
+  "slippery": []
+ },
+ "rebuild": {
+  "module": "/p/cral/vignesh/ARL/Scripts/scripts/baselines_r1/gym_course_spot.py",
+  "cls": "SpotLevelCourse",
+  "fn": "make_spot_level_spec(1, 0)",
+  "stage": "assets/school.usd in memory; gym_course_levels.prepare_level(stage, level); B = SpotLevelCourse(stage); B.build(spec)",
+  "spec_json": "/p/cral/vignesh/ARL/experiments/4_obstacle_course/spot/L1/spec_L1.json",
+  "verify_json": "/p/cral/vignesh/ARL/experiments/4_obstacle_course/spot/L1/verify_L1.json"
+ },
+ "rules": "strict success = base within 0.5 m of goal xy; relative goal only; no prior map"
+}

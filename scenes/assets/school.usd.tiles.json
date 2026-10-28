@@ -1,0 +1,180 @@
+{
+  "scene": "school",
+  "tile_m": 2.0,
+  "lighting": "B",
+  "ground_collider": "off",
+  "source_usd": "/p/cral/vignesh/ARL/Collected_Abandoned_school_showcase/Abandoned_school_showcase.usd",
+  "mud_mass": 32.0,
+  "n_tiles": 12,
+  "tiles": [
+    {
+      "id": "ground_oil0",
+      "kind": "oil",
+      "x": -9.087425231933594,
+      "y": -6.197375297546387,
+      "th": 0.0,
+      "z_top": 0.711,
+      "mu": 0.5,
+      "drag_c": 0.0,
+      "level": "ground",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "ground_sticky0",
+      "kind": "sticky",
+      "x": -26.837425231933594,
+      "y": 9.802624702453613,
+      "th": 1.5707963267948966,
+      "z_top": 0.711,
+      "mu": 2.7,
+      "drag_c": 0.0,
+      "sticky_adhesion": {
+        "down": -60.0,
+        "back": -35.0
+      },
+      "level": "ground",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "ground_mud0",
+      "kind": "mud",
+      "x": -24.837425231933594,
+      "y": -5.447375297546387,
+      "th": 1.5707963267948966,
+      "z_top": 0.711,
+      "mu": 0.55,
+      "drag_c": 5.0,
+      "level": "ground",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "ground_rubble0",
+      "kind": "rubble",
+      "x": -21.837425231933594,
+      "y": -6.697375297546387,
+      "th": 0.8726646259971648,
+      "z_top": 0.711,
+      "mu": 0.7,
+      "drag_c": 0.0,
+      "level": "ground",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "ground_oil1",
+      "kind": "oil",
+      "x": -5.587425231933594,
+      "y": 4.552624702453613,
+      "th": 1.3962634015954636,
+      "z_top": 0.711,
+      "mu": 0.35,
+      "drag_c": 0.0,
+      "level": "ground",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "first_oil0",
+      "kind": "oil",
+      "x": -24.837425231933594,
+      "y": -5.447375297546387,
+      "th": 2.443460952792061,
+      "z_top": 5.131,
+      "mu": 0.5,
+      "drag_c": 0.0,
+      "level": "first",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "first_sticky0",
+      "kind": "sticky",
+      "x": -21.837425231933594,
+      "y": -6.697375297546387,
+      "th": 0.8726646259971648,
+      "z_top": 5.131,
+      "mu": 2.7,
+      "drag_c": 0.0,
+      "sticky_adhesion": {
+        "down": -60.0,
+        "back": -35.0
+      },
+      "level": "first",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "first_mud0",
+      "kind": "mud",
+      "x": -5.087425231933594,
+      "y": 4.552624702453613,
+      "th": 1.3962634015954636,
+      "z_top": 5.131,
+      "mu": 0.55,
+      "drag_c": 5.0,
+      "level": "first",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "first_rubble0",
+      "kind": "rubble",
+      "x": -6.587425231933594,
+      "y": -6.197375297546387,
+      "th": 2.2689280275926285,
+      "z_top": 5.131,
+      "mu": 0.7,
+      "drag_c": 0.0,
+      "level": "first",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "first_oil1",
+      "kind": "oil",
+      "x": -10.837425231933594,
+      "y": -5.697375297546387,
+      "th": 2.792526803190927,
+      "z_top": 5.131,
+      "mu": 0.35,
+      "drag_c": 0.0,
+      "level": "first",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "first_oil2",
+      "kind": "oil",
+      "x": -26.587425231933594,
+      "y": 1.5526247024536133,
+      "th": 1.2217304763960306,
+      "z_top": 5.131,
+      "mu": 0.25,
+      "drag_c": 0.0,
+      "level": "first",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    },
+    {
+      "id": "first_sticky1",
+      "kind": "sticky",
+      "x": -26.087425231933594,
+      "y": 10.802624702453613,
+      "th": 1.3962634015954636,
+      "z_top": 5.131,
+      "mu": 2.7,
+      "drag_c": 0.0,
+      "sticky_adhesion": {
+        "down": -60.0,
+        "back": -35.0
+      },
+      "level": "first",
+      "lane_back": 1.9,
+      "lane_fwd": 2.1
+    }
+  ],
+  "note": "mud drag F=-drag_c*mud_mass*v_planar and sticky_adhesion are RUNTIME forces (physics callback keyed by tile xy/th), not in the USD."
+}
