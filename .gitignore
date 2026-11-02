@@ -1,8 +1,10 @@
 __pycache__/
 *.pyc
+*.egg-info/
 *.bak*
 *.pt
 *.mp4
 data/
 third_party/*
 !third_party/setup.sh
+.ruff_cache/

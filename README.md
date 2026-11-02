@@ -1,79 +1,71 @@
 # XFeas
 
 **A learned feasibility layer for off-the-shelf locomotion controllers.**
-XFeas sits on top of a robot's existing controller, which it never retrains or modifies. Every 0.25 s it picks which of the
-controller's *own* commands to send: forward/lateral speed, body height, pitch, roll and gait or mode. Rules don't decide when
-to crouch, sidestep or stand back up: the learned model makes every choice, including its timing. One model is trained across
-many controllers and robots. A new controller is handled zero-shot: a short self-test probe measures what its commands
-actually do.
 
-<p align="center">
-  <img src="docs/media/school_course_v2a_day.jpg" width="640"><br>
-  <em>School course (v2a) in the Abandoned School scene, day render. Experiments run at night with only the robot's headlight.</em>
-</p>
+A robot already has a walking controller (AMO, ReLIC, SONIC, ...). XFeas does not change or retrain it. Every 0.25 s, XFeas
+looks at the robot's head camera and picks which of the controller's **own commands** to send: walk normally, slow down,
+crouch with the torso pitched, sidestep, stand back up. A neural network predicts what each command would lead to over the
+next 1.5 s (fall, stall, hitting something, reaching the goal) and XFeas sends the best one.
 
 | G1 + AMO, stock commands | G1 + AMO + XFeas | Spot + ReLIC + XFeas |
 |:---:|:---:|:---:|
 | <img src="docs/media/g1_amo_stock_overhang.gif" width="270"> | <img src="docs/media/g1_amo_xfeas_overhang.gif" width="270"> | <img src="docs/media/spot_xfeas_overhang.gif" width="270"> |
-| walks into the 1.10 m lintel: **stuck** | crouches (h 0.3, pitch 1.57) under it: **goal** | lowers its body under it: **goal** |
+| walks into the 1.10 m lintel: **stuck** | crouches under it: **reaches the goal** | lowers its body under it: **reaches the goal** |
 
-*Night, headlight only, no map, relative goal, success = within 0.5 m. G1 clips are shown at 3× speed, Spot at 1.5×.*
+*Night, headlight only, no map, goal given relative to the robot, success = within 0.5 m with no fall. G1 clips at 3×
+speed, Spot at 1.5×.*
+
+New to the code? Read **[docs/CODEBASE.md](docs/CODEBASE.md)**: what every folder and file does.
+
+---
+
+## Quick start
+
+```bash
+git clone <this repo> && cd XFeas
+pip install -e .                    # in your PyTorch environment
+# edit the paths at the top of env.sh for your machine (see "Setup"), then:
+source env.sh
+bash third_party/setup.sh           # fetch the released controllers
+# download data/ and the extras (see "Data"), then:
+python tools/relocate_data_paths.py --apply
+
+python evaluate.py model --ckpt data/gen_train/gen5b/runs/all/model.pt --device cpu   # offline check, no simulator
+python evaluate.py school demo amo g5b 1                                              # one episode in Isaac Sim
+```
 
 ---
 
 ## How it works
 
 ```
- head camera (depth) ─► perception ─► clearance map + feasibility features ─┐
-                                                                             ├─► XFeas model ─► score every candidate
- controller spec ─► candidate commands (the controller's own command grid) ─┤        (ensemble, pessimistic)
- self-test probe ─► what each command measurably does on THIS controller ───┘                │
-                                                                                             ▼
-                                         best command, held for 0.25 s ─► off-the-shelf controller ─► robot
+ head camera (depth) ─► perception ─► clearance map + body state ──────────┐
+ controller spec ─► candidate commands (the controller's own command grid) ─┼─► XFeas network ─► best command
+ controller self-test ─► what each command measurably does ─────────────────┘   (every 0.25 s)      │
+                                                                                                     ▼
+                                                             off-the-shelf controller ─► robot (Isaac Sim)
 ```
 
-* **Candidates are the controller's own commands.** They form a fixed grid over the ranges in its spec (speed, height, pitch,
-  lateral; discrete modes × speed for modal controllers), plus *keep current* and *stock*. Nothing maps abstract actions
-  onto commands by hand.
-* **Commands are described by measurement, not by name.** The self-test probe records what each command does on this
-  controller: height, width and pitch reached, speed, settle time, tilt, falls. It also records what switching to it at speed
-  does. A new controller's "crouch" is comparable to a known one's height command because both are described by measured
-  effects.
-* **The model scores every candidate** on "hold this for 1.5 s": fall, stall and contact risk, progress, and a learned value.
-  A 5-member ensemble gives the uncertainty, and the score is `mean − κ·std`. The choice is made again every 0.25 s, so the
-  timing (when to crouch, when to stand) is learned too.
-* **Kept engineered** (and disclosed): perception (depth → clearance), steering (the stock relative-goal path follower) and an
-  emergency stop once the robot is already falling, which never counts as a success.
+1. **Candidates are the controller's own commands**: a grid over its speed, body height, pitch and lateral ranges (or its
+   discrete modes), plus "keep the current command" and "stock command".
+2. **Each command is described by measurement, not by name.** A short **self-test** runs on every controller and records
+   what each command physically does (height reached, speed, tilt, falls, how safe switching is at speed).
+3. **The network scores every candidate** for "hold this for 1.5 s": fall, stall and contact risk, progress and success.
+   Five ensemble heads give an uncertainty; the score is `mean − κ·std`, so XFeas is cautious when unsure.
+4. **Steering is never learned**: the same path follower steers every method, so results compare only the command choice.
+5. **Training data is side by side**: the simulator state is saved at a moment before an obstacle and replayed with
+   different commands, so the real outcome of every option from the same state is known.
 
-**Robots and controllers** (all used as released):
+**Robots and controllers** (all used as released, never retrained):
 
-| Robot | Training controllers | Held out (probe only, never trained on) |
+| Robot | Controllers | Notes |
 |---|---|---|
-| Unitree G1 | AMO (`g1c`), GR00T-WBC (`g1g`), Isaac Lab velocity policy (`g1l`), URMA (`g1u`), PHP (`g1p`) | GEAR-SONIC (`g1s`) |
-| Boston Dynamics Spot | ReLIC (`spotp`) | Isaac Sim Spot flat-terrain policy (`spotf`) |
-| Clearpath Jackal | one wheeled controller | – |
-| Iris (Pegasus) | one aerial controller (XFeas picks altitude and speed) | – |
+| Unitree G1 | AMO (`g1c`), GR00T-WBC (`g1g`), Isaac Lab policy (`g1l`), URMA (`g1u`), PHP (`g1p`), GEAR-SONIC (`g1s`) | SONIC is held out of training in this snapshot |
+| Boston Dynamics Spot | ReLIC (`spotp`), Isaac Sim flat-terrain policy (`spotf`) | `spotf` held out |
+| Clearpath Jackal, Iris drone | one controller each | |
 
-The training set also contains *look-alike* variants of these controllers (`v_*`, `lk_*`, `mm_*`), whose names and specs
-match but whose behaviour differs. These force the model to rely on the self-test rather than on names.
-
----
-
-## Results (preliminary)
-
-School course v2a, cut off 1.5 m after its first overhang (a 0.55 m doorway with a lintel). Night, headlight only, 3 trials
-per cell, strict 0.5 m success.
-
-| Robot + controller | Arm | Lintel 1.10 m (`SC2A_O1`) | Lintel 0.85 m (`O1L`) | No lintel (`O1N`) |
-|---|---|:---:|:---:|:---:|
-| G1 + AMO | stock commands | 0/3 | – | – |
-| G1 + AMO | XFeas (all controllers) | **3/3** | **3/3** | **3/3** |
-| G1 + AMO | XFeas, **AMO held out** (zero-shot) | 0/3 | 0/3 | 3/3 |
-| Spot + ReLIC | XFeas (all controllers) | **3/3** | **3/3** | **3/3** |
-
-No falls in any of these cells. `O1N` is the over-intervention control: there is nothing to crouch under. Zero-shot transfer
-to a held-out controller does **not** work yet on this course, and the gym course and terrain-tile evaluations are still
-running. These numbers will change.
+Training also uses *look-alike* variants of these controllers (same name and spec, different behaviour), which force the
+model to rely on the self-test rather than on names.
 
 ---
 
@@ -81,114 +73,160 @@ running. These numbers will change.
 
 ```
 XFeas/
-├── env.sh, xfeas_paths.py    machine paths (env vars) + puts every code folder on the import path
-├── Scripts/
-│   ├── model/                the XFeas model (model5.py), candidates, descriptors, controller registry
-│   ├── data_collector/       side-by-side branch collector (run_gen_v5b.py), schedules, suites, audit, queue, self-test probe
-│   └── train/                train5b.py (current), train5g4.py, datasets, labels, relocate_data_paths.py
-├── closed_loop/              XFeas as a closed-loop method (gen5_methods.py + select_gen5.py), episode runner, courses,
-│   │                         launchers p5_cell.sh / gym5_cell.sh / trial.sh, result tables
-│   └── baselines/            terrain harnesses + baseline planners (EVORA, VAMOS) used by the evaluations
-├── isaac_sim/                robot adapters, camera mount, chase camera, video, GPU wrapper
-│   └── controllers/          adapters for AMO, ReLIC Spot, SONIC, PHP, GR00T-WBC, URMA, Isaac Lab G1, Jackal, Iris
-├── scenes/                   scene and course builders (school, gym, overhangs, stairs, terrain tiles)
-│   ├── assets/school.usd     the baked school scene (references the Abandoned School pack, see Setup)
-│   └── courses/              course spec / task JSONs
-├── third_party/setup.sh      fetches the released controllers at pinned commits
-└── docs/media/               README images
+├── train.py  evaluate.py  collect.py  probe.py     ← the four entry points (start here)
+├── env.sh                    machine paths (Isaac Sim, Python environments, third-party code)
+├── xfeas/                    the code (a Python package)
+│   ├── model/                the network, candidate commands, command descriptors, controller registry
+│   ├── data_collection/      side-by-side data collection in Isaac Sim, controller self-test, job queue
+│   ├── train/                datasets, labels, training
+│   ├── closed_loop/          running XFeas in full episodes, model server, evaluation scenes and launchers
+│   ├── sim/                  robots and controllers in Isaac Sim, cameras, video
+│   ├── scenes/               scene and course builders (school, gym, overhangs, stairs, terrain)
+│   ├── paths.py              machine paths for Python (read from env.sh variables)
+│   └── _support/             earlier model generations the current code builds on (you don't need to read these)
+├── baselines/                comparison methods (VAMOS, EVORA, ...) run through the same evaluation
+├── tools/                    result tables, diagnostic videos, data / scene path fixes
+├── assets/                   the school scene (school.usd) and course definitions
+├── third_party/setup.sh      fetches the released controllers
+└── docs/                     codebase guide, README media
 ```
 
-Modules import each other by bare name (`import model5`). Each script's first two lines import `xfeas_paths`, which puts every
-code folder on `sys.path`, so any script runs from anywhere.
+Every Python file starts with `import xfeas`, which puts all code folders on the import path; modules then import each
+other by plain name (`import feasibility_model`).
 
 ---
 
 ## Setup
 
-**1. Software**
-* [Isaac Sim 5.1](https://docs.isaacsim.omniverse.nvidia.com/) (simulation, rendering). Isaac Lab 2.3 is needed only for the
-  terrain tiles.
-* A Python 3.11 environment with PyTorch (CUDA), numpy and opencv for training and the model server (`XFEAS_PY`).
-* Edit the paths at the top of **`env.sh`** (Isaac Sim's `python.sh`, the Python environments). The launchers source it; source
-  it yourself before running anything by hand:
-  ```bash
-  source env.sh
-  ```
+### 1. Software
 
-**2. Released controllers**
+| What | Why |
+|---|---|
+| [Isaac Sim 5.1](https://docs.isaacsim.omniverse.nvidia.com/) | simulation and rendering |
+| Python 3.10+ with PyTorch (CUDA), numpy, opencv | training and the model server (`pip install -e .` installs the package) |
+| A second Python env with `onnxruntime` | the SONIC / PHP / GR00T policy servers (`GR00T_PY`) |
+| Isaac Lab 2.3 (optional) | terrain tiles only |
+
+The simulator and the model run in **two separate processes**: Isaac Sim's Python runs the robot, your PyTorch Python runs
+the network (`xfeas/closed_loop/model_server.py`), and they talk over stdin/stdout.
+
+### 2. `env.sh`
+
+Edit the defaults at the top of `env.sh`, then `source env.sh` in every new shell (the launchers source it themselves).
+
+| Variable | Meaning |
+|---|---|
+| `ISAACSIM_PYTHON` | Isaac Sim's `python.sh` |
+| `XFEAS_PY` | your PyTorch Python |
+| `GR00T_PY` | the Python with onnxruntime for the SONIC / PHP / GR00T servers |
+| `ISAACLAB_PY` | Isaac Lab venv Python (terrain tiles only) |
+| `XFEAS_BASELINES` | where the released controllers are (default `third_party/`) |
+| `XFEAS_ISAAC_ASSETS` | Isaac Sim asset mirror (environments, vegetation, sky HDRs) |
+| `XFEAS_SCENE_ASSETS` | folder that holds `Collected_Abandoned_school_showcase` (default `third_party/scene_assets/`) |
+
+### 3. Released controllers
+
 ```bash
-bash third_party/setup.sh        # AMO, GR00T-WholeBodyControl, php_parkour, relic, mppi_numba, vamos, PegasusSimulator, GEAR-SONIC
+bash third_party/setup.sh     # AMO, GR00T-WholeBodyControl, php_parkour, relic, mppi_numba, vamos, PegasusSimulator, GEAR-SONIC
 ```
-Then unpack the **XFeas extras** into `third_party/`. They hold the robot USDs we converted from each controller's own
-MJCF/URDF (`AMO/usd`, `relic/usd`, `php_parkour/usd`, `GEAR-SONIC/usd`, `GR00T-WBC/`) and the VAMOS adapter
-(`vamos/arl_adapter`). *(Download link: TBA.)*
+Then unpack the **XFeas extras** into `third_party/`: the robot USDs we converted from each controller's own MJCF/URDF
+and the VAMOS adapter. *(Download link: TBA.)*
 
-**3. Scene assets**
-* **Abandoned School pack:** place (or symlink) it at `third_party/scene_assets/Collected_Abandoned_school_showcase`, which is
-  where `scenes/assets/school.usd` looks. If it lives elsewhere, re-point the scene once:
-  ```bash
-  $ISAACSIM_PYTHON scenes/relink_school_usd.py --pack /path/to/Collected_Abandoned_school_showcase
-  ```
-* **Isaac Sim asset mirror** (environments, vegetation, sky HDRs; terrain tiles and the warehouse/office environments): set
-  `XFEAS_ISAAC_ASSETS` in `env.sh`.
+### 4. School scene
 
-**4. Data and checkpoints**
-Download into `data/` *(link: TBA)*: controller specs and self-test probes, the gen5b dataset, the gen4 initialisation
-weights and the trained XFeas checkpoints. The data files store absolute paths from the machine that wrote them. Re-point
-them once:
+Put (or symlink) the Abandoned School asset pack at `third_party/scene_assets/Collected_Abandoned_school_showcase`. That is
+where `assets/school.usd` looks. If the pack is elsewhere, re-point the scene once:
 ```bash
-$XFEAS_PY Scripts/train/relocate_data_paths.py            # dry run
-$XFEAS_PY Scripts/train/relocate_data_paths.py --apply
+$ISAACSIM_PYTHON tools/relink_school_usd.py --pack /path/to/Collected_Abandoned_school_showcase
 ```
+
+### 5. Data
+
+Download into `data/` *(link: TBA)*, then re-point the absolute paths stored in the data files:
+```bash
+python tools/relocate_data_paths.py            # dry run: shows what will change
+python tools/relocate_data_paths.py --apply
+```
+
+| Path | Contents |
+|---|---|
+| `data/gen_v5/specs/`, `data/gen_v4/specs/` | controller specs (each controller's command interface) |
+| `data/probes_v5/`, `data/probes_v4/` | controller self-test results |
+| `data/gen_v5b/` | collected side-by-side training data |
+| `data/gen_train/gen5b/manifest.jsonl` | training index |
+| `data/gen_train/gen4/full/*/ckpt/xfeas_gen4_ens.pt` | earlier weights the network starts from |
+| `data/gen_train/gen5b/runs/all/model.pt` | trained XFeas (all controllers); `g1c_ho/` = trained without AMO |
 
 ---
 
 ## Usage
 
-All commands run from the repo root after `source env.sh`. **GPU:** the launchers pin everything to GPU 0.
+All commands run from the repo root after `source env.sh`. Isaac Sim jobs run on **GPU 0**.
 
-**Train XFeas** (gen5b side-by-side branches + gen4 side-by-side options; initialised from the gen4 context encoder):
+### Train
 ```bash
-$XFEAS_PY Scripts/train/train5b.py --out data/gen_train/gen5b/runs/all \
+python train.py --out data/gen_train/gen5b/runs/all \
     --gen4-ckpt data/gen_train/gen4/full/f_none/ckpt/xfeas_gen4_ens.pt
-# hold a controller out (zero-shot test), e.g. AMO:
-$XFEAS_PY Scripts/train/train5b.py --out data/gen_train/gen5b/runs/g1c_ho --holdout-base g1c \
-    --gen4-ckpt data/gen_train/gen4/full/f_g1c/ckpt/xfeas_gen4_ens.pt
-# offline evaluation
-$XFEAS_PY Scripts/train/train5b.py --eval-only --ckpt data/gen_train/gen5b/runs/all/model.pt --eval-split val
+python train.py --out data/gen_train/gen5b/runs/g1c_ho --holdout-base g1c \
+    --gen4-ckpt data/gen_train/gen4/full/f_g1c/ckpt/xfeas_gen4_ens.pt          # leave AMO out
+python train.py --eval-only --ckpt data/gen_train/gen5b/runs/all/model.pt --eval-split val
 ```
-`Scripts/train/run5b.sh` runs the full sequence (held-out fold, evaluations, all-controllers model) with restarts.
+Outputs: `model.pt`, `last.pt` (for resuming), `norm.json`, `train.log` in `--out`.
+`bash xfeas/train/run_training.sh` runs the full sequence (held-out model, evaluations, all-controllers model).
 
-**Check a trained model offline** (descriptor parity + candidate scores against the training data, CPU is fine):
+### Evaluate
 ```bash
-$XFEAS_PY closed_loop/select_gen5.py --selftest --ckpt data/gen_train/gen5b/runs/all/model.pt --device cpu
+python evaluate.py model --ckpt data/gen_train/gen5b/runs/all/model.pt --device cpu   # offline check, no simulator
+python evaluate.py school <job id> <amo|spot|sonic> <stock|g5b|g5bho> <trials> [SC2A_O1|SC2A_O1L|SC2A_O1N]
+python evaluate.py gym    <job id> <amo|sonic> <GC2F|CC1F> <trials>
+python evaluate.py terrain <spot|amo> <tile> <trial index> <out dir>
+```
+* Arms: `stock` = the controller's default commands, `g5b` = XFeas, `g5bho` = XFeas trained without AMO.
+* School scenes: `SC2A_O1` lintel at 1.10 m, `SC2A_O1L` lowered to 0.85 m, `SC2A_O1N` no lintel (checks XFeas doesn't
+  crouch for nothing).
+* Results: `data/gen5_closed/course/<job id>/runs_<robot>.jsonl` (one row per trial: `success`, `outcome`, `t_end`,
+  `max_tilt_deg`, ...), videos in `data/gen5_closed/videos/`, decision logs in `data/gen5_closed/diag/<job id>/`.
+* Whole school matrix: `bash xfeas/closed_loop/run_school_matrix.sh`, summary: `python tools/summarize_school_matrix.py`.
+
+### Collect training data
+```bash
+python xfeas/data_collection/make_suites.py --groups a,b,c --write-jobs   # scenes + job list
+python xfeas/data_collection/job_queue.py                                 # runs every job on GPU 0, audits each
+python collect.py --env school --base g1c --suite data/gen_v5b/suites/school_g1c_b1.json \
+    --chunk 0:4 --part school_g1c_b1_0000                                 # or one job by hand
+python xfeas/train/branch_dataset.py build --root data/gen_v5b --out data/gen_train/gen5b/manifest.jsonl
 ```
 
-**Closed loop in Isaac Sim** (school course, first overhang):
+### Self-test a controller
 ```bash
-# closed_loop/p5_cell.sh <job id> <amo|spot|sonic> <stock|g5b|g5bho> <trials> [SC2A_O1|SC2A_O1L|SC2A_O1N]
-bash closed_loop/p5_cell.sh demo_amo amo g5b 1 SC2A_O1
-```
-Results go to `data/gen5_closed/course/<job id>/runs_<robot>.jsonl`, videos to `data/gen5_closed/videos/`.
-Other courses: `closed_loop/gym5_cell.sh` (gym obstacle course) and `closed_loop/trial.sh` (terrain tiles).
-
-**Self-test a controller** (the probe that lets XFeas use a controller it never saw):
-```bash
-Scripts/data_collector/run_isaac5.sh 0 Scripts/data_collector/probe_transitions5.py --base g1c --ctrls g1c
+python probe.py --base g1c --ctrls g1c
 ```
 
-**Collect side-by-side branch data**:
-```bash
-python Scripts/data_collector/make_suite5b.py --groups a,b,c --write-jobs   # situations + jobs
-$XFEAS_PY Scripts/data_collector/queue5b.py                                 # runs the jobs (GPU 0), audits each one
-# one job by hand:
-Scripts/data_collector/run_isaac5.sh 0 Scripts/data_collector/run_gen_v5b.py --env school --base g1c \
-    --suite data/gen_v5b/suites/school_g1c_b1.json --chunk 0:4 --part school_g1c_b1_0000
-$XFEAS_PY Scripts/train/dataset5b.py build --out data/gen_train/gen5b/manifest.jsonl
-```
-Each situation is replayed from the same saved moment with different commands: switch at several distances, hold vs stand up
-once crouched, and scenes with nothing to avoid. Every training sample therefore answers a concrete "which command, now?"
-question.
+---
+
+## Results (preliminary, 2026-10-28 snapshot)
+
+School course, first doorway. Night, headlight only, 3 trials per cell, strict 0.5 m success, no falls in any cell.
+
+| Robot + controller | Arm | Lintel 1.10 m | Lintel 0.85 m | No lintel |
+|---|---|:---:|:---:|:---:|
+| G1 + AMO | stock | 0/3 | – | – |
+| G1 + AMO | XFeas | **3/3** | **3/3** | **3/3** |
+| G1 + AMO | XFeas trained without AMO | 0/3 | 0/3 | 3/3 |
+| Spot + ReLIC | XFeas | **3/3** | **3/3** | **3/3** |
+
+The gym-course and terrain-tile evaluations are in progress.
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `ModuleNotFoundError: No module named 'xfeas'` | `pip install -e .` in that Python, or `source env.sh` (adds the repo to `PYTHONPATH`) |
+| a controller's files are missing | `bash third_party/setup.sh` and unpack the extras into `third_party/` |
+| the school scene loads empty or grey | the asset pack is not at `third_party/scene_assets/...`: run `tools/relink_school_usd.py` |
+| `FileNotFoundError` under `/p/...` or another machine's path | `python tools/relocate_data_paths.py --apply` |
 
 ---
 
@@ -197,7 +235,6 @@ question.
 XFeas runs on top of released controllers, used unmodified:
 [AMO](https://github.com/OpenTeleVision/AMO), [GEAR-SONIC](https://huggingface.co/nvidia/GEAR-SONIC),
 [GR00T-WholeBodyControl](https://github.com/NVlabs/GR00T-WholeBodyControl), [PHP](https://github.com/amazon-far/php_parkour),
-[ReLIC](https://github.com/rai-opensource/relic), URMA, the Isaac Lab G1 velocity policy, and
-[Pegasus Simulator](https://github.com/PegasusSimulator/PegasusSimulator). The baselines are
-[VAMOS](https://github.com/vamos-vla/vamos) and EVORA ([mppi_numba](https://github.com/mit-acl/mppi_numba)). Each keeps its own
-license.
+[ReLIC](https://github.com/rai-opensource/relic), URMA, the Isaac Lab G1 velocity policy and
+[Pegasus Simulator](https://github.com/PegasusSimulator/PegasusSimulator). Baselines: [VAMOS](https://github.com/vamos-vla/vamos)
+and EVORA ([mppi_numba](https://github.com/mit-acl/mppi_numba)). Each keeps its own license.

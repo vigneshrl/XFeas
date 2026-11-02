@@ -14,4 +14,4 @@ export XFEAS_ISAAC_ASSETS="${XFEAS_ISAAC_ASSETS:-$XFEAS_ROOT/third_party/isaac_a
 export XFEAS_SCENE_ASSETS="${XFEAS_SCENE_ASSETS:-$XFEAS_ROOT/third_party/scene_assets}"
 export PEGASUS_DIR="${PEGASUS_DIR:-$XFEAS_ROOT/third_party/PegasusSimulator}"
 
-export PYTHONPATH="$XFEAS_ROOT:$PYTHONPATH"     # xfeas_paths.py adds the code folders itself
+export PYTHONPATH="$XFEAS_ROOT:$PYTHONPATH"     # makes `import xfeas` work (or: pip install -e .)

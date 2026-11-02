@@ -1,0 +1,20 @@
+[project]
+name = "xfeas"
+version = "0.5.0"
+description = "A learned feasibility layer on top of off-the-shelf locomotion controllers"
+requires-python = ">=3.10"
+dependencies = ["torch", "numpy", "opencv-python"]
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["xfeas"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.format]
+quote-style = "preserve"
