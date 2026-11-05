@@ -4,7 +4,7 @@
                                arm: stock | g5sm (current method) | g5smP | g5smC | g5sr | g5sr0 | g5s | g5b | g5bho
     python evaluate.py gym     <job id> <amo|sonic> <GC2F|CC1F> <trials>
     python evaluate.py terrain <spot|amo> <tile> <trial index> <out dir>
-    python evaluate.py model   --ckpt data/gen_train/gen5b/runs/all_g1s_v4/model.pt --device cpu    # offline, no simulator
+    python evaluate.py model   --ckpt checkpoints/xfeas_all_g1s_v4.pt --device cpu    # offline, no simulator
 
 school / gym results: data/gen5_closed/ and data/gen5_gym/ (runs_<robot>.jsonl per job, videos, decision logs).
 """

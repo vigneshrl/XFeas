@@ -70,6 +70,7 @@ classes and starts from the gen4 network weights). That older code lives in `xfe
 | `env.sh` | Machine paths for the shell launchers; `source env.sh` in every shell |
 | `pyproject.toml` | Package definition (`pip install -e .`) and formatter settings |
 | `third_party/setup.sh` | Fetches the released controllers at pinned commits |
+| `checkpoints/xfeas_all_g1s_v4.pt` | The current trained model (Git LFS); details in `checkpoints/README.md` |
 
 ### `xfeas/model/`: the network and its inputs
 

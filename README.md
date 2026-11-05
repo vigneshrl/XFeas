@@ -23,6 +23,7 @@ New to the code? Read **[docs/CODEBASE.md](docs/CODEBASE.md)**: what every folde
 ## Quick start
 
 ```bash
+git lfs install                     # once: the model weights are stored with Git LFS
 git clone <this repo> && cd XFeas
 pip install -e .                    # in your PyTorch environment
 # edit the paths at the top of env.sh for your machine (see "Setup"), then:
@@ -91,6 +92,7 @@ XFeas/
 │   └── _support/             earlier model generations the current code builds on (you don't need to read these)
 ├── baselines/                comparison methods (VAMOS, EVORA, ...) run through the same evaluation
 ├── tools/                    result tables, diagnostic videos, data / scene path fixes
+├── checkpoints/              trained model weights (Git LFS); see checkpoints/README.md
 ├── assets/                   the school scene (school.usd) and course definitions
 ├── third_party/setup.sh      fetches the released controllers
 └── docs/                     codebase guide, README media
@@ -160,7 +162,7 @@ python tools/relocate_data_paths.py --apply
 | `data/gen_v5b/` | collected side-by-side training data |
 | `data/gen_train/gen5b/manifest.jsonl` | training index |
 | `data/gen_train/gen4/full/*/ckpt/xfeas_gen4_ens.pt` | earlier weights the network starts from |
-| `data/gen_train/gen5b/runs/all_g1s_v4/model.pt` | **current trained XFeas** (all controllers incl. SONIC) |
+| `checkpoints/xfeas_all_g1s_v4.pt` (in the repo, not `data/`) | **current trained XFeas** (all controllers incl. SONIC); see [checkpoints/README.md](checkpoints/README.md) |
 | `data/gen_train/gen5b/runs/all/model.pt`, `g1c_ho/` | earlier model without SONIC; `g1c_ho` = trained without AMO |
 
 ---
@@ -178,6 +180,9 @@ python train.py --out data/gen_train/gen5b/runs/g1c_ho --holdout-base g1c \
 python train.py --eval-only --ckpt data/gen_train/gen5b/runs/all/model.pt --eval-split val
 ```
 Outputs: `model.pt`, `last.pt` (for resuming), `norm.json`, `train.log` in `--out`.
+Training from scratch downloads the DINOv3-S vision weights through `timm` from Hugging Face (you may need to accept
+the DINOv3 license there and set `HF_TOKEN`). The model server (`evaluate.py`) also fetches them once on its first run,
+before loading the checkpoint's own weights over them.
 * The current model (`all_g1s_v4`, with SONIC) is trained on the v4 manifest:
   `python xfeas/train/build_manifest_v4.py ...` (filters the data and runs a quality check; exit 1 = don't train), then
   `train.py --manifest data/gen_train/gen5b/manifest_g1s_v4.jsonl ...`. The whole chain (collect → manifest + check → train
@@ -186,7 +191,7 @@ Outputs: `model.pt`, `last.pt` (for resuming), `norm.json`, `train.log` in `--ou
 
 ### Evaluate
 ```bash
-python evaluate.py model --ckpt data/gen_train/gen5b/runs/all_g1s_v4/model.pt --device cpu   # offline check, no simulator
+python evaluate.py model --ckpt checkpoints/xfeas_all_g1s_v4.pt --device cpu   # offline check, no simulator
 python evaluate.py school <job id> <amo|spot|sonic> <arm> <trials> [scene]
 python evaluate.py gym    <job id> <amo|sonic> <GC2F|CC1F> <trials>
 python evaluate.py terrain <spot|amo> <tile> <trial index> <out dir>
@@ -245,6 +250,7 @@ cell, strict 0.5 m success, no falls in any cell. Results for the current method
 
 | Problem | Fix |
 |---|---|
+| `checkpoints/*.pt` is a ~130-byte text file / `invalid load key` | it's a Git LFS pointer: `git lfs install && git lfs pull` |
 | `ModuleNotFoundError: No module named 'xfeas'` | `pip install -e .` in that Python, or `source env.sh` (adds the repo to `PYTHONPATH`) |
 | a controller's files are missing | `bash third_party/setup.sh` and unpack the extras into `third_party/` |
 | the school scene loads empty or grey | the asset pack is not at `third_party/scene_assets/...`: run `tools/relink_school_usd.py` |

@@ -8,3 +8,4 @@ data/
 third_party/*
 !third_party/setup.sh
 .ruff_cache/
+!checkpoints/*.pt
