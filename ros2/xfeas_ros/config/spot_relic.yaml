@@ -1,0 +1,65 @@
+# XFeas on a real Boston Dynamics Spot (with arm) driven by the ReLIC policy. Paths may use $VARS and ~.
+# Values marked "CHECK ON THE ROBOT" depend on your driver / setup and could not be verified from simulation.
+
+xfeas_root: $XFEAS_ROOT
+python: $XFEAS_PY
+checkpoint: $XFEAS_ROOT/checkpoints/xfeas_all_g1s_v4.pt
+device: cuda:0
+cuda_device: "0"
+model_log: /tmp/xfeas_model_server.log
+
+controller_id: spotp                                      # spec data/gen_v4/specs/spotp.json, self-test data/probes_v4/spotp/
+robot: spot
+arm: rules
+env:
+  XF_RULES_MODELSKILL: "1"
+  XF_DROP_CLS: ""
+max_vx: 0.5
+wz_cap: 0.5
+
+topics:
+  joint_states: /joint_states                             # CHECK ON THE ROBOT (spot_ros2 may prefix the robot name)
+  odom: /odometry                                         # CHECK ON THE ROBOT
+  rgb: /camera/camera/color/image_raw                     # an added D435i at the body nose (see ros2/README.md)
+  depth: /camera/camera/aligned_depth_to_color/image_raw
+  camera_info: /camera/camera/color/camera_info
+  goal: /xfeas/goal
+  enable: /xfeas/enable
+  command: /xfeas/command                                 # xfeas_msgs/ControllerCommand -> your ReLIC bridge
+  cmd_vel: /xfeas/cmd_vel
+  status: /xfeas/status
+
+frames:
+  world: odom                                             # CHECK ON THE ROBOT
+  camera_optical: camera_color_optical_frame              # publish body -> camera: (0.415, 0, -0.02) m, pitched 0.45 rad down
+  body_top: [body]
+  feet: [front_left_foot, front_right_foot, rear_left_foot, rear_right_foot]   # CHECK ON THE ROBOT: foot frame names
+body_top_offset: 0.45                                     # CHECK ON THE ROBOT: standing, the logged top must be ~0.97 m (self-test stand_top)
+foot_sole_offset: 0.0
+
+# the model's joint names (ReLIC simulator names); default_pos is read from the repo (spot_posture.DEFAULT) when empty
+joint_names: [arm_sh0_joint, arm_sh1_joint, arm_el0_joint, arm_el1_joint, arm_wr0_joint, arm_wr1_joint, arm_f1x_joint,
+  fl_hx_joint, fr_hx_joint, hl_hx_joint, hr_hx_joint, fl_hy_joint, fr_hy_joint, hl_hy_joint, hr_hy_joint,
+  fl_kn_joint, fr_kn_joint, hl_kn_joint, hr_kn_joint]
+default_pos: []
+joint_map:                                                # spot_ros2 name -> model name. CHECK ON THE ROBOT
+  front_left_hip_x: fl_hx_joint
+  front_left_hip_y: fl_hy_joint
+  front_left_knee: fl_kn_joint
+  front_right_hip_x: fr_hx_joint
+  front_right_hip_y: fr_hy_joint
+  front_right_knee: fr_kn_joint
+  rear_left_hip_x: hl_hx_joint
+  rear_left_hip_y: hl_hy_joint
+  rear_left_knee: hl_kn_joint
+  rear_right_hip_x: hr_hx_joint
+  rear_right_hip_y: hr_hy_joint
+  rear_right_knee: hr_kn_joint
+  arm_sh0: arm_sh0_joint
+  arm_sh1: arm_sh1_joint
+  arm_el0: arm_el0_joint
+  arm_el1: arm_el1_joint
+  arm_wr0: arm_wr0_joint
+  arm_wr1: arm_wr1_joint
+  arm_f1x: arm_f1x_joint
+joint_limits: {}

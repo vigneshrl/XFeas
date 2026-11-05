@@ -1,0 +1,50 @@
+# XFeas on a real Unitree G1 driven by GEAR-SONIC. Paths may use $VARS and ~.
+# Values marked "CHECK ON THE ROBOT" depend on your robot's driver / URDF and could not be verified from simulation.
+
+xfeas_root: $XFEAS_ROOT                                   # the XFeas repo
+python: $XFEAS_PY                                         # Python with PyTorch: runs the model server
+checkpoint: $XFEAS_ROOT/checkpoints/xfeas_all_g1s_v4.pt
+device: cuda:0                                            # model server device (cpu works, ~4x slower)
+cuda_device: "0"
+model_log: /tmp/xfeas_model_server.log
+
+controller_id: g1s                                        # spec data/gen_v4/specs/g1s.json, self-test data/probes_v4/g1s/
+robot: g1
+arm: rules                                                # g5sm: rules decide WHEN + stand-up, the model picks the move
+env:                                                      # = the g5sm arm of xfeas/closed_loop/run_school_cell.sh
+  XF_RULES_MODELSKILL: "1"
+  XF_DROP_CLS: ""
+max_vx: 0.5                                               # hard cap on forward speed (m/s) for first trials
+wz_cap: 0.5                                               # steering rate cap (rad/s)
+
+topics:
+  joint_states: /joint_states                             # CHECK ON THE ROBOT: unitree_ros2 publishes LowState; republish as JointState
+  odom: /odom                                             # CHECK ON THE ROBOT: base odometry (z up, twist in the body frame)
+  rgb: /camera/camera/color/image_raw                     # head D435i (realsense2_camera, align_depth.enable:=true)
+  depth: /camera/camera/aligned_depth_to_color/image_raw
+  camera_info: /camera/camera/color/camera_info
+  goal: /xfeas/goal                                       # geometry_msgs/PoseStamped in the odometry frame
+  enable: /xfeas/enable                                   # std_msgs/Bool dead-man switch
+  command: /xfeas/command                                 # xfeas_msgs/ControllerCommand -> your SONIC bridge
+  cmd_vel: /xfeas/cmd_vel
+  status: /xfeas/status
+
+frames:
+  world: odom                                             # CHECK ON THE ROBOT
+  camera_optical: camera_color_optical_frame              # must be connected to torso_link in TF (the G1 URDF d435_joint)
+  body_top: [torso_link]                                  # highest body point = max z of these frames + body_top_offset
+  feet: [left_ankle_roll_link, right_ankle_roll_link]     # floor = min z of these frames - foot_sole_offset
+body_top_offset: 0.48                                     # CHECK ON THE ROBOT: standing, the logged top must be ~1.32 m (self-test stand_top)
+foot_sole_offset: 0.035                                   # CHECK ON THE ROBOT: ankle_roll_link origin above the sole
+
+# the model's joint names (simulator names). Order = the order of joint_names below; default_pos is read from the repo
+# (sonic_ref.DEFAULT_ANGLES) when left empty. joint_map renames robot joint names to these.
+joint_names: [left_hip_pitch_joint, left_hip_roll_joint, left_hip_yaw_joint, left_knee_joint, left_ankle_pitch_joint,
+  left_ankle_roll_joint, right_hip_pitch_joint, right_hip_roll_joint, right_hip_yaw_joint, right_knee_joint,
+  right_ankle_pitch_joint, right_ankle_roll_joint, waist_yaw_joint, waist_roll_joint, waist_pitch_joint,
+  left_shoulder_pitch_joint, left_shoulder_roll_joint, left_shoulder_yaw_joint, left_elbow_joint, left_wrist_roll_joint,
+  left_wrist_pitch_joint, left_wrist_yaw_joint, right_shoulder_pitch_joint, right_shoulder_roll_joint,
+  right_shoulder_yaw_joint, right_elbow_joint, right_wrist_roll_joint, right_wrist_pitch_joint, right_wrist_yaw_joint]
+default_pos: []
+joint_map: {}                                             # the Unitree driver uses the same names
+joint_limits: {}                                          # optional {lower, upper, velocity, effort} lists from the URDF

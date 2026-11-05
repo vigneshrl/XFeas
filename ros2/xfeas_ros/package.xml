@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>xfeas_ros</name>
+  <version>0.1.0</version>
+  <description>XFeas decision layer as a ROS 2 node (G1 + GEAR-SONIC, Spot + ReLIC)</description>
+  <maintainer email="vickyrv570@gmail.com">XFeas</maintainer>
+  <license>TBD</license>
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>message_filters</depend>
+  <depend>xfeas_msgs</depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>python3-opencv</exec_depend>
+  <export><build_type>ament_python</build_type></export>
+</package>
