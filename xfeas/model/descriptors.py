@@ -228,6 +228,9 @@ class Describer:
             return self._static[key].copy()
         x = np.zeros(F_DESC, np.float32)
         cmd = c["cmd"] if c["cmd"] is not None else self.nom
+        face = float(cmd.get("face") or 0.0)  # 2026-10-31 facing offset (path_follower.face_*): the op of the same
+        if face:  # gait matches
+            cmd = {k: v for k, v in cmd.items() if k != "face"}
         op, dist = self._match_op(cmd)
         v = float(cmd.get("lin_vel_x", 0.0) or 0.0)
         if op is not None:
@@ -286,6 +289,12 @@ class Describer:
         x[KI["is_keep"]] = float(c["kind"] == "KEEP")
         x[KI["is_nominal"]] = float(c["kind"] == "NOMINAL")
         x[KI["is_stop"]] = float((self.vm is not None and v <= 1e-3) or x[KI["c_mode_static"]] > 0.5)
+        if face:  # no probe of the turned gait: the effect stays the matched gait
+            fr = math.radians(face)  # op's; c_vy = the body-frame lateral command actually sent
+            x[KI["e_vy"]] = 0.0
+            if self.ym is not None:
+                x[KI["has_vy"]] = 1.0
+                x[KI["c_vy"]] = float(np.clip(-v * math.sin(fr) / self.ym, -1.0, 1.0))
         self._static[key] = x
         return x.copy()
 

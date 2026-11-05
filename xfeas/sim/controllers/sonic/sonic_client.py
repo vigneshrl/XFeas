@@ -97,6 +97,14 @@ class SonicClient:
         h, a = self._recv()
         return a.copy(), h
 
+    def save(self, key):
+        self._send({"op": "save", "key": key})
+        return self._recv()[0]
+
+    def load(self, key):
+        self._send({"op": "load", "key": key})
+        return self._recv()[0]
+
     def info(self):
         self._send({"op": "info"})
         return self._recv()[0]

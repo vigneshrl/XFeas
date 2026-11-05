@@ -107,3 +107,40 @@ def follower_cmd(spec, names, err, moving=True, wz_cap=1.0):
             if cls in mc["values"]:
                 out[mc["name"]] = cls
     return out
+
+
+# ---------------------------------------------------------------- facing offset (2026-10-31, SONIC sidestep)
+# A command may carry 'face' (deg): the body is held at the path heading + face while it TRAVELS along the path at the
+# command's lin_vel_x (SONIC's planner takes facing_direction and movement_direction separately; spec binding
+# 'face_lateral'). face +90 = body turned left, walking body -vy along the lane (sonic_section_sweep 'turn 90 + sidestep').
+# Steering stays the stock follower's: it is run on the TRAVEL yaw (body yaw - face); the body velocity is the travel
+# velocity rotated into the body frame, zero while |travel heading error| > FACE_TURN_FIRST (turn in place first, as
+# stairs_methods.StairsStock's turn-first).
+FACE_TURN_FIRST = 0.5
+
+
+def face_of(cmd):
+    """-> facing offset (rad) of a role command (0 when absent)"""
+    return math.radians(float((cmd or {}).get("face") or 0.0))
+
+
+def travel_yaw(yaw, cmd):
+    return wrap(float(yaw) - face_of(cmd))
+
+
+def face_body_vel(cmd, herr):
+    """role command with 'face' -> {lin_vel_x, lin_vel_y} body-frame velocity; herr = travel heading error (rad)"""
+    v = float(cmd.get("lin_vel_x") or 0.0)
+    if abs(herr) > FACE_TURN_FIRST:
+        v = 0.0
+    f = face_of(cmd)
+    return {"lin_vel_x": round(v * math.cos(f), 4), "lin_vel_y": round(-v * math.sin(f), 4)}
+
+
+def body_cmd(cmd, herr=0.0):
+    """role command as sent to the controller: 'face' removed, travel velocity rotated into the body frame"""
+    if not (cmd or {}).get("face"):
+        return cmd
+    out = {k: v for k, v in cmd.items() if k != "face"}
+    out.update(face_body_vel(cmd, herr))
+    return out

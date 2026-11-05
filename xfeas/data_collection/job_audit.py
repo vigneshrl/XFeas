@@ -32,7 +32,7 @@ ap.add_argument("--part", default="")
 ap.add_argument("--tag", default="a")
 ap.add_argument("--sheets", action="store_true")
 a = ap.parse_args()
-HELD_C = ("g1s", "spotf")
+HELD_C = ("spotf",)  # g1s is a training controller since 2026-10-30
 HELD_E = ("gq", "hospital", "interior")
 
 

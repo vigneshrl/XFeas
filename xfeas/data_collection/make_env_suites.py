@@ -26,6 +26,18 @@ if "--p-crawl" in argv:
     i = argv.index("--p-crawl")
     p_crawl = float(argv[i + 1])
     del argv[i : i + 2]
+# 2026-10-31 (SONIC stand-up data): --d-range lo,hi = first-decision distance D before the hazard front (default 3,5 as
+# make_suite5); --runout R = goal at least R m past the hazard end (sit['goal_runout'], gensim5._path_geo; capped by the lane)
+d_range = (3.0, 5.0)
+runout = 0.0
+if "--d-range" in argv:
+    i = argv.index("--d-range")
+    d_range = tuple(float(v) for v in argv[i + 1].split(","))
+    del argv[i : i + 2]
+if "--runout" in argv:
+    i = argv.index("--runout")
+    runout = float(argv[i + 1])
+    del argv[i : i + 2]
 SRC = os.path.join(ROOT, "xfeas", "_support", "data_collection", "make_suite5.py")
 src = open(SRC).read()
 rep = [
@@ -41,9 +53,35 @@ rep = [
         '            if _eo:\n                x["params"]["crawl"] = True; x["aggr"] = True',
     ),
 ]
+# 2026-10-30: SONIC (g1s) is a training base (seed block 950_000, nominal slowWalk 0.3 m/s, probe steady speed 0.31 m/s)
+rep += [
+    (
+        'BOFF = dict(g1c=0, g1g=250_000, g1l=500_000, g1u=750_000, g1p=850_000, spotp=900_000)',
+        'BOFF = dict(g1c=0, g1g=250_000, g1l=500_000, g1u=750_000, g1p=850_000, spotp=900_000, g1s=950_000)',
+    ),
+    (
+        'V_NOM = dict(g1c=0.3, g1g=0.3, g1l=0.3, g1u=0.3, g1p=0.73, spotp=0.6)[a.base]',
+        'V_NOM = dict(g1c=0.3, g1g=0.3, g1l=0.3, g1u=0.3, g1p=0.73, spotp=0.6, g1s=0.3)[a.base]',
+    ),
+    (
+        'V_MEAS = dict(g1c=0.2, g1g=0.25, g1l=0.25, g1u=0.25, g1p=0.7, spotp=0.55)[a.base]',
+        'V_MEAS = dict(g1c=0.2, g1g=0.25, g1l=0.25, g1u=0.25, g1p=0.7, spotp=0.55, g1s=0.3)[a.base]',
+    ),
+]
+rep += [
+    ('    D = float(rng.uniform(3.0, 5.0))', '    D = float(rng.uniform(*D_RANGE5B))'),
+    (
+        '        D = lim - s_sp - WARM\n        if D < 3.0:\n            s_sp = 0.2; D = lim - s_sp - WARM\n            if D < 3.0:',
+        '        D = lim - s_sp - WARM\n        if D < D_RANGE5B[0]:\n            s_sp = 0.2; D = lim - s_sp - WARM\n            if D < D_RANGE5B[0]:',
+    ),
+    (
+        '    name = f"{a.env}_{a.base}" + (f"_{a.tag}" if a.tag else "")',
+        '    if RUNOUT5B > 0:\n        for x in S:\n            x["goal_runout"] = RUNOUT5B\n    name = f"{a.env}_{a.base}" + (f"_{a.tag}" if a.tag else "")',
+    ),
+]
 for a_, b_ in rep:
     assert src.count(a_) == 1, a_
     src = src.replace(a_, b_)
 sys.argv = [SRC] + argv
-g = dict(__name__="__main__", __file__=SRC, P_CRAWL5B=p_crawl)
+g = dict(__name__="__main__", __file__=SRC, P_CRAWL5B=p_crawl, D_RANGE5B=d_range, RUNOUT5B=runout)
 exec(compile(src, SRC + " (gen5b)", "exec"), g)

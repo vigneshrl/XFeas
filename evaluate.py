@@ -1,9 +1,10 @@
 """Evaluate XFeas in closed loop (Isaac Sim, GPU 0), or check a trained model offline.
 
-    python evaluate.py school  <job id> <amo|spot|sonic> <stock|g5b|g5bho> <trials> [SC2A_O1|SC2A_O1L|SC2A_O1N]
+    python evaluate.py school  <job id> <amo|spot|sonic> <arm> <trials> [SC2A|SC2A_O1|SC2A_O1L|SC2A_O1N|D1g|HW1|GC2F]
+                               arm: stock | g5sm (current method) | g5smP | g5smC | g5sr | g5sr0 | g5s | g5b | g5bho
     python evaluate.py gym     <job id> <amo|sonic> <GC2F|CC1F> <trials>
     python evaluate.py terrain <spot|amo> <tile> <trial index> <out dir>
-    python evaluate.py model   --ckpt data/gen_train/gen5b/runs/all/model.pt --device cpu    # offline, no simulator
+    python evaluate.py model   --ckpt data/gen_train/gen5b/runs/all_g1s_v4/model.pt --device cpu    # offline, no simulator
 
 school / gym results: data/gen5_closed/ and data/gen5_gym/ (runs_<robot>.jsonl per job, videos, decision logs).
 """

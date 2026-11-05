@@ -36,8 +36,14 @@ os.makedirs(Q, exist_ok=True)
 LOGD = os.path.join(D4, "logs")
 os.makedirs(LOGD, exist_ok=True)
 JOBS, STATE = os.path.join(Q, "jobs.jsonl"), os.path.join(Q, "state.json")
-MAX_PER_GPU, MAX_TRIES, STARTUP_S, THREAD_CAP, THREADS_PER_JOB = 3, 4, 600, 1600, 260
-GPUS = ("0", "1")
+MAX_PER_GPU, MAX_TRIES, STARTUP_S, THREAD_CAP, THREADS_PER_JOB = (
+    int(os.environ.get("XF_MAX_PER_GPU", "3")),
+    4,
+    600,
+    1600,
+    260,
+)
+GPUS = tuple(os.environ.get("XF_GPUS", "0").split(","))  # 10-31: GPU 0 only by default (memory rule); was ("0", "1")
 PY = xfeas.paths.XFEAS_PY
 ENV = dict(os.environ, XFEAS_FOOT_MATERIAL="1", XFEAS_PERC_MINPOOL_FIX="1", OMP_NUM_THREADS="4")
 ENV.pop("XFEAS_LEGACY_PRIMITIVES", None)

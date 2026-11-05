@@ -41,6 +41,23 @@ B_PTS = (
 )
 B_FROM_D = 1.5
 LOW_FAMS = ("crawl", "overhang", "env_overhang")
+# Per-controller EXTRA classes (2026-10-30, user: SONIC trained with its own skills). Picked from the controller's own menu by
+# MODE name (the user named the skills; the measured-effect picker would drop elbowCrawling, which fell in SONIC's probe):
+#   ground  = elbowCrawling (forced in although e_fell = 1, so the data shows when it is unsafe)
+#   careful / stealth = styled upright gaits
+#   latL / latR = the sidestep with the NOMINAL gait (slowWalk + lateral), replacing the e_vy picker's 'run' lateral;
+#                 since 10-31 the facing-offset candidate (face +-90, slowWalk 0.5 along the lane)
+EXTRA = {
+    "g1s": dict(
+        modes=dict(ground="elbowCrawling", careful="careful", stealth="stealth"),
+        lat_mode="slowWalk",
+        # 10-31: more stand-up moments after the overhang (SONIC suites have >= 3 m run-out, make_env_suites --runout)
+        b_extra=(("post1.0", "end", 1.0), ("post2.5", "end", 2.5)),
+        # 11-01: staged stand-up option stockS = stop in P at zero speed -> idle until upright -> stock
+        # (flat-floor check sonic_seq_test.py; the direct switch 'stock' fell ~50 % in the s3 data)
+        staged_up=True,
+    )
+}
 SIDE_FAMS = ("slot", "env_lowclutter", "lowclutter", "clutter", "env_gap")
 
 
@@ -94,6 +111,38 @@ def pick_classes(C, X, lateral=True):
     return out
 
 
+def extra_classes(base, C, X):
+    """-> {class: candidate index} for EXTRA[base]; per mode the non-lateral candidate whose measured e_vx is closest to the
+    nominal's; latL / latR = the lat_mode candidate with +/- lin_vel_y"""
+    ex = EXTRA.get(base)
+    if not ex:
+        return {}
+    v_n = max(float(X[1][KI["e_vx"]]), 0.05)
+    out = {}
+    for nm, mode in ex["modes"].items():
+        idx = [i for i, c in enumerate(C) if c["kind"] == "mode" and (c.get("cmd") or {}).get("mode") == mode]
+        if idx:
+            out[nm] = int(min(idx, key=lambda i: abs(float(X[i, KI["e_vx"]]) - v_n)))
+    for nm, sg in (("latL", 1.0), ("latR", -1.0)):
+        # 2026-10-31: the sidestep is the facing-offset candidate (body turned +-90 deg travelling along the lane,
+        # candidates 'mode_face'); the old mode_lateral pick (vx 0.5 + vy 0.8 = a diagonal walk into the wall) only if absent
+        idx = [
+            i
+            for i, c in enumerate(C)
+            if c["kind"] == "mode_face" and sg * float((c.get("cmd") or {}).get("face") or 0.0) > 0
+        ]
+        idx = idx or [
+            i
+            for i, c in enumerate(C)
+            if c["kind"] == "mode_lateral"
+            and (c.get("cmd") or {}).get("mode") == ex["lat_mode"]
+            and sg * float((c.get("cmd") or {}).get("lin_vel_y") or 0.0) > 0
+        ]
+        if idx:
+            out[nm] = int(idx[0])
+    return out
+
+
 def slow_in(C, X, p):
     ev = X[:, KI["e_vx"]]
     m = (
@@ -107,12 +156,17 @@ def slow_in(C, X, p):
     return int(i[np.argmin(np.abs(ev[i] - 0.5 * ev[p]))])
 
 
-def plan(family5, C, X, robot, hazards, arc_goal, front_reach=0.0):
+def plan(family5, C, X, robot, hazards, arc_goal, front_reach=0.0, base=None):
     """-> dict(classes, A=[(label, arc)], B={P: [(label, arc)]}, opts); arcs are BASE path arclengths. d (A) and pre0.5 (B) are
     measured from the body FRONT (base + front_reach: G1 0.25 m, Spot 0.90 m incl. the stowed arm, gensim5.COMMIT_REACH);
     mid / end / post points are base positions relative to the hazard (the body is under it / its rear clears it)."""
     lateral = family5 in SIDE_FAMS
     cl = pick_classes(C, X, lateral=lateral)
+    ex = extra_classes(base, C, X)
+    for k, v in ex.items():
+        if k.startswith("lat") and not lateral:
+            continue
+        cl[k] = v
     out = dict(classes=cl, A=[], B={}, opts_A=[], opts_B={}, null=family5 == "null")
     if family5 == "null" or not hazards:
         g = float(arc_goal)
@@ -129,7 +183,10 @@ def plan(family5, C, X, robot, hazards, arc_goal, front_reach=0.0):
                 continue
             other = "low2" if P == "low1" else "low1"
             pts = []
-            for lab, ref, off in B_PTS:
+            for lab, ref, off in sorted(
+                B_PTS + tuple(EXTRA.get(base, {}).get("b_extra", ())),
+                key=lambda q: (q[1] != "front", q[1] != "mid", q[2]),
+            ):
                 r = a0 - front_reach if ref == "front" else a1 if ref == "end" else 0.5 * (a0 + a1)
                 pts.append((lab, r + off))
             out["B"][P] = [
@@ -141,5 +198,9 @@ def plan(family5, C, X, robot, hazards, arc_goal, front_reach=0.0):
             sp = slow_in(C, X, cl[P])
             if sp is not None:
                 o["slowP"] = sp
+            if EXTRA.get(base, {}).get("staged_up"):
+                o["stockS"] = cl["stock"]
+            if "ground" in cl and cl["ground"] != cl[P]:
+                o["ground"] = cl["ground"]
             out["opts_B"][P] = o
     return out

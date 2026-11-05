@@ -1,4 +1,5 @@
 """Builds the terrain-tile results table (successes per robot and tile)."""
+
 import xfeas  # noqa: F401  (puts every XFeas code folder on sys.path)
 
 # gen5b terrain table (2026-10-28): per robot x tile, strict successes / 3 + outcomes, with the gen4 canonical row beside it

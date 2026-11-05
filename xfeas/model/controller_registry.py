@@ -8,7 +8,7 @@ Extends the gen_v4 registry (scripts/gen4/ctrl4.py, not modified) with
   * g1p   PHP (released depth student, scripts/php/g1_php:make_g1p) as a G1 TRAINING controller;
   * spotf the Isaac Sim Spot flat-terrain policy (robots.py kind 'spot', wrapped by spot_flat5:make_spotf) -- HELD OUT
           (probe only, never data; the second zero-shot test,.
-SONIC (g1s) stays held out. Spec files: data/gen_v5/specs first (copies of gen_v4 + the new ones), then gen_v4.
+SONIC (g1s) was held out until 2026-10-30; since then it is a G1 TRAINING controller. Spec files: data/gen_v5/specs first (copies of gen_v4 + the new ones), then gen_v4.
 """
 
 import xfeas  # noqa: F401  (puts every XFeas code folder on sys.path)
@@ -36,11 +36,11 @@ FACT = dict(
     jackal="xbody5:make_jackal5",
     iris="xbody5:make_iris5",
 )
-G1_BASES = ("g1c", "g1g", "g1l", "g1u", "g1p")
+G1_BASES = ("g1c", "g1g", "g1l", "g1u", "g1p", "g1s")  # g1s added 2026-10-30 (was held out)
 SPOT_BASES = ("spotp",)
 XBODY_BASES = ("jackal", "iris")  # gen5 2026-10-25: Clearpath Jackal (wheeled), Pegasus Iris (aerial); xbody5.py
 BASES = G1_BASES + SPOT_BASES + XBODY_BASES  # collected (training) bases
-HELD_OUT = ("g1s", "spotf")  # probe only, NEVER data / fitting
+HELD_OUT = ("spotf",)  # probe only, NEVER data / fitting (g1s removed 2026-10-30)
 ALL_BASES = BASES + HELD_OUT
 CS.HELD_OUT = HELD_OUT
 ROBOT_OF = {b: ("g1" if b.startswith("g1") else b if b in XBODY_BASES else "spot") for b in ALL_BASES}

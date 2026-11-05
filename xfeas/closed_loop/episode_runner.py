@@ -525,7 +525,9 @@ def main():
     _VT = os.environ.get("EP_VIDEO_TRIALS", "")  # unset = every trial, as before. Rendering never steps physics.
     for sid in scenes:
         G = scene_geometry(sid)
-        for trial in range(a.trials):
+        for trial in range(
+            int(os.environ.get("XF_TRIAL0", "0")), a.trials
+        ):  # 11-03: XF_TRIAL0 = first trial index (split a cell over GPUs)
             if str(trial) in os.environ.get("EP_SKIP_TRIALS", "").split(
                 ","
             ):  # (additive 2026-10-21) resume: trial already recorded

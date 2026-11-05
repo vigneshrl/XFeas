@@ -52,10 +52,15 @@ class V5bMixin:
         st["judge"] = dict(reason=j.reason, legacy_fired=j.legacy_fired, n_low_tilt=j.n_low_tilt, t_low_end=j.t_low_end)
         b = self.buf
         st["buf"] = (copy.deepcopy(b.base), copy.deepcopy(b.joints), copy.deepcopy(b.extras), b.k)
+        inner = rob._v_inner
+        if hasattr(inner, "ctrl_save"):  # out-of-process controller state (SONIC server), 2026-10-30
+            st["srv"] = inner.ctrl_save()
         return st
 
     def b_restore(self, st):
         self.restore_state(st)
+        if st.get("srv") is not None:
+            self.rob._v_inner.ctrl_load(st["srv"])
         if st.get("v5") is not None:
             object.__setattr__(self.rob, "_v5", copy.deepcopy(st["v5"]))
         for k, v in st["judge"].items():
@@ -141,14 +146,24 @@ class V5bMixin:
         )
         cur = dict(L["cur"])
         t_sw = L["t_sw"]
+        stage = None  # 11-01 staged stand-up (option stockS): stop low -> stand (idle) -> cmd
+        if cmd is not None and "_stage" in cmd:
+            cmd = dict(cmd)
+            stage = dict(cmd.pop("_stage"), final=dict(cmd), ph=0, t1=None, t_up=None, upright=None)
+            cmd = dict(stage["low"], lin_vel_x=0.0, lin_vel_y=0.0)
+            cmd.pop("face", None)
+        yc = CS.cmd(spec, "yaw_rate")
         if cmd is not None:
             if not CA.same_cmd(cmd, cur):
                 t_sw = t0
             cur = dict(cmd)
-            rob.command(CA.to_names(spec, cur))
             bs = rob.base_state()
+            er0 = pf.errors(bs["pos"][:2], ST.travel_yaw(bs["yaw"], cur)) if bs is not None else None
+            rob.command(
+                CA.to_names(spec, ST.body_cmd(cur, er0["herr"] if er0 else 9.0))
+            )  # 'face' (10-31): body-frame velocity
             if bs is not None:
-                sc = ST.follower_cmd(spec, None, pf.errors(bs["pos"][:2], float(bs["yaw"])), moving=moving(cur))
+                sc = ST.follower_cmd(spec, None, er0, moving=moving(cur))
                 if sc:
                     rob.command(sc)
         t_end_cap = min(float(L["t_max"]) if master and "state" not in start else 1e9, t0 + float(t_cap))
@@ -179,8 +194,27 @@ class V5bMixin:
                     reason="fell", t=t, fall_reason=self.judge.reason or ("no_state" if bs is None else "legacy")
                 )
                 break
-            er = pf.errors(bs["pos"][:2], float(bs["yaw"]))
+            er = pf.errors(
+                bs["pos"][:2], ST.travel_yaw(bs["yaw"], cur)
+            )  # travel yaw = body yaw - face (10-31; 0 = as before)
             sc = ST.follower_cmd(spec, None, er, moving=moving(cur))
+            if cur.get("face"):  # turn first, then the travel velocity in the body frame
+                sc = dict(sc or {}, **CA.to_names(spec, ST.face_body_vel(cur, er["herr"])))
+            if stage is not None and stage["ph"] < 2:  # staged stand-up phases: no steering, no stall clock
+                if stage["ph"] == 0 and t - t0 >= stage["stop"]:
+                    stage["ph"], stage["t1"] = 1, t
+                    cur = dict(stage["idle"])
+                    rob.command(CA.to_names(spec, cur))
+                if stage["ph"] == 1:
+                    up = float(bs["tilt"]) < stage["tilt_up"] and float(bs["pos"][2]) - fz >= stage["z_up"]
+                    if (up and t - stage["t1"] >= stage["stand_min"]) or t - stage["t1"] > stage["stand_max"]:
+                        stage["ph"], stage["t_up"], stage["upright"] = 2, t, bool(up)
+                        cur = dict(stage["final"])
+                        t_sw = t
+                        rob.command(CA.to_names(spec, ST.body_cmd(cur, er["herr"])))
+                if stage["ph"] < 2:
+                    sc = {yc["name"]: 0.0} if yc is not None else None
+                    t_best = t
             if sc:
                 rob.command(sc)
             if resend:
@@ -352,6 +386,13 @@ class V5bMixin:
         bins = self.contacts.bins(nb)
         trace = list(rob._v_trace or [])
         rob._v_trace = None
+        if stage is not None and end is not None:
+            end["stage"] = dict(
+                ph=stage["ph"],
+                t_stand=None if stage["t1"] is None else round(stage["t1"] - t0, 2),
+                t_up=None if stage["t_up"] is None else round(stage["t_up"] - t0, 2),
+                upright=stage["upright"],
+            )
         return dict(
             t0=t0,
             clock0=tc0,

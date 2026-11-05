@@ -64,6 +64,7 @@ ROOT = xfeas.paths.ROOT
 import gen4_methods as G4M
 import gen3_methods as GM
 import gen3_closed_loop as GCL
+import path_follower as ST5  # 10-31: facing-offset helpers only (face_of / wrap)
 
 PERIOD = float(
     os.environ.get("XFEAS_GEN5_PERIOD", "") or GM.PERIOD
@@ -71,6 +72,10 @@ PERIOD = float(
 SIDECAR = os.path.join(THIS, "model_server.py")
 CKPT5 = os.path.join(ROOT, "data", "gen_train", "gen5g4", "runs", "g1c", "model.pt")
 FORBIDDEN_MODULES = ("select_gen3", "select_gen4", "gen3_trigger")
+# 11-03 (additive, default off): env XF_SONIC_PRIMS=1 -> the chosen move is EXECUTED by the SONIC primitives of
+# sonic_primitives.py (sidestep: stop, turn in place to +-90 deg, slide with heading hold + lateral centring on the perceived gap
+# centre, turn back; crawl / crouch: heading hold on the lane line). The model / rules still pick the move. g1s only.
+SPRIMS = os.environ.get("XF_SONIC_PRIMS", "0") == "1"
 
 
 class GuardHit(RuntimeError):
@@ -104,7 +109,9 @@ class Gen5Client:
 
     def __init__(self, ckpt, log=None):
         e = dict(os.environ)
-        assert e.get("CUDA_VISIBLE_DEVICES", "0") == "0", "GPU 0 only"
+        assert e.get("CUDA_VISIBLE_DEVICES", "0") == "0" or e.get("XFEAS_GPU1_OK") == "1", (
+            "GPU 0 only"
+        )  # GPU1_OK: user-approved GPU-1 sim (11-02); the sidecar stays on GPU 0
         e["CUDA_VISIBLE_DEVICES"] = "0"
         e["OMP_NUM_THREADS"] = e.get("OMP_NUM_THREADS", "2")
         e["OPENBLAS_NUM_THREADS"] = "1"
@@ -178,7 +185,9 @@ class _Gen5Layer(G4M._Gen4Layer):
     # -------------------------------------------------------------- setup
     def _g5_env(self):
         self.arm = os.environ.get("XFEAS_GEN5_ARM", "gen5")
-        assert self.arm in ("gen5", "stock"), self.arm
+        assert self.arm in ("gen5", "stock", "rules"), (
+            self.arm
+        )  # 10-31 'rules': skill_rules.py picks the skill, the model ranks in it
         assert os.environ.get("XFEAS_GEN3_TRIGGER") == "off", "XFEAS_GEN3_TRIGGER must be 'off'"
         assert os.environ.get("XFEAS_GEN3_SAFE_STAND") == "0", "XFEAS_GEN3_SAFE_STAND must be 0"
         assert os.environ.get("XFEAS_GEN3_COMMIT_N") == "1", "XFEAS_GEN3_COMMIT_N must be 1"
@@ -195,7 +204,11 @@ class _Gen5Layer(G4M._Gen4Layer):
         os.environ["XFEAS_GEN3_MODEL_HIST"] = "1"
         os.environ["XFEAS_GEN3_MEM_PROG"] = "0"
         self.ckpt5 = os.environ.get("XFEAS_GEN5_CKPT") or CKPT5
-        lbl = {"gen5": "+ XFeas gen5 (learned, direct commands)", "stock": "stock (nominal command)"}[self.arm]
+        lbl = {
+            "gen5": "+ XFeas gen5 (learned, direct commands)",
+            "stock": "stock (nominal command)",
+            "rules": "+ XFeas gen5 (feasibility model + skill rules)",
+        }[self.arm]
         os.environ.setdefault("XFEAS_LABEL", f"{self.ctrl} {lbl}")
 
     def _g5_setup(self, ctx):
@@ -254,6 +267,11 @@ class _Gen5Layer(G4M._Gen4Layer):
             flush=True,
         )
         self._n_exec_total = 0
+        self.rules5 = None
+        if self.arm == "rules":
+            import skill_rules as SKR
+
+            self.rules5 = SKR.SkillRules(self.probe["fp"])
         if self.diag:
             os.makedirs(self.diag, exist_ok=True)
             self._diag_setup()
@@ -282,17 +300,27 @@ class _Gen5Layer(G4M._Gen4Layer):
         return ok
 
     def _g5_reset(self, ep):
+        self.hold_still = False
+        self.sprim, self._gapc, self._sp_was = None, [], False
+        if SPRIMS and self.ctrl == "g1s":
+            import sonic_primitives as SPR
+
+            self.SPR, self.sprim = SPR, SPR.SonicPrim()
         if getattr(self, "_n_exec", 0):
             self._verify_line("end of previous episode")
         self._g4_reset(ep)  # _g3_reset (buffers, h(t), memory) + gen4 diag reset
         self.v_cap, self.vy_cmd = self.v_nom, 0.0
+        self.face = 0.0
         self.cmd_now, self.ch_now = None, None
         self._t_sw, self._n_switch = None, 0
         self._n_exec, self._t_dec0 = 0, None
         self._top_pass = []
+        if self.rules5 is not None:
+            self.rules5.reset()
         import stairs_scenes as SS
 
-        self._pp5 = SS.PathProgress(SS.STAIR_SCENES[ep["scene"]]["path"])
+        sp = SS.STAIR_SCENES.get(ep["scene"])  # 10-31: None on straight-drive scenes (D1g, HW1)
+        self._pp5 = SS.PathProgress(sp["path"]) if sp else None
         if self.diag:
             p = os.path.join(self.diag, f"decisions5_t{self.ep_trial}.jsonl")
             if os.path.exists(p):
@@ -358,11 +386,15 @@ class _Gen5Layer(G4M._Gen4Layer):
             g5_any_switch=np.bool_(self._t_sw is not None),
             g5_vx=np.float64(np.asarray(bs["v_b"], float)[0]),
         )
+        if self.arm == "rules":
+            req["g5_all"] = np.bool_(True)  # the sidecar scores every class; the rules pick the group
         t0 = time.time()
         ch = self.client5.ask(req, self.ctrl, self.spec_path, self.probe_path, self.robot5)
         ms = (time.time() - t0) * 1e3
+        if self.arm == "rules":
+            ch = self._rules_pick(t, bs, ch)
         # ---- execution = send the command (gen5: the model's pick; stock: candidate 0 = nominal)
-        cmd = dict(ch["cmd"]) if self.arm == "gen5" else dict(ch["table"][0]["cmd"])
+        cmd = dict(ch["cmd"]) if self.arm in ("gen5", "rules") else dict(ch["table"][0]["cmd"])
         assert self.arm == "gen5" or ch["table"][0]["kind"] == "NOMINAL"
         assert ch["table"][0]["kind"] == "NOMINAL"
         prev = (
@@ -372,6 +404,8 @@ class _Gen5Layer(G4M._Gen4Layer):
             self._t_sw = t
             self._n_switch += 1
         self._send(cmd)
+        if ch.get("v_over") is not None:  # rules arm stand-up: stopped until upright
+            self.v_cap = float(ch["v_over"])
         self.cmd_now, self.ch_now = cmd, ch
         self._n_exec += 1
         self._n_exec_total += 1
@@ -380,6 +414,108 @@ class _Gen5Layer(G4M._Gen4Layer):
         elif self._n_exec % 40 == 0:
             self._verify_line(f"decision {self._n_exec}")
         self._log5(obs, ch, cmd, ms, fd)
+
+    def _path_s(self, bs):
+        x, y = float(bs["pos"][0]), float(bs["pos"][1])
+        if self._pp5:
+            return float(self._pp5.update(x, y)[0])
+        if getattr(self, "_xy0", None):
+            return math.hypot(x - self._xy0[0], y - self._xy0[1])
+        return 0.0
+
+    def _rules_pick(self, t, bs, ch):
+        """skill_rules: hazard map from the 4-frame point memory (only while upright), skill -> the model's best class in it"""
+        top = self._top_above_floor()
+        s = self._path_s(bs)
+        upright = top is not None and top >= self.rules5.stand_top - 0.15 and not self.face
+        seen = None
+        if upright and getattr(self, "_peek", None) is not None and self.floor_sup is not None:
+            sel = self._hist_sel
+            dh = self._peek["depth_hist"].astype(np.float32)
+            frames = [(dh[k], sel[k][3], self._bases.get(round(sel[k][0], 4))) for k in range(len(sel))]
+            P = self.FM.mem_points(
+                frames, (float(bs["pos"][0]), float(bs["pos"][1]), float(bs["yaw"])), float(self.floor_sup), self_x=0.0
+            )
+            seen = self.rules5.observe(P, s, True)
+            if self.sprim is not None and seen and seen.get("nar"):  # XF_SONIC_PRIMS: perceived gap centre (world)
+                c, sn = math.cos(float(bs["yaw"])), math.sin(float(bs["yaw"]))
+                for xg in np.arange(seen["nar"][0], seen["nar"][1] + 1e-6, 0.1):
+                    r = self.SPR.gap_lohi(P, (xg - 0.05, xg + 0.05))
+                    if r is not None and r[0] < self.rules5.stand_width + 0.15:
+                        yc = 0.5 * (r[1] + r[2])
+                        self._gapc.append(
+                            (float(bs["pos"][0]) + c * xg - sn * yc, float(bs["pos"][1]) + sn * xg + c * yc)
+                        )
+                self._gapc = self._gapc[-80:]
+        row, v_over, why = self.rules5.step(t, s, ch["table"], top, float(bs.get("tilt", 0.0)))
+        self.hold_still = row["cls"] in (
+            "stoplow",
+            "standup",
+        )  # 11-01: exactly zero twist (the follower's vmin / steering
+        # would keep a crawl mode moving at its 0.4 m/s floor)
+        out = dict(
+            ch,
+            cmd=row["cmd"],
+            cls=row["cls"],
+            U=row["U"],
+            p=row["p"],
+            stock=row["cls"] == "stock",
+            v_over=v_over,
+            model_cls=ch["cls"],
+            rule=dict(skill=self.rules5.skill, why=why, s=round(s, 2), seen=seen, map=self.rules5.summary()),
+        )
+        print(
+            f"[gen5.rule] t {t:6.2f} s {s:6.2f} top {top} upright {upright} seen {seen} -> {self.rules5.skill}: {why} "
+            f"(model alone: {ch['cls']})",
+            flush=True,
+        )
+        return out
+
+    def _sp_lane(self, obs):
+        """lane line of the primitives: sidestep -> through the perceived gap centre towards the goal; course -> the path
+        segment under the robot; straight -> start -> goal"""
+        SPR = self.SPR
+        g = np.asarray(obs["goal_xy"], float)
+        if self.sprim.kind == "side" and len(self._gapc) >= 3:
+            C = np.median(np.asarray(self._gapc), axis=0)
+            d = g - C
+            if np.linalg.norm(d) > 0.8:
+                return SPR.Lane(C, d)
+        if self._pp5 is not None:
+            k = self._pp5.k
+            return SPR.Lane(self._pp5.P[k, :2], self._pp5.seg[k])
+        xy0 = np.asarray(getattr(self, "_xy0", None) or obs["bs"]["pos"][:2], float)
+        return SPR.Lane(xy0, g - xy0)
+
+    def _sp_apply(self, obs, tw):
+        """XF_SONIC_PRIMS: the primitive's twist (+ planner mode) replaces the layer's default execution of the move in force"""
+        if self.sprim is None or getattr(self, "hold_still", False) or self.cmd_now is None:
+            return tw
+        t, bs = float(obs["t"]), obs["bs"]
+        self.sprim.update(t, self.cmd_now)
+        tw2 = None
+        if self.sprim.active():
+            md, tw2, lab = self.sprim.step(
+                t, float(bs["pos"][0]), float(bs["pos"][1]), float(bs["yaw"]), self._sp_lane(obs), self.cmd_now
+            )
+        if tw2 is None:
+            if self._sp_was:  # primitive over: the class's own mode again
+                self._sp_was = False
+                self._send(self.cmd_now)
+            return tw
+        md = {k: v for k, v in (md or {}).items() if v is not None}  # VRob clips every value (no None)
+        if "mode" in md:  # bridge names -> the spec's mode values (VRob asserts them)
+            md["mode"] = {
+                "slow_walk": "slowWalk",
+                "crouch_walk": "crouch",
+                "hand_crawl": "handCrawling",
+                "elbow_crawl": "elbowCrawling",
+            }.get(md["mode"], md["mode"])
+        if md:
+            self.vrob.command(md)
+        self._sp_was = True
+        self._sp_lab = lab
+        return np.asarray(tw2, float)
 
     def _send(self, cmd):
         """the chosen command -> the controller (same calls the gen4 stock arm makes for its nominal command)"""
@@ -394,6 +530,7 @@ class _Gen5Layer(G4M._Gen4Layer):
         self.vrob.set_env_intent(self.v_nom, 9.9, 9.9, 0.0)
         self.v_cap = float(cmd.get("lin_vel_x", self.v_nom))
         self.vy_cmd = float(cmd.get("lin_vel_y", 0.0) or 0.0)
+        self.face = ST5.face_of(cmd)  # 10-31 facing offset (rad; SONIC sidestep), 0 = as before
 
     def _top_above_floor(self):
         try:
@@ -406,7 +543,13 @@ class _Gen5Layer(G4M._Gen4Layer):
     def _log5(self, obs, ch, cmd, ms, fd):
         t, bs = float(obs["t"]), obs["bs"]
         x, y = float(bs["pos"][0]), float(bs["pos"][1])
-        s, _ = self._pp5.update(x, y)
+        s = (
+            self._pp5.update(x, y)[0]
+            if self._pp5
+            else math.hypot(x - self._xy0[0], y - self._xy0[1])
+            if getattr(self, "_xy0", None)
+            else 0.0
+        )
         top = self._top_above_floor()
         tab = sorted(ch["table"], key=lambda r: -r["U"])
         cmp = lambda r: dict(cls=r["cls"], cmd=r["cmd"], U=r["U"], p=r["p"], p_std=r["p_std"], p_fall=r["p_fall"])
@@ -442,6 +585,18 @@ class _Gen5Layer(G4M._Gen4Layer):
             ms=round(ms, 1),
             frame=int(self._dx["rec"].n) if self.diag and self._dx.get("rec") is not None else None,
             table=ch["table"],
+            rule=ch.get("rule"),
+            model_cls=ch.get("model_cls"),
+            sprim=None
+            if getattr(self, "sprim", None) is None
+            else dict(
+                kind=self.sprim.kind,
+                phase=self.sprim.phase,
+                lab=getattr(self, "_sp_lab", None),
+                n_gapc=len(self._gapc),
+                gapc=None if not self._gapc else np.round(np.median(np.asarray(self._gapc), axis=0), 3).tolist(),
+                log=self.sprim.log[-4:],
+            ),
         )
         self.log.append({k: v for k, v in row.items() if k not in ("table", "feas4")})
         self.last = f"gen5[{self.arm}] {ch['cls']} vx {cmd.get('lin_vel_x')} h {cmd.get('pelvis_height')} p {cmd.get('torso_pitch')} U {ch['U']:.2f}"
@@ -450,7 +605,7 @@ class _Gen5Layer(G4M._Gen4Layer):
                 json.dumps(row, default=G4M._js) + "\n"
             )
         print(
-            f"[gen5] t {t:6.2f} x {x:8.3f} d_oh {row['d_to_overhang']} top {top} -> {self.arm} {'SENT ' + ch['cls'] if self.arm == 'gen5' else 'nominal (model: ' + ch['cls'] + ')'} "
+            f"[gen5] t {t:6.2f} x {x:8.3f} d_oh {row['d_to_overhang']} top {top} -> {self.arm} {'SENT ' + ch['cls'] if self.arm in ('gen5', 'rules') else 'nominal (model: ' + ch['cls'] + ')'} "
             f"vx {cmd.get('lin_vel_x')} h {cmd.get('pelvis_height')} p {cmd.get('torso_pitch')} | U {ch['U']:.3f} stock {ch['U_stock']:.3f} | {ms:.0f} ms",
             flush=True,
         )
@@ -501,13 +656,17 @@ try:
             self._g5_reset(ep)
 
         def setpoints(self, obs, s, k):
-            return None, self.v_cap, 0.0  # speed = the command's lin_vel_x; no setpoint dict here
+            return None, self.v_cap, self.face  # speed = the command's lin_vel_x; yaw offset = its 'face' (10-31)
 
         def act(self, obs):
             self._g5_tick(obs)
             r0 = StairsStock.act(self, obs)  # the stock path follower: wz (and its turn-first / vmin)
             tw = np.asarray(r0["twist"], float).copy()
-            tw[1] = self.vy_cmd
+            if not self.face:  # with a facing offset StairsStock already rotated v into the body
+                tw[1] = self.vy_cmd
+            tw = self._sp_apply(obs, tw)  # XF_SONIC_PRIMS (default off: unchanged)
+            if getattr(self, "hold_still", False):
+                tw[:] = 0.0
             self.vrob.command(tw)
             info = self.last or r0["info"]
             if self._top_pass:
@@ -519,3 +678,52 @@ try:
             return r
 except Exception as _e:  # outside Isaac
     print("[xfeas_method] stairs arm not loaded:", repr(_e))
+
+
+try:
+    import local_nav as LN
+    from door_methods import straight_act
+
+    class StraightXFeasGen5(_Gen5Layer, LN.LocalNav):
+        """(10-31) straight drive to the goal for the non-course scenes D1g / HW1, as gen4_methods.StraightXFeasGen4: heading
+        control of door_methods.straight_act at the command's speed v_cap, lateral from the command (vy_cmd)"""
+
+        name = "gen5_straight"
+        label = "+ XFeas gen5 (straight drive)"
+
+        def setup(self, ctx):
+            LN.LocalNav.setup(self, ctx)
+            self.kind_cam = str(ctx["kind"])
+            self._g5_setup(ctx)
+            self.label = os.environ.get("XFEAS_LABEL", self.label)
+
+        def reset(self, ep):
+            LN.LocalNav.reset(self, ep)
+            self._g5_reset(ep)
+            self._xy0 = None
+
+        def act(self, obs):
+            if self._xy0 is None:
+                self._xy0 = tuple(float(v) for v in obs["bs"]["pos"][:2])
+            self._g5_tick(obs)
+            v0 = self.v
+            self.v = self.v_cap
+            o = obs
+            if self.face:  # 10-31: steer the TRAVEL yaw (body yaw - face), as path_follower
+                o = dict(obs, bs=dict(obs["bs"], yaw=ST5.wrap(float(obs["bs"]["yaw"]) - self.face)))
+            try:
+                r0 = straight_act(self, o)
+            finally:
+                self.v = v0
+            tw = np.asarray(r0["twist"], float).copy()
+            if self.face:  # travel velocity -> body frame (straight_act already turns first)
+                tw[0], tw[1] = tw[0] * math.cos(self.face), -tw[0] * math.sin(self.face)
+            else:
+                tw[1] = self.vy_cmd
+            tw = self._sp_apply(obs, tw)  # XF_SONIC_PRIMS (default off: unchanged)
+            if getattr(self, "hold_still", False):
+                tw[:] = 0.0
+            self.vrob.command(tw)
+            return dict(twist=tw, info=(self.last or r0["info"]), decisions=self.log)
+except Exception as _e:  # outside Isaac
+    print("[xfeas_method] straight arm not loaded:", repr(_e))

@@ -10,6 +10,8 @@ Requests (header["op"]):
   tick  : array = q(29) dq(29) quat_wxyz(4) gyro_body(3)              -> array q_target(29),
           header {"frame","planner_yaw_offset","ref_root_z"}
   info  : -> header with gains/default pose/timing
+  save  : header {"key"} -> snapshot of the controller's mutable state (planner motion, history, movement, heading, ...)
+  load  : header {"key"} -> restore that snapshot (gen5b branching from a saved moment, 2026-10-30)
   quit
 Client: sonic_client.SonicClient (numpy only; works from Isaac kit python).
 """
@@ -56,6 +58,17 @@ def main():
     from sonic_ref import SonicController, KPS, KDS, DEFAULT_ANGLES, G1_ACTION_SCALE
 
     c = SonicController(a.model_dir, a.variant, planner_async=a.planner_async, intra_op_threads=a.threads)
+    import copy
+
+    skip = {
+        "enc",
+        "dec",
+        "planner",
+        "_lock",
+        "_thread",
+        "timing",
+    }  # ONNX sessions / thread objects: stateless or shared
+    snaps = {}
     write_msg(fout, {"ready": 1})
     while True:
         h, arr = read_msg(fin)
@@ -96,6 +109,15 @@ def main():
                     h.get("speed", -1.0),
                     h.get("height", -1.0),
                 )
+                write_msg(fout, {"ok": 1})
+            elif op == "save":
+                snaps[h["key"]] = copy.deepcopy({k: v for k, v in c.__dict__.items() if k not in skip})
+                while len(snaps) > 96:
+                    snaps.pop(next(iter(snaps)))
+                write_msg(fout, {"ok": 1, "n": len(snaps)})
+            elif op == "load":
+                for k, v in copy.deepcopy(snaps[h["key"]]).items():
+                    setattr(c, k, v)
                 write_msg(fout, {"ok": 1})
             elif op == "info":
                 t = c.timing

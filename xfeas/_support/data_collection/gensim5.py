@@ -263,6 +263,10 @@ class V5Mixin:
             else:
                 g = min(float(geo["s_goal"]) + 1.0, pf.total - 0.3)
                 g = max(g, float(geo["s_goal"]))
+                if (
+                    sit.get("goal_runout") and geo["hazards"]
+                ):  # 10-31 SONIC stand-up suites: goal >= runout past the hazard end
+                    g = max(g, min(max(h["arc1"] for h in geo["hazards"]) + float(sit["goal_runout"]), pf.total - 0.3))
             geo["arc_goal"] = round(float(g), 3)
         return geo
 

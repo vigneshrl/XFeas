@@ -160,6 +160,15 @@ def enumerate_candidates(spec):
             if ym is not None:
                 for vy in (-ym, ym):
                     C.append(dict(kind="mode_lateral", cmd={"mode": m, "lin_vel_x": r4(lv[1]), "lin_vel_y": r4(vy)}))
+    fl = spec.get("binding", {}).get(
+        "face_lateral"
+    )  # 2026-10-31 SONIC sidestep: body turned +-90 deg, travelling along
+    if fl and os.environ.get("XF_FACE_LAT"):  # sweep override "mode:speed" (smoke tests only)
+        _m, _v = os.environ["XF_FACE_LAT"].split(":")
+        fl = dict(fl, mode=_m, speed=float(_v))
+    if fl:  # the path (path_follower.face_*); the controller's own facing input
+        for f in (90.0, -90.0):
+            C.append(dict(kind="mode_face", cmd={"mode": fl["mode"], "lin_vel_x": r4(fl["speed"]), "face": f}))
     for i, c in enumerate(C):
         c["idx"] = i
         c["cls"] = transition_class(spec, c["cmd"] if c["cmd"] is not None else nom)
@@ -170,6 +179,8 @@ def transition_class(spec, cmd):
     nom = nominal_cmd(spec)
     if cmd is None:
         return "keep"
+    if cmd.get("face"):
+        return "face_L" if float(cmd["face"]) > 0 else "face_R"
     if "mode" in cmd and cmd["mode"] != nom.get("mode"):
         return f"mode:{cmd['mode']}"
     h, p = cmd.get("pelvis_height", nom.get("pelvis_height")), cmd.get("torso_pitch", nom.get("torso_pitch"))
@@ -195,7 +206,7 @@ def probe_classes(spec):
     seen, out = set(), []
     nom = nominal_cmd(spec)
     for c in enumerate_candidates(spec):
-        if c["cmd"] is None or c["cls"] in ("nominal", "keep") or c["cls"] in seen:
+        if c["cmd"] is None or c["cls"] in ("nominal", "keep", "face_L", "face_R") or c["cls"] in seen:
             continue
         rep = dict(c["cmd"])
         if c["cls"].startswith(

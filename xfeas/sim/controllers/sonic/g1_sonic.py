@@ -394,6 +394,19 @@ class G1SonicAdapter:
             av.set_body_masses(m.reshape(1, -1))
         self._variant = dict(effort_scale=float(effort_scale), payload_kg=float(payload_kg), cmd_scale=float(cmd_scale))
 
+    def ctrl_save(self):
+        """snapshot of the SERVER-side controller state (planner motion, history, movement); -> key (gen5b branching)"""
+        import uuid
+
+        k = uuid.uuid4().hex
+        r = self.client.save(k)
+        assert r.get("ok"), r
+        return k
+
+    def ctrl_load(self, key):
+        r = self.client.load(key)
+        assert r.get("ok"), r
+
     def teleport(self, x, y, yaw, floor_z):
         """Start state of sonic_mujoco_ref: default pose (hands 0), soles on the floor, zero velocity; then 0.1 s
         default-pose PD hold and a fresh controller (planner re-initialised from the measured joints, IDLE)."""

@@ -11,7 +11,8 @@ A robot already has a locomotion controller (AMO, ReLIC, SONIC, ...), which XFea
 the head-camera depth image and decides **which of the controller's own commands to send**: walk, slow down, crouch,
 sidestep, stand up. A network scores every possible command for "what happens if I hold this for 1.5 s?" (fall / stall /
 contact / progress / success) and the best one is sent. Commands are compared by what a short **self-test** measured them to
-do on that controller, not by their names.
+do on that controller, not by their names. Simple geometric rules (`skill_rules.py`) decide **when** to switch to a crouch
+or sidestep and how to stand back up; the model decides **which** of the controller's commands to use.
 
 ## 2. Three pipelines
 
@@ -50,7 +51,7 @@ classes and starts from the gen4 network weights). That older code lives in `xfe
 | descriptor | the vector describing a candidate by its measured effect |
 | situation | one reproducible scene setup: environment, lane, obstacle, lighting, seed |
 | moment / branch | a saved simulator state, and one command replayed from it |
-| arm | a method being evaluated: `stock`, `g5b` (XFeas), `g5bho` (XFeas trained without AMO) |
+| arm | a method being evaluated: `stock`, `g5sm` (current XFeas: rules time, model picks), `g5sr`, `g5sr0` (rules only), `g5s` (model only), `g5b` / `g5bho` (earlier model without SONIC) |
 | cell | one evaluation job: robot × arm × scene × trials |
 | success | within 0.5 m of the goal and no fall; no map; goal given relative to the robot |
 
@@ -103,6 +104,8 @@ classes and starts from the gen4 network weights). That older code lives in `xfe
 | `trainer.py` | **Training and offline evaluation** (`--holdout-base` leaves a controller out) |
 | `branch_dataset.py` | Loads the side-by-side moments; `build` writes the manifest |
 | `branch_labels.py` | Outcome labels of a tried command |
+| `build_manifest_v4.py` | Builds the training manifest for the current model (with SONIC) and runs a data-quality check |
+| `run_sonic_retrain.sh` | The current model's full chain: collect → manifest + check → train `all_g1s_v4` → closed-loop test |
 | `trainer_gen4data.py`, `gen4_option_dataset.py` | The same model trained on the earlier gen4 side-by-side data, which `trainer.py` mixes in |
 | `run_training.sh` | Full training sequence with restarts |
 
@@ -113,9 +116,11 @@ classes and starts from the gen4 network weights). That older code lives in `xfe
 | `episode_runner.py` | **Runs one evaluation episode** (scene, robot, method, scoring, video); every method uses it |
 | `xfeas_method.py` | **XFeas inside an episode**: every 0.25 s asks the model server and sends the chosen command |
 | `model_server.py` | **The network as a separate PyTorch process**; `--selftest` checks a model offline |
+| `skill_rules.py` | **When to switch skill**: detects overhangs / narrow gaps from the head-camera points; walk / crouch-crawl / sidestep timing and the staged stand-up. The model picks the move inside the skill |
+| `sonic_primitives.py` | Optional SONIC execution helpers (arm `g5smP`): turn in place before a sidestep, hold heading and lateral position |
 | `local_nav.py`, `avoid_threshold.json` | Map-free navigation shared by every method |
 | `fall_judge.py` | The fall rule (crawl and kneel modes tilt on purpose) |
-| `school_overhang_scenes.py` | Test scenes `SC2A_O1` / `O1L` / `O1N` |
+| `school_overhang_scenes.py` | Test scenes `SC2A_O1` / `O1L` / `O1N` (school course cut after its first doorway) |
 | `school_episode.py`, `gym_episode.py` | Episode entry points for the school and gym courses |
 | `terrain_method.py`, `terrain_harness_g1.py`, `terrain_harness_spot.py` | XFeas on terrain tiles and the tile harnesses |
 | `run_school_cell.sh`, `run_gym_cell.sh`, `run_terrain_trial.sh` | Launch one cell / trial (`evaluate.py` calls these) |
@@ -180,5 +185,5 @@ Everything is built **in memory** from the school's own assets; `assets/school.u
 |---|---|
 | `model/` | gen1–gen4 networks (`model_xe`, `model_gen*`), their features (`gen3_common`, `gen4_common`, `sp_tokens`), the geometric feasibility check (`feas`, `feas_mem`), clearance map (`cmap`), spec loader (`ctrl_spec`) and `specs/` |
 | `data_collection/` | The simulator harness chain the current one extends (`gensim` → `gensim_v1` → `gensim_v2` → `gensim3` → `gensim4` → `gensim5`), other environments (`envsim`), situation generators (`families`, `envfam*`), self-test plan (`probe`), look-alike controllers (`virtual`), gen3 command mapper (`driver`), gen5 random-switch collector parts |
-| `train/` | Earlier datasets (`dataset_gen*`, `dataset_xe`, `dataset5`), labels and training (`labels5`, `train5`, `target5`), test-scene exclusion, robot descriptors (`*_desc.json`) |
+| `train/` | Earlier datasets (`dataset_gen*`, `dataset_xe`, `dataset5`), labels (`labels5`), test-scene exclusion, robot descriptors (`*_desc.json`) |
 | `closed_loop/` | Earlier closed-loop arms and model servers (`gen*_methods`, `select_gen*`, `select_xe`), course registration the current episodes import (`course4_ep`, `course_ctrl`, `school_ctrl`, `seq_course`), stock / oracle arms for single-skill scenes, and `sidestep_g1` (the AMO robot with full-body colliders) |

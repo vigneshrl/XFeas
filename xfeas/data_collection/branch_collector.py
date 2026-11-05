@@ -5,7 +5,7 @@ different commands, so every command's real outcome from the same state is known
 
 Details:
 gen5b BRANCH collector. One process = one BASE controller (+ its v_/lk_/mm_
-variants, same robot asset); never g1s / spotf. Per situation x controller (a PAIR):
+variants, same robot asset); never spotf (g1s is a training base since 2026-10-30, with branch_schedule.EXTRA classes). Per situation x controller (a PAIR):
   A  master run from the spawn with the stock command (warm-up 1.5 s, then held to the end); moments at d before the hazard
      start (branch_schedule.A_D); from every moment one run per command class (branch_schedule.pick_classes) held to the end
   B  (low-obstacle families) the low1 / low2 runs from the d = 1.5 moment are masters too: moments at the B points; from
@@ -52,7 +52,11 @@ assert not (PROD and any(k.startswith("GEN5_DEBUG") for k in os.environ)), "debu
 for k, v in K5.env_for(a.base).items():
     os.environ.setdefault(k, v)
 RUN_ID = "gen_v5b" if PROD else "gen_v5b_smoke"
-OUT_ROOT = os.path.join(ROOT, "data", "gen_v5b" if PROD else "gen_v5b_smoke")
+OUT_ROOT = os.path.join(
+    ROOT,
+    "data",
+    "gen_v5b" if PROD else "gen_v5b_smoke" + (f"_{os.environ['XF_OUT_TAG']}" if os.environ.get("XF_OUT_TAG") else ""),
+)
 OUT = os.path.join(OUT_ROOT, a.env, a.base)
 for sub in ("br", "side"):
     os.makedirs(os.path.join(OUT, sub), exist_ok=True)
@@ -117,6 +121,10 @@ JN = json.dumps(list(G.rob._v_inner._art.dof_names))
 print(f"[v5b] env {a.env} base {a.base} robot {ROBOT} cam {G.cam4.src}:{G.cam4.mount}", flush=True)
 CTRL = {}
 T_CAP = dict(g1=25.0, spot=20.0)[ROBOT]  # a light branch run: held at most this long after the branch
+STAGE_IDLE = dict(
+    mode="idle", lin_vel_x=0.0, lin_vel_y=0.0
+)  # 11-01 staged stand-up: stop low 3 s, idle until the pelvis is
+STAGE_UP = dict(stop=3.0, stand_min=1.0, stand_max=5.0, tilt_up=0.2, z_up=0.68)  # back at standing height and level
 T_CAP_B = dict(g1=35.0, spot=20.0)[ROBOT]  # a B master (posture held through the hazard)
 FID_S, FID_TOL = 1.0, 0.02
 
@@ -141,6 +149,12 @@ def load_ctrl(cid):
         pfile=os.path.relpath(fp, ROOT),
         tfile=os.path.relpath(ft, ROOT),
     )
+
+
+ONLY_CLS = set(filter(None, os.environ.get("XF_ONLY_CLS", "").split(",")))
+VID_CLS = set(
+    filter(None, os.environ.get("XF_VID_CLS", "").split(","))
+)  # 10-31: also film these A-branch classes (side camera)
 
 
 def use(ctl):
@@ -185,7 +199,16 @@ def pair(sit, geo, ctl, j, fs, rej):
     spec, C = ctl["spec"], ctl["cands"]
     nom = CA.nominal_cmd(spec)
     X0 = ctl["desc"].describe(C, nom, float(nom.get("lin_vel_x", 0.3) or 0.3))
-    pl = SB.plan(sit["family5"], C, X0, ROBOT, geo["hazards"], geo["arc_goal"], front_reach=G5.COMMIT_REACH[ROBOT][0])
+    pl = SB.plan(
+        sit["family5"],
+        C,
+        X0,
+        ROBOT,
+        geo["hazards"],
+        geo["arc_goal"],
+        front_reach=G5.COMMIT_REACH[ROBOT][0],
+        base=a.base,
+    )
     cl = pl["classes"]
     vid = None
     if a.side > 0 and j % a.side == 0:
@@ -267,7 +290,7 @@ def pair(sit, geo, ctl, j, fs, rej):
         if FID_ALL or m["label"] in ("d1.5", "null_a"):
             fid[mi] = fidelity(sit, geo, ctl, m, R0)
         branch(mi, "stock", cl["stock"], 0, True)
-        for k in pl["opts_A"] if not pl["null"] else pl["opts_A"]:
+        for k in [k for k in pl["opts_A"] if not ONLY_CLS or k in ONLY_CLS]:  # XF_ONLY_CLS: smoke sweeps only
             ci = cl[k]
             is_bm = k in pl["B"] and m["label"] == f"d{SB.B_FROM_D:.1f}"
             try:
@@ -280,7 +303,8 @@ def pair(sit, geo, ctl, j, fs, rej):
                     master=is_bm,
                     pts=pl["B"].get(k, []) if is_bm else (),
                     t_cap=T_CAP_B if is_bm else T_CAP,
-                    vid=vid if is_bm else None,
+                    vid=vid if (is_bm or k in VID_CLS) else None,
+                    side_at=tuple(range(4, 400, 4)) if (k in VID_CLS and not is_bm) else (8,),
                 )
             except GS.Reject as e:
                 print(f"[v5b] run reject {sid} {m['label']} {k}: {str(e)[:120]}", flush=True)
@@ -303,7 +327,10 @@ def pair(sit, geo, ctl, j, fs, rej):
             branch(mi, "keep", cl[P], ri, True)
             for k, ci in pl["opts_B"][P].items():
                 try:
-                    R = G.run_training(sit, geo, ctl, m, C[ci]["cmd"], master=False, t_cap=T_CAP)
+                    cm = C[ci]["cmd"]
+                    if k == "stockS":  # 11-01 staged stand-up (branch_sim.run_training '_stage')
+                        cm = dict(cm, _stage=dict(low=dict(C[cl[P]]["cmd"]), idle=dict(STAGE_IDLE), **STAGE_UP))
+                    R = G.run_training(sit, geo, ctl, m, cm, master=False, t_cap=T_CAP)
                 except GS.Reject as e:
                     print(f"[v5b] run reject {sid} {m['label']} {k}: {str(e)[:120]}", flush=True)
                     continue

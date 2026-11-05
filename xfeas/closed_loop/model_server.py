@@ -180,6 +180,11 @@ class Selector5:
             nom = CA.nominal_cmd(spec)
             X0 = D.describe(C, nom, float(nom.get("lin_vel_x", 0.3) or 0.3))  # == branch_collector.pair
             cl = SB.pick_classes(C, X0, lateral=False)
+            cl.update(
+                SB.extra_classes(K5.base_of(ctrl_id), C, X0)
+            )  # 2026-10-30: SONIC's own skills (== branch_schedule.plan)
+            for k in filter(None, os.environ.get("XF_DROP_CLS", "").split(",")):  # classes the model was not trained on
+                cl.pop(k, None)
             for p in ("low1", "low2"):
                 if p in cl:
                     sp = SB.slow_in(C, X0, cl[p])
@@ -203,10 +208,14 @@ class Selector5:
             )
         return self._g5b[ctrl_id]
 
-    def g5b_set(self, g, cur):
-        """-> [(class name, menu index)] for the command in force (stock first)"""
+    def g5b_set(self, g, cur, all_cls=False):
+        """-> [(class name, menu index)] for the command in force (stock first). all_cls (10-31, skill-rules arm): every class
+        is scored, whatever is in force; the layer's rules then choose which group may be sent"""
         C, cl = g["C"], g["cl"]
         ci = next((i for i in range(1, len(C)) if CA.same_cmd(C[i]["cmd"], cur)), None)
+        if all_cls:
+            names = [("stock", cl["stock"])] + [(k, i) for k, i in cl.items() if k != "stock"]
+            return names, ci
         post = {
             cl.get("low1"): "low1",
             cl.get("slowP_low1"): "low1",
@@ -222,13 +231,19 @@ class Selector5:
                 names.append((oth, cl[oth]))
             if f"slowP_{P}" in cl:
                 names.append((f"slowP_{P}", cl[f"slowP_{P}"]))
+            if "ground" in cl and cl["ground"] != cl[P]:  # branch_schedule.plan B option (EXTRA controllers)
+                names.append(("ground", cl["ground"]))
             if ci not in [i for _, i in names]:
                 names.append(("keep", ci))
         else:  # group A: upright command in force
-            names = [(k, cl[k]) for k in ("stock", "slow", "fast", "low1", "low2") if k in cl]
+            names = [
+                (k, cl[k])
+                for k in ("stock", "slow", "fast", "low1", "low2", "latL", "latR", "ground", "careful", "stealth")
+                if k in cl
+            ]
         return names, ci
 
-    def choose_g5b(self, obs, ctrl_id, robot, cur, t_since, any_sw, vx):
+    def choose_g5b(self, obs, ctrl_id, robot, cur, t_since, any_sw, vx, all_cls=False):
         import torch
 
         g = self.g5b_ctrl(ctrl_id)
@@ -240,7 +255,7 @@ class Selector5:
         X[0, DS.KI["is_keep"]] = 1.0
         X[:, DS.KI["is_nominal"]] = 0.0
         X[1, DS.KI["is_nominal"]] = 1.0
-        names, ci = self.g5b_set(g, cur)
+        names, ci = self.g5b_set(g, cur, all_cls)
         idx = [i for _, i in names]
         desc = D5.robot_desc5(robot)
         ctx, feas_raw = D5.DG.build_context(
@@ -469,6 +484,7 @@ def serve(sel):
                     float(meta["g5_t_since"]),
                     bool(meta["g5_any_switch"]),
                     float(meta["g5_vx"]),
+                    bool(meta.get("g5_all", False)),
                 )
             else:
                 ch = sel.choose(obs, meta["ctrl_id"], meta["spec_path"], meta["probe_path"], meta["robot"])

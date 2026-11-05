@@ -10,7 +10,7 @@ moment ranking term on the success logit. Two item sources in one shuffled set:
   gen5b  one branch MOMENT (branch_dataset): context from the moment snapshot, candidates = the K branch commands described given the
          command IN FORCE at the moment (so the current command enters through the descriptors: is_keep, transition cost),
          state = real decision_state (time since the last switch, any switch yet). Labels: success, fell, contact, stall,
-         progress; G1 uses success_tilt / fell_tilt (tilt > 1.2 rad = fall, the 10-26 decision).
+         progress; G1 uses success_tilt / fell_tilt (tilt > 1.2 rad = fall, the 10-26 decision), except SONIC (g1s, 10-31).
   gen4   one situation x controller (gen4_option_dataset), STATE0 (walking stock, no switch); every SCHOOL row is dropped (all 519 are
          within 3 m of the SC2A test course, the held-out rule).
 Groups for eval: A = switch distance from a stock walk, B = held posture (keep / stand up / other / slow), C = no hazard
@@ -39,6 +39,9 @@ ap.add_argument("--g4-manifest", default=os.path.join(ROOT, "data", "gen_train",
 ap.add_argument("--no-g4", action="store_true")
 ap.add_argument("--drop-env", default="school")
 ap.add_argument("--drop-sid", default="wa5_env_overhang_spotp_54170036")  # quarantined (audit FAIL: dark frames)
+ap.add_argument(
+    "--drop-cls", default=""
+)  # comma list of gen5b branch classes left out (10-31: g1s latL,latR were diagonal walks)
 ap.add_argument("--out", default="")
 ap.add_argument("--holdout-base", default="")
 ap.add_argument("--gen4-ckpt", default="")
@@ -65,6 +68,12 @@ ap.add_argument("--g5-manifest", default="")
 ap.add_argument("--g5-every", type=int, default=4)
 ap.add_argument("--g5-frac", type=float, default=0.5)
 ap.add_argument("--init", default="")
+ap.add_argument(
+    "--time-ratio",
+    type=float,
+    default=0.0,
+    help="(2026-10-28) gen5b rows: a success counts only if its time to goal <= ratio x the fastest successful branch of the same moment (0 = off)",
+)
 ap.add_argument("--norm-from-init", action="store_true")
 args = ap.parse_args()
 os.environ.setdefault("OMP_NUM_THREADS", "4")
@@ -101,6 +110,12 @@ def load_rows(holdout):
         r = json.loads(l)
         if args.drop_sid and r["sid"].startswith(args.drop_sid):
             continue
+        if args.drop_cls:
+            keep = [j for j, c in enumerate(r["cls"]) if c not in args.drop_cls.split(",")]
+            if len(keep) < 2:
+                continue
+            r["branches"] = [r["branches"][j] for j in keep]
+            r["cls"] = [r["cls"][j] for j in keep]
         r["src"] = "g5b"
         rows.append(r)
     if not args.no_g4:
@@ -240,18 +255,22 @@ class Items(Dataset):
             X[:, DB.DS.KI["is_nominal"]] = 0.0
             X[1, DB.DS.KI["is_nominal"]] = 1.0
             cand = X[np.asarray(z["b_cand"])[ks].astype(np.int64)]
-            g1 = r["robot"] == "g1"
+            g1 = (
+                r["robot"] == "g1" and r["base"] != "g1s"
+            )  # 10-31: SONIC crawls pitch ~1.35 rad by design; its mode-aware
+            # fall rule (y_success / y_fell, as the episode harness) applies
             col = lambda k: np.asarray(z[f"y_{k}"])[ks].astype(np.float32)
-            y = np.stack(
-                [
-                    col("success_tilt" if g1 else "success"),
-                    col("fell_tilt" if g1 else "fell"),
-                    col("contact"),
-                    col("stall"),
-                    col("progress"),
-                ],
-                1,
-            )
+            ys = col("success_tilt" if g1 else "success")
+            if args.time_ratio > 0:  # time-aware success: slower than ratio x the best option = failure
+                tg = col("t_goal")
+                ok = (ys > 0.5) & np.isfinite(tg)
+                if ok.any():
+                    ys = np.where(
+                        ys > 0.5,
+                        (np.isfinite(tg) & (tg <= args.time_ratio * float(np.min(tg[ok])))).astype(np.float32),
+                        ys,
+                    )
+            y = np.stack([ys, col("fell_tilt" if g1 else "fell"), col("contact"), col("stall"), col("progress")], 1)
             stock = np.asarray([c == "stock" for c in r["cls"]], bool)
             state = DB.decision_state(z, i)
         t = torch.from_numpy
@@ -362,6 +381,7 @@ def train():
     np.random.seed(args.seed)
     cfg = dict(
         backbone="dinov3_s",
+        time_ratio=args.time_ratio,
         holdout_base=args.holdout_base,
         k_ens=args.k_ens,
         use_margin=True,
@@ -373,6 +393,7 @@ def train():
         data="gen5b+gen5g4" if not args.no_g4 else "gen5b",
         drop_env=args.drop_env,
         drop_sid=args.drop_sid,
+        drop_cls=args.drop_cls,
         gen4_ckpt=os.path.abspath(args.gen4_ckpt) if args.gen4_ckpt else "",
         loss_w=LOSS_W,
         rank_w=args.rank_w,
@@ -588,6 +609,7 @@ def evaluate(ckpt, split):
     d = torch.load(ckpt, map_location="cpu", weights_only=False)
     cfg, norm = d["cfg"], d["norm"]
     args.drop_env, args.drop_sid = cfg.get("drop_env", args.drop_env), cfg.get("drop_sid", args.drop_sid)
+    args.drop_cls = cfg.get("drop_cls", args.drop_cls)
     m = M5.build(cfg, pretrained=True).to(dev).eval()
     m.load_state_dict(d["model"], strict=False)
     args.g5_manifest = ""

@@ -4,8 +4,9 @@
 
 A robot already has a walking controller (AMO, ReLIC, SONIC, ...). XFeas does not change or retrain it. Every 0.25 s, XFeas
 looks at the robot's head camera and picks which of the controller's **own commands** to send: walk normally, slow down,
-crouch with the torso pitched, sidestep, stand back up. A neural network predicts what each command would lead to over the
-next 1.5 s (fall, stall, hitting something, reaching the goal) and XFeas sends the best one.
+crouch or crawl, sidestep, stand back up. A neural network (the **feasibility model**) predicts what each command would lead
+to over the next 1.5 s (fall, stall, hitting something, reaching the goal). Simple geometric rules decide **when** to switch
+to a crouch or sidestep and how to stand back up; the model decides **which** of the controller's commands to use.
 
 | G1 + AMO, stock commands | G1 + AMO + XFeas | Spot + ReLIC + XFeas |
 |:---:|:---:|:---:|
@@ -31,7 +32,7 @@ bash third_party/setup.sh           # fetch the released controllers
 python tools/relocate_data_paths.py --apply
 
 python evaluate.py model --ckpt data/gen_train/gen5b/runs/all/model.pt --device cpu   # offline check, no simulator
-python evaluate.py school demo amo g5b 1                                              # one episode in Isaac Sim
+python evaluate.py school demo sonic g5sm 1                                            # one episode in Isaac Sim
 ```
 
 ---
@@ -51,16 +52,20 @@ python evaluate.py school demo amo g5b 1                                        
 2. **Each command is described by measurement, not by name.** A short **self-test** runs on every controller and records
    what each command physically does (height reached, speed, tilt, falls, how safe switching is at speed).
 3. **The network scores every candidate** for "hold this for 1.5 s": fall, stall and contact risk, progress and success.
-   Five ensemble heads give an uncertainty; the score is `mean − κ·std`, so XFeas is cautious when unsure.
-4. **Steering is never learned**: the same path follower steers every method, so results compare only the command choice.
-5. **Training data is side by side**: the simulator state is saved at a moment before an obstacle and replayed with
+   Five ensemble heads give an uncertainty; the score is `mean − κ·std − λ·P(fall)`, so XFeas is cautious when unsure.
+4. **Rules decide when, the model decides what.** From the head-camera points, the skill rules
+   (`xfeas/closed_loop/skill_rules.py`) detect overhangs and narrow gaps ahead and decide when to switch skill
+   (walk / crouch-crawl / sidestep) and how to stand back up (stop low, then rise in place). The model picks the move.
+   Every rule threshold is a margin of the robot's self-test measurements, not tuned on test scenes.
+5. **Steering is never learned**: the same path follower steers every method, so results compare only the command choice.
+6. **Training data is side by side**: the simulator state is saved at a moment before an obstacle and replayed with
    different commands, so the real outcome of every option from the same state is known.
 
 **Robots and controllers** (all used as released, never retrained):
 
 | Robot | Controllers | Notes |
 |---|---|---|
-| Unitree G1 | AMO (`g1c`), GR00T-WBC (`g1g`), Isaac Lab policy (`g1l`), URMA (`g1u`), PHP (`g1p`), GEAR-SONIC (`g1s`) | SONIC is held out of training in this snapshot |
+| Unitree G1 | AMO (`g1c`), GR00T-WBC (`g1g`), Isaac Lab policy (`g1l`), URMA (`g1u`), PHP (`g1p`), GEAR-SONIC (`g1s`) | SONIC is in training (model `all_g1s_v4`) |
 | Boston Dynamics Spot | ReLIC (`spotp`), Isaac Sim flat-terrain policy (`spotf`) | `spotf` held out |
 | Clearpath Jackal, Iris drone | one controller each | |
 
@@ -155,7 +160,8 @@ python tools/relocate_data_paths.py --apply
 | `data/gen_v5b/` | collected side-by-side training data |
 | `data/gen_train/gen5b/manifest.jsonl` | training index |
 | `data/gen_train/gen4/full/*/ckpt/xfeas_gen4_ens.pt` | earlier weights the network starts from |
-| `data/gen_train/gen5b/runs/all/model.pt` | trained XFeas (all controllers); `g1c_ho/` = trained without AMO |
+| `data/gen_train/gen5b/runs/all_g1s_v4/model.pt` | **current trained XFeas** (all controllers incl. SONIC) |
+| `data/gen_train/gen5b/runs/all/model.pt`, `g1c_ho/` | earlier model without SONIC; `g1c_ho` = trained without AMO |
 
 ---
 
@@ -172,18 +178,35 @@ python train.py --out data/gen_train/gen5b/runs/g1c_ho --holdout-base g1c \
 python train.py --eval-only --ckpt data/gen_train/gen5b/runs/all/model.pt --eval-split val
 ```
 Outputs: `model.pt`, `last.pt` (for resuming), `norm.json`, `train.log` in `--out`.
-`bash xfeas/train/run_training.sh` runs the full sequence (held-out model, evaluations, all-controllers model).
+* The current model (`all_g1s_v4`, with SONIC) is trained on the v4 manifest:
+  `python xfeas/train/build_manifest_v4.py ...` (filters the data and runs a quality check; exit 1 = don't train), then
+  `train.py --manifest data/gen_train/gen5b/manifest_g1s_v4.jsonl ...`. The whole chain (collect → manifest + check → train
+  → closed-loop test) is `bash xfeas/train/run_sonic_retrain.sh`.
+* `bash xfeas/train/run_training.sh` runs the earlier sequence (held-out model, evaluations, all-controllers model).
 
 ### Evaluate
 ```bash
-python evaluate.py model --ckpt data/gen_train/gen5b/runs/all/model.pt --device cpu   # offline check, no simulator
-python evaluate.py school <job id> <amo|spot|sonic> <stock|g5b|g5bho> <trials> [SC2A_O1|SC2A_O1L|SC2A_O1N]
+python evaluate.py model --ckpt data/gen_train/gen5b/runs/all_g1s_v4/model.pt --device cpu   # offline check, no simulator
+python evaluate.py school <job id> <amo|spot|sonic> <arm> <trials> [scene]
 python evaluate.py gym    <job id> <amo|sonic> <GC2F|CC1F> <trials>
 python evaluate.py terrain <spot|amo> <tile> <trial index> <out dir>
 ```
-* Arms: `stock` = the controller's default commands, `g5b` = XFeas, `g5bho` = XFeas trained without AMO.
-* School scenes: `SC2A_O1` lintel at 1.10 m, `SC2A_O1L` lowered to 0.85 m, `SC2A_O1N` no lintel (checks XFeas doesn't
-  crouch for nothing).
+* Arms (`xfeas/closed_loop/run_school_cell.sh` lists them all):
+
+  | Arm | What runs |
+  |---|---|
+  | `stock` | the controller's default commands |
+  | **`g5sm`** | **current method**: rules decide when + stand-up, the model picks the move (model `all_g1s_v4`) |
+  | `g5smP` | `g5sm` + SONIC execution helpers (`sonic_primitives.py`: turn in place, hold heading / lateral position) |
+  | `g5smC`, `g5smCF` | `g5sm` with course-safe timing |
+  | `g5sr` | rules pick the skill, the model ranks the commands inside it |
+  | `g5sr0` | rules only, no model (ablation) |
+  | `g5s` | model only, no rules (with SONIC) |
+  | `g5b`, `g5bho` | earlier model without SONIC; `g5bho` trained without AMO |
+* Scenes: `SC2A` full school course; `SC2A_O1` its first doorway (lintel 1.10 m), `SC2A_O1L` lintel lowered to 0.85 m,
+  `SC2A_O1N` no lintel (checks XFeas doesn't crouch for nothing); `D1g` raised door (crouch), `HW1` blocked hallway
+  (sidestep), `GC2F` gym course.
+* `P5_GPU=1` runs a cell on GPU 1 (default GPU 0).
 * Results: `data/gen5_closed/course/<job id>/runs_<robot>.jsonl` (one row per trial: `success`, `outcome`, `t_end`,
   `max_tilt_deg`, ...), videos in `data/gen5_closed/videos/`, decision logs in `data/gen5_closed/diag/<job id>/`.
 * Whole school matrix: `bash xfeas/closed_loop/run_school_matrix.sh`, summary: `python tools/summarize_school_matrix.py`.
@@ -204,18 +227,17 @@ python probe.py --base g1c --ctrls g1c
 
 ---
 
-## Results (preliminary, 2026-10-28 snapshot)
+## Results (preliminary)
 
-School course, first doorway. Night, headlight only, 3 trials per cell, strict 0.5 m success, no falls in any cell.
+Earlier model (`g5b`, trained without SONIC, model-only), school course, first doorway. Night, headlight only, 3 trials per
+cell, strict 0.5 m success, no falls in any cell. Results for the current method (`g5sm`) are being collected.
 
 | Robot + controller | Arm | Lintel 1.10 m | Lintel 0.85 m | No lintel |
 |---|---|:---:|:---:|:---:|
 | G1 + AMO | stock | 0/3 | – | – |
-| G1 + AMO | XFeas | **3/3** | **3/3** | **3/3** |
-| G1 + AMO | XFeas trained without AMO | 0/3 | 0/3 | 3/3 |
-| Spot + ReLIC | XFeas | **3/3** | **3/3** | **3/3** |
-
-The gym-course and terrain-tile evaluations are in progress.
+| G1 + AMO | XFeas (`g5b`) | **3/3** | **3/3** | **3/3** |
+| G1 + AMO | XFeas trained without AMO (`g5bho`) | 0/3 | 0/3 | 3/3 |
+| Spot + ReLIC | XFeas (`g5b`) | **3/3** | **3/3** | **3/3** |
 
 ---
 
